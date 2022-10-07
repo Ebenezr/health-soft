@@ -1,10 +1,12 @@
+import Patient from "./components/nav/aside";
 import Sidenav from "./components/nav/Sidenav";
-
+import "./sass/style.scss";
 function App() {
   return (
-    <div className="App">
+    <main>
       <Sidenav />
-    </div>
+      <Patient />
+    </main>
   );
 }
 
