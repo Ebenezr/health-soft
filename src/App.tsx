@@ -7,10 +7,8 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   return (
     <main>
-      <main className="dark-mode">
-        <Sidenav />
-        <Main />
-      </main>
+      <Sidenav />
+      <Main />
     </main>
   );
 }

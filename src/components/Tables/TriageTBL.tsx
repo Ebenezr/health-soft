@@ -48,7 +48,7 @@ const columns = [
     ),
   },
   {
-    name: "Delete Nurse",
+    name: "Delete",
     button: true,
     cell: () => (
       <button

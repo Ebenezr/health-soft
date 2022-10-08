@@ -11,6 +11,7 @@ import Patients from "./Patients";
 import Triage from "./Triage";
 import Users from "./Users";
 
+
 const Main: React.FC = () => {
   return (
     <section className="container__main">
@@ -29,7 +30,7 @@ const Main: React.FC = () => {
           <Route path="appointments" element={<Appointments />} />
         </Routes>
         <Routes>
-          <Route path="checkups" element={<Checkups />} />
+          <Route path="checkup" element={<Checkups />} />
         </Routes>
         <Routes>
           <Route path="management" element={<Users />}>

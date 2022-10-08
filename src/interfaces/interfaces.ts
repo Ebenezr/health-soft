@@ -62,3 +62,33 @@ export interface patientVitals {
   bp_diastolic?: number;
   notes?: string;
 }
+
+export interface checkupInterface {
+  id: number;
+  visit_id: number;
+  symptoms: string;
+  diagnosis: string;
+  advice: string;
+  checkup_date: string;
+  next_visit: string;
+  comment: string;
+  hpi: string;
+  patient: {
+    id?: 1;
+    national_id?: number;
+    first_name?: string;
+    last_name?: string;
+    gender?: string;
+    dob?: string;
+    marital_status?: string;
+  };
+  doctor: {
+    id?: number;
+    first_name?: string;
+    last_name?: string;
+    phone?: number;
+    email?: string;
+    designation?: string;
+    role?: string;
+  };
+}

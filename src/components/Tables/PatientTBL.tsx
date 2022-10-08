@@ -63,7 +63,7 @@ const columns = [
     ),
   },
   {
-    name: "Delete Patient",
+    name: "Delete",
     button: true,
     cell: () => (
       <button
@@ -99,13 +99,7 @@ function PatientTBL() {
 
   return (
     <div className="table">
-      <DataTable
-        title="Patient List"
-        columns={columns}
-        data={rows}
-        dense
-        progressPending={pending}
-      />
+      <DataTable columns={columns} data={rows} progressPending={pending} />
     </div>
   );
 }

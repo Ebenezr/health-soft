@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import axios from "axios";
-import { userInterface } from "../../interfaces/interfaces";
+import { checkupInterface, userInterface } from "../../interfaces/interfaces";
 
 const columns = [
   {
@@ -15,28 +15,35 @@ const columns = [
       color: "white",
     },
   },
-
   {
-    name: "First Name",
-    selector: (row: any) => row.first_name,
+    name: "Visit Id",
+    selector: (row: any) => row.visit_id,
+  },
+  {
+    name: "Doctor",
+    selector: (row: any) => row.doctor.fullname,
     sortable: true,
   },
   {
-    name: "Last Name",
-    selector: (row: any) => row.last_name,
+    name: "Patient",
+    selector: (row: any) => row.patient.fullname,
     sortable: true,
   },
   {
-    name: "Designation",
-    selector: (row: any) => row.designation,
+    name: "Symptoms",
+    selector: (row: any) => row.symptoms,
   },
   {
-    name: "Telephone",
-    selector: (row: any) => row.phone,
+    name: "Diagnosis",
+    selector: (row: any) => row.diagnosis,
   },
   {
-    name: "Email",
-    selector: (row: any) => row.email,
+    name: "Check Up Date",
+    selector: (row: any) => row.checkup_date,
+  },
+  {
+    name: "Next Visit",
+    selector: (row: any) => row.next_visit,
   },
   {
     name: "Edit",
@@ -64,14 +71,14 @@ const columns = [
   },
 ];
 
-function NurseTBL() {
+function CheckupTBL() {
   const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<userInterface[]>([]);
+  const [rows, setRows] = useState<checkupInterface[]>([]);
 
   useEffect(() => {
     try {
       axios
-        .get("http://127.0.0.1:3000/nurses")
+        .get("http://127.0.0.1:3000/checkups")
         .then((res: any) => setRows(res.data))
         .then(() => {
           setPending(false);
@@ -85,7 +92,7 @@ function NurseTBL() {
   return (
     <div className="table">
       <DataTable
-        title="Nurse List"
+        title="Patient Vitals"
         columns={columns}
         data={rows}
         dense
@@ -95,4 +102,4 @@ function NurseTBL() {
   );
 }
 
-export default NurseTBL;
+export default CheckupTBL;
