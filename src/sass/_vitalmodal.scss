@@ -1,7 +1,7 @@
 .modal {
   background: white;
   height: 60vh;
-  width: clamp(70%, 500px, 50%);
+  width: clamp(30%, 300px, 70%);
   border-radius: 1rem;
   overflow: hidden;
   position: fixed;
@@ -36,6 +36,24 @@
   article {
     flex-grow: 1;
     background-color: rgb(228, 228, 228);
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1rem;
+    .input_group {
+      display: flex;
+      justify-content: space-around;
+      input[type="number"] {
+        padding: 0.5rem 1rem;
+        border-radius: 0.7rem;
+        border: none;
+        outline: none;
+      }
+      input[type="text-area"] {
+        width: 100%;
+        display: block;
+      }
+    }
   }
   .modal-footer {
     justify-self: flex-end;

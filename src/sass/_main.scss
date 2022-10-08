@@ -21,7 +21,7 @@
     height: 100%;
     background: $color-background;
     display: grid;
-    grid-template-rows: 6% 6% auto;
+    grid-template-rows: 6% 10% auto;
     grid-template-areas: "title" "section-header" "table";
     .section__title {
       text-align: center;
@@ -32,6 +32,23 @@
       padding: 1rem;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      input[type="search"] {
+        border-radius: 0.5rem;
+        border: 0.1rem solid grey;
+        padding: 0.2rem 0.5rem;
+        outline: none;
+        &:focus {
+          scale: 1.1;
+        }
+      }
+      .add_button {
+        border: none;
+        background: transparent;
+      }
+      .add_button_icon {
+        font-size: 2.5rem;
+      }
     }
     .section__table {
       .table {

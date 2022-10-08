@@ -57,7 +57,24 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
             />
           </button>
         </header>
-        <article></article>
+        <article>
+          <span className="input_group">
+            <label>Temperature(C)</label>
+            <input type="number" id="temperature"></input>
+          </span>{" "}
+          <span className="input_group">
+            <label>BP Systolic</label>
+            <input type="number" id="bp_systolic"></input>
+          </span>
+          <span className="input_group">
+            <label>BP Diasyolic</label>
+            <input type="number" id="bp_diastolic"></input>
+          </span>
+          <span className="input_group">
+            <label>Nurse Notes</label>
+            <input type="text-area" id="notes"></input>
+          </span>
+        </article>
         <footer className="modal-footer">
           <button className="btn save">Action</button>
           <button className="btn close" onClick={closeModal}>
