@@ -1,6 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FaUserNurse,
   FaUnlock,
@@ -13,6 +12,7 @@ import { Navigation } from "react-minimal-side-navigation";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 
 const Sidenav: React.FC = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   return (
     <aside>
@@ -25,7 +25,7 @@ const Sidenav: React.FC = () => {
         <h2>Ebenezar Bukosia</h2>
       </div>
       <Navigation
-        activeItemId="/management/members"
+        activeItemId={location.pathname}
         onSelect={({ itemId }) => {
           //navigate to selected path
           navigate(itemId);

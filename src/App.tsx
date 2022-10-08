@@ -2,13 +2,14 @@ import Sidenav from "./components/nav/Sidenav";
 import "./sass/style.scss";
 
 import { useState } from "react";
-import Main from "./Pages/Main";
+import Layout from "./Pages/Layout";
+
 function App() {
   const [openModal, setOpenModal] = useState(false);
   return (
     <main>
       <Sidenav />
-      <Main />
+      <Layout />
     </main>
   );
 }
