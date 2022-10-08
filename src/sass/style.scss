@@ -3,6 +3,8 @@
 
 @import "./side";
 
+@import "./_vitalmodal";
+
 * {
   padding: 0;
   margin: 0;
@@ -50,4 +52,10 @@ main {
   &.delete {
     background: crimson;
   }
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 2.5rem;
+  border: none;
 }
