@@ -79,7 +79,7 @@ const columns = [
   },
 ];
 
-function DataTableBase() {
+function PatientTBL() {
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<patientInterface[]>([]);
 
@@ -110,4 +110,4 @@ function DataTableBase() {
   );
 }
 
-export default DataTableBase;
+export default PatientTBL;

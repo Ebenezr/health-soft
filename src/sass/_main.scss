@@ -1,0 +1,31 @@
+@import "./variables";
+.container__main {
+  background-color: $color-background;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 6% auto 6%;
+  overflow-y: hidden;
+}
+.view__main {
+  padding-right: 1rem;
+}
+@media (max-width: $breakpoint-tablet) {
+  .container__main {
+    height: 100%;
+    width: 100vw;
+    overflow-y: unset;
+    max-width: inherit;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .container__main {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0 !important;
+    }
+  }
+}

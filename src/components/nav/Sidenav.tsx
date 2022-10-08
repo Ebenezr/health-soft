@@ -1,4 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaUserNurse,
   FaUnlock,
@@ -11,6 +13,7 @@ import { Navigation } from "react-minimal-side-navigation";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 
 const Sidenav: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <aside>
       <div className="logo">
@@ -22,15 +25,15 @@ const Sidenav: React.FC = () => {
         <h2>Ebenezar Bukosia</h2>
       </div>
       <Navigation
-        // you can use your own router's api to get pathname
         activeItemId="/management/members"
         onSelect={({ itemId }) => {
-          // maybe push to the route
+          //navigate to selected path
+          navigate(itemId);
         }}
         items={[
           {
             title: "Patient Info",
-            itemId: "/patient",
+            itemId: "/patients",
 
             elemBefore: () => <FaUserClock />,
           },
