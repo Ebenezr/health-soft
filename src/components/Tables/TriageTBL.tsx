@@ -1,24 +1,8 @@
 import { useEffect, useState } from "react";
-import DataTable from "../DataTable";
+import DataTable from "./DataTable";
 import axios from "axios";
+import { userInterface } from "../../interfaces/interfaces";
 
-interface patientInterface {
-  national_id: number;
-  first_name: string;
-  last_name: string;
-  gender: string;
-  dob: string;
-  marital_status: string;
-  patient_contacts: [
-    {
-      phone: number;
-      email: string;
-      address: string;
-      county: string;
-      estate: string;
-    }
-  ];
-}
 const columns = [
   {
     name: "Id",
@@ -31,43 +15,28 @@ const columns = [
       color: "white",
     },
   },
+
   {
-    name: "First Name",
-    selector: (row: any) => row.first_name,
+    name: "Patient",
+    selector: (row: any) => row.patient.fullname,
     sortable: true,
   },
   {
-    name: "Last Name",
-    selector: (row: any) => row.last_name,
+    name: "Temperature",
+    selector: (row: any) => row.temperature,
     sortable: true,
   },
   {
-    name: "Marital Status",
-    selector: (row: any) => row.marital_status,
+    name: "Bp Systolic",
+    selector: (row: any) => row.bp_systolic,
   },
   {
-    name: "Gender",
-    selector: (row: any) => row.gender,
+    name: "Bp Diastolic",
+    selector: (row: any) => row.bp_diastolic,
   },
   {
-    name: "Phone",
-    selector: (row: any) => row.patient_contacts[0].phone,
-    sortable: true,
-  },
-  {
-    name: "Email",
-    selector: (row: any) => row.patient_contacts[0].email,
-    sortable: true,
-  },
-  {
-    name: "Address",
-    selector: (row: any) => row.patient_contacts[0].address,
-    sortable: true,
-  },
-  {
-    name: "Estate",
-    selector: (row: any) => row.patient_contacts[0].estate,
-    sortable: true,
+    name: "Notes",
+    selector: (row: any) => row.notes,
   },
   {
     name: "Edit",
@@ -79,7 +48,7 @@ const columns = [
     ),
   },
   {
-    name: "Delete Patient",
+    name: "Delete Nurse",
     button: true,
     cell: () => (
       <button
@@ -95,14 +64,14 @@ const columns = [
   },
 ];
 
-function DataTableBase() {
+function TriageTBL() {
   const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<patientInterface[]>([]);
+  const [rows, setRows] = useState<userInterface[]>([]);
 
   useEffect(() => {
     try {
       axios
-        .get("http://127.0.0.1:3000/patients")
+        .get("http://127.0.0.1:3000/patient_vitals")
         .then((res: any) => setRows(res.data))
         .then(() => {
           setPending(false);
@@ -116,7 +85,7 @@ function DataTableBase() {
   return (
     <div className="table">
       <DataTable
-        title="Patient List"
+        title="Patient Vitals"
         columns={columns}
         data={rows}
         dense
@@ -126,4 +95,4 @@ function DataTableBase() {
   );
 }
 
-export default DataTableBase;
+export default TriageTBL;
