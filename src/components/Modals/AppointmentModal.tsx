@@ -59,20 +59,24 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         </header>
         <article>
           <span className="input_group">
-            <label>Temperature(C)</label>
-            <input type="number" id="temperature"></input>
-          </span>{" "}
-          <span className="input_group">
-            <label>BP Systolic</label>
-            <input type="number" id="bp_systolic"></input>
+            <label>Patient</label>
+            <input type="text" id="patient" className="inputs"></input>
           </span>
           <span className="input_group">
-            <label>BP Diasyolic</label>
-            <input type="number" id="bp_diastolic"></input>
+            <label>Doctor</label>
+            <input type="text" id="patient" className="inputs"></input>
           </span>
-          <span className="input_group notes">
-            <label>Nurse Notes</label>
-            <textarea rows={4} id="notes" />
+          <span className="input_group">
+            <label>Appointment Date</label>
+            <input type="date" id="patient" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Appointment Time</label>
+            <input type="time" id="patient" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Note</label>
+            <textarea id="patient" className="inputs"></textarea>
           </span>
         </article>
         <footer className="modal-footer">
