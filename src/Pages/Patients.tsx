@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaPlusSquare } from "react-icons/fa";
-import VitalsModal from "../components/Modals/patientVitalsModal";
 import PatientTBL from "../components/Tables/PatientTBL";
 import { motion } from "framer-motion";
+import PatientModal from "../components/Modals/PatientModal";
 
 const Patients: React.FC<{ className?: string }> = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -24,7 +24,7 @@ const Patients: React.FC<{ className?: string }> = () => {
       <div className="section__table">
         <PatientTBL />
       </div>
-      <VitalsModal
+      <PatientModal
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />

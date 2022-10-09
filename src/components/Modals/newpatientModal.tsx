@@ -28,7 +28,7 @@ interface ModalProps {
   closeModal(): void;
 }
 
-const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
+const NewPatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
   if (!openModal) return null;
   return (
     <motion.div
@@ -70,9 +70,9 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
             <label>BP Diasyolic</label>
             <input type="number" id="bp_diastolic"></input>
           </span>
-          <span className="input_group notes">
+          <span className="input_group">
             <label>Nurse Notes</label>
-            <textarea rows={4} id="notes" />
+            <input type="text-area" id="notes"></input>
           </span>
         </article>
         <footer className="modal-footer">
@@ -86,4 +86,4 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
   );
 };
 
-export default VitalsModal;
+export default NewPatientModal;

@@ -28,7 +28,7 @@ interface ModalProps {
   closeModal(): void;
 }
 
-const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
+const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
   if (!openModal) return null;
   return (
     <motion.div
@@ -86,4 +86,4 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
   );
 };
 
-export default VitalsModal;
+export default AppointmentModal;

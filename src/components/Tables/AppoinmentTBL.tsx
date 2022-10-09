@@ -5,70 +5,81 @@ import {
   appointmentInterface,
   patientInterface,
 } from "../../interfaces/interfaces";
-
-const columns = [
-  {
-    name: "Id",
-    selector: (row: any) => row.id,
-    sortable: true,
-    grow: 0,
-    right: true,
-    style: {
-      backgroundColor: "rgba(50, 50, 50, 0.5)",
-      color: "white",
-    },
-  },
-  {
-    name: "Serial Number",
-    selector: (row: any) => row.serial_no,
-  },
-  {
-    name: "Patient",
-    selector: (row: any) => row.patient.fullname,
-    sortable: true,
-  },
-  {
-    name: "Doctor",
-    selector: (row: any) => row.doctor.fullname,
-    sortable: true,
-  },
-  {
-    name: "Appointment Date",
-    selector: (row: any) => row.appointment_date,
-  },
-  {
-    name: "Appointment Time",
-    selector: (row: any) => row.appointment_time,
-  },
-  {
-    name: "Edit",
-    button: true,
-    cell: () => (
-      <button className="table-btn edit" type="button">
-        Edit
-      </button>
-    ),
-  },
-  {
-    name: "Delete",
-    button: true,
-    cell: () => (
-      <button
-        className="table-btn delete"
-        type="button"
-        onClick={() => {
-          alert("mbuss");
-        }}
-      >
-        Delete
-      </button>
-    ),
-  },
-];
+import { motion } from "framer-motion";
+import AppointmentModal from "../Modals/AppointmentModal";
 
 function AppointmentTable() {
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<appointmentInterface[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const columns = [
+    {
+      name: "Id",
+      selector: (row: any) => row.id,
+      sortable: true,
+      grow: 0,
+      right: true,
+      style: {
+        backgroundColor: "rgba(50, 50, 50, 0.5)",
+        color: "white",
+      },
+    },
+    {
+      name: "Serial Number",
+      selector: (row: any) => row.serial_no,
+    },
+    {
+      name: "Patient",
+      selector: (row: any) => row.patient.fullname,
+      sortable: true,
+    },
+    {
+      name: "Doctor",
+      selector: (row: any) => row.doctor.fullname,
+      sortable: true,
+    },
+    {
+      name: "Appointment Date",
+      selector: (row: any) => row.appointment_date,
+    },
+    {
+      name: "Appointment Time",
+      selector: (row: any) => row.appointment_time,
+    },
+    {
+      name: "Edit",
+      button: true,
+      cell: () => (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="table-btn edit"
+          onClick={() => setOpenModal(true)}
+          type="button"
+        >
+          Edit
+        </motion.button>
+      ),
+    },
+    {
+      name: "Delete",
+      button: true,
+      cell: () => (
+        <motion.button
+          className="table-btn delete"
+          type="button"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => {
+            alert("mbuss");
+          }}
+        >
+          Delete
+        </motion.button>
+      ),
+    },
+  ];
 
   useEffect(() => {
     try {
@@ -91,6 +102,10 @@ function AppointmentTable() {
         data={rows}
         dense
         progressPending={pending}
+      />
+      <AppointmentModal
+        openModal={openModal}
+        closeModal={() => setOpenModal(false)}
       />
     </div>
   );
