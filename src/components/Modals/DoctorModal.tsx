@@ -59,20 +59,32 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         </header>
         <article>
           <span className="input_group">
-            <label>Temperature(C)</label>
-            <input type="number" id="temperature"></input>
-          </span>{" "}
-          <span className="input_group">
-            <label>BP Systolic</label>
-            <input type="number" id="bp_systolic"></input>
+            <label>First Name</label>
+            <input type="text" id="first_name" className="inputs"></input>
           </span>
           <span className="input_group">
-            <label>BP Diasyolic</label>
-            <input type="number" id="bp_diastolic"></input>
+            <label>Last Name</label>
+            <input type="text" id="last_name" className="inputs"></input>
           </span>
-          <span className="input_group notes">
-            <label>Nurse Notes</label>
-            <textarea rows={4} id="notes" />
+          <span className="input_group">
+            <label>Phone Number</label>
+            <input type="number" id="phone" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Email</label>
+            <input type="text" id="eamil" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Designation</label>
+            <input type="text" id="designation" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Password</label>
+            <input type="password" id="password" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Confirm Password</label>
+            <input type="password" id="cpassword" className="inputs"></input>
           </span>
         </article>
         <footer className="modal-footer">

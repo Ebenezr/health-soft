@@ -59,21 +59,51 @@ const PatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         </header>
         <article>
           <span className="input_group">
-            <label>Temperature(C)</label>
-            <input type="number" id="temperature"></input>
-          </span>{" "}
-          <span className="input_group">
-            <label>BP Systolic</label>
-            <input type="number" id="bp_systolic"></input>
+            <label>First Name</label>
+            <input type="text" id="first_name" className="inputs"></input>
           </span>
           <span className="input_group">
-            <label>BP Diasyolic</label>
-            <input type="number" id="bp_diastolic"></input>
+            <label>Last Name</label>
+            <input type="text" id="last_name" className="inputs"></input>
           </span>
-          <span className="input_group notes">
-            <label>Nurse Notes</label>
-            <textarea rows={4} id="notes" />
+          <span className="input_group">
+            <label>National ID</label>
+            <input type="number" id="national_id" className="inputs"></input>
           </span>
+          <span className="input_group">
+            <label>Gender</label>
+            <input type="text" id="gender" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>DOB</label>
+            <input type="date" id="dob" className="inputs"></input>
+          </span>
+          <span className="input_group">
+            <label>Marital Status</label>
+            <input type="text" id="marital_status" className="inputs"></input>
+          </span>
+          <div className="contact" style={{ display: "none" }}>
+            <span className="input_group">
+              <label>Phone</label>
+              <input type="number" id="phone" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Email</label>
+              <input type="eamil" id="email" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Address</label>
+              <input type="text" id="address" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>County</label>
+              <input type="text" id="county" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Estate</label>
+              <input type="text" id="estate" className="inputs"></input>
+            </span>
+          </div>
         </article>
         <footer className="modal-footer">
           <button className="btn save">Action</button>
