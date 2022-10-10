@@ -10,6 +10,12 @@ function CheckupTBL() {
   const [rows, setRows] = useState<checkupInterface[]>([]);
   const [openModal, setOpenModal] = useState(false);
 
+  const handleDelete = (id: number) => {
+    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
+    setRows(deluser);
+    axios.delete(`http://127.0.0.1:3000/checkups/${id}`).then((res) => {});
+  };
+
   const columns = [
     {
       name: "Id",
@@ -70,14 +76,14 @@ function CheckupTBL() {
     {
       name: "Delete",
       button: true,
-      cell: () => (
+      cell: (row: any) => (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="table-btn delete"
           type="button"
           onClick={() => {
-            alert("mbuss");
+            handleDelete(row.id);
           }}
         >
           Delete

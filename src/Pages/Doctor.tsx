@@ -3,9 +3,11 @@ import DoctorModal from "../components/Modals/DoctorModal";
 import DoctorTBL from "../components/Tables/Doctortable";
 import { motion } from "framer-motion";
 import { FaPlusSquare } from "react-icons/fa";
+import { userInterface } from "../interfaces/interfaces";
 
 const Doctor = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<userInterface>({});
 
   return (
     <section className="panel__main">
@@ -25,6 +27,7 @@ const Doctor = () => {
         <DoctorTBL />
       </div>
       <DoctorModal
+        currentUser={currentUser}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />

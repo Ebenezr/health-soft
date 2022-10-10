@@ -18,12 +18,16 @@ export interface patientInterface {
 }
 
 export interface userInterface {
+  id?: number;
   first_name?: string;
   last_name?: string;
   phone?: number;
   email?: string;
   designation?: string;
   role?: string;
+  featured_image?: {};
+  password?: string;
+  cpassword?: string;
 }
 
 export interface appointmentInterface {
@@ -56,6 +60,7 @@ export interface appointmentInterface {
 }
 
 export interface patientVitals {
+  id?: number;
   patient?: string;
   temperature?: number;
   bp_systolic?: number;

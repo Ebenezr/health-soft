@@ -4,12 +4,24 @@ import axios from "axios";
 import { userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import DoctorModal from "../Modals/DoctorModal";
+import NurseModal from "../Modals/NurseModal";
 
 function NurseTBL() {
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<userInterface[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<userInterface>({});
 
+  const handleDelete = (id: number) => {
+    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
+    setRows(deluser);
+    axios.delete(`http://127.0.0.1:3000/nurses/${id}`).then((res) => {});
+  };
+
+  const handleEdit = (row: userInterface) => {
+    setOpenModal(true);
+    setCurrentUser(row);
+  };
   const columns = [
     {
       name: "Id",
@@ -48,13 +60,13 @@ function NurseTBL() {
     {
       name: "Edit",
       button: true,
-      cell: () => (
+      cell: (row: any) => (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="table-btn edit"
           type="button"
-          onClick={() => setOpenModal(true)}
+          onClick={() => handleEdit(row)}
         >
           Edit
         </motion.button>
@@ -63,14 +75,14 @@ function NurseTBL() {
     {
       name: "Delete",
       button: true,
-      cell: () => (
+      cell: (row: any) => (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="table-btn delete"
           type="button"
           onClick={() => {
-            alert("mbuss");
+            handleDelete(row.id);
           }}
         >
           Delete
@@ -89,7 +101,6 @@ function NurseTBL() {
     } catch (err) {
       console.error(err);
     }
-    //console.log(rows[0].patient_contacts[0].phone);
   }, []);
 
   return (
@@ -101,7 +112,8 @@ function NurseTBL() {
         dense
         progressPending={pending}
       />
-      <DoctorModal
+      <NurseModal
+        currentUser={currentUser}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />
