@@ -2,6 +2,7 @@ import React from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { padding } from "@mui/system";
+import { Label } from "../Radix/Label";
 
 const dropIn = {
   hidden: {
@@ -48,10 +49,10 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        style={{ width: "clamp(30%, 300px, 70%)" }}
+        style={{ width: "clamp(40%, 300px, 70%)" }}
       >
         <header className="modal-header">
-          <h2>Modal form</h2>
+          <h2>User Info</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -62,31 +63,47 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         <article style={{ gridTemplateColumns: "1fr", padding: "2rem" }}>
           <div className="left form">
             <span className="input_group">
-              <label>First Name</label>
+              <Label htmlFor="first_name" css={{ lineHeight: "35px" }}>
+                First Name
+              </Label>
+
               <input type="text" id="first_name" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Last Name</label>
+              <Label htmlFor="last_name" css={{ lineHeight: "35px" }}>
+                Last Name
+              </Label>
               <input type="text" id="last_name" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Phone Number</label>
+              <Label htmlFor="phone" css={{ lineHeight: "35px" }}>
+                Phone Number
+              </Label>
               <input type="number" id="phone" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Email</label>
+              <Label htmlFor="email" css={{ lineHeight: "35px" }}>
+                Email
+              </Label>
               <input type="text" id="eamil" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Designation</label>
+              <Label htmlFor="designation" css={{ lineHeight: "35px" }}>
+                Designation
+              </Label>
+
               <input type="text" id="designation" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Password</label>
+              <Label htmlFor="password" css={{ lineHeight: "35px" }}>
+                Password
+              </Label>
               <input type="password" id="password" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Confirm Password</label>
+              <Label htmlFor="cpassword" css={{ lineHeight: "35px" }}>
+                Cornfirm Password
+              </Label>
               <input type="password" id="cpassword" className="inputs"></input>
             </span>
           </div>

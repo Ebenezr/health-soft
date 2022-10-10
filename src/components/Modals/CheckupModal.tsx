@@ -1,7 +1,8 @@
 import React from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Avatars/Tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Radix/Tabs";
+import { Label } from "../Radix/Label";
 
 const dropIn = {
   hidden: {
@@ -99,27 +100,38 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
               <TabsContent value="tab1">
                 <div className="form">
                   <span className="input_group notes">
-                    <label>Symptomps</label>
-                    <textarea rows={3} id="notes" />
+                    <Label htmlFor="symptoms" css={{ lineHeight: "30px" }}>
+                      Symptoms
+                    </Label>
+                    <textarea rows={3} id="symptoms" />
                   </span>
                   <span className="input_group notes">
-                    <label>Diagnosis</label>
-                    <textarea rows={3} id="notes" />
+                    <Label htmlFor="diagnosis" css={{ lineHeight: "30px" }}>
+                      Diagnosis
+                    </Label>
+                    <textarea rows={2} id="diagnosis" />
                   </span>
                   <span className="input_group notes">
-                    <label>HPI</label>
-                    <textarea rows={3} id="notes" />
+                    <Label htmlFor="hpi" css={{ lineHeight: "30px" }}>
+                      HPI
+                    </Label>
+                    <textarea rows={3} id="hpi" />
                   </span>
                   <span className="input_group notes">
-                    <label>Physical Examinations</label>
-                    <textarea rows={3} id="notes" />
+                    <Label htmlFor="examination" css={{ lineHeight: "30px" }}>
+                      Physical Examinations
+                    </Label>
+                    <textarea rows={3} id="examination" />
                   </span>
                 </div>
               </TabsContent>
               <TabsContent value="tab2">
                 <div className="form">
                   <span className="input_group">
-                    <label>Temperature(°C)</label>
+                    <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
+                      Temperature(°C)
+                    </Label>
+
                     <input
                       type="number"
                       id="temperature"
@@ -127,7 +139,9 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                     ></input>
                   </span>
                   <span className="input_group">
-                    <label>BP Systolic</label>
+                    <Label htmlFor="bp_systolic" css={{ lineHeight: "35px" }}>
+                      BP Systolic
+                    </Label>
                     <input
                       type="number"
                       id="bp_systolic"
@@ -135,7 +149,10 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                     ></input>
                   </span>
                   <span className="input_group">
-                    <label>BP Diasyolic</label>
+                    <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
+                      BP Diasyolic
+                    </Label>
+
                     <input
                       type="number"
                       id="bp_diastolic"
@@ -143,7 +160,9 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                     ></input>
                   </span>
                   <span className="input_group notes">
-                    <label>Nurse Notes</label>
+                    <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
+                      Nurse Notes
+                    </Label>
                     <textarea rows={4} id="notes" />
                   </span>
                 </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { Label } from "../Radix/Label";
 
 const dropIn = {
   hidden: {
@@ -47,10 +48,10 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        style={{ width: "clamp(30%, 300px, 70%)" }}
+        style={{ width: "clamp(40%, 300px, 70%)" }}
       >
         <header className="modal-header">
-          <h2>Modal form</h2>
+          <h2>Patient Vitals form</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -61,19 +62,27 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         <article style={{ gridTemplateColumns: "1fr" }}>
           <div className="form">
             <span className="input_group">
-              <label>Temperature(°C)</label>
+              <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
+                Temperature(°C)
+              </Label>
               <input type="number" id="temperature" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>BP Systolic</label>
+              <Label htmlFor="bp_systolic" css={{ lineHeight: "35px" }}>
+                BP Systolic
+              </Label>
               <input type="number" id="bp_systolic" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>BP Diasyolic</label>
+              <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
+                BP Diasyolic
+              </Label>
               <input type="number" id="bp_diastolic" className="inputs"></input>
             </span>
             <span className="input_group notes">
-              <label>Nurse Notes</label>
+              <Label htmlFor="notes" css={{ lineHeight: "35px" }}>
+                Nurse Notes
+              </Label>
               <textarea rows={4} id="notes" />
             </span>
           </div>

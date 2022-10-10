@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { Label } from "../Radix/Label";
 
 const dropIn = {
   hidden: {
@@ -47,9 +48,10 @@ const PatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ width: "clamp(60%, 700px, 70%)" }}
       >
         <header className="modal-header">
-          <h2>Modal form</h2>
+          <h2>Patient Info Form</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -60,49 +62,73 @@ const PatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         <article>
           <div className="left form">
             <span className="input_group">
-              <label>First Name</label>
+              <Label htmlFor="first_name" css={{ lineHeight: "35px" }}>
+                First Name
+              </Label>
               <input type="text" id="first_name" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Last Name</label>
+              <Label htmlFor="last_name" css={{ lineHeight: "35px" }}>
+                Last Name
+              </Label>
               <input type="text" id="last_name" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>National ID</label>
+              <Label htmlFor="national_id" css={{ lineHeight: "35px" }}>
+                National ID
+              </Label>
+
               <input type="number" id="national_id" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Gender</label>
+              <Label htmlFor="gender" css={{ lineHeight: "35px" }}>
+                Gender
+              </Label>
               <input type="text" id="gender" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>DOB</label>
+              <Label htmlFor="dob" css={{ lineHeight: "35px" }}>
+                DOB
+              </Label>
               <input type="date" id="dob" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Marital Status</label>
+              <Label htmlFor="marital_status" css={{ lineHeight: "35px" }}>
+                Marital Status
+              </Label>
+
               <input type="text" id="marital_status" className="inputs"></input>
             </span>
           </div>
           <div className="right form">
             <span className="input_group">
-              <label>Phone</label>
+              <Label htmlFor="phone" css={{ lineHeight: "35px" }}>
+                Phone Number
+              </Label>
               <input type="number" id="phone" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Email</label>
+              <Label htmlFor="email" css={{ lineHeight: "35px" }}>
+                Email
+              </Label>
               <input type="eamil" id="email" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Address</label>
+              <Label htmlFor="address" css={{ lineHeight: "35px" }}>
+                Address
+              </Label>
               <input type="text" id="address" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>County</label>
+              <Label htmlFor="county" css={{ lineHeight: "35px" }}>
+                County
+              </Label>
               <input type="text" id="county" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Estate</label>
+              <Label htmlFor="estate" css={{ lineHeight: "35px" }}>
+                Estate
+              </Label>
               <input type="text" id="estate" className="inputs"></input>
             </span>
           </div>

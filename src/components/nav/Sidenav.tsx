@@ -10,8 +10,8 @@ import {
 import { RiAdminFill } from "react-icons/ri";
 import { Navigation } from "react-minimal-side-navigation";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
-import { Avatar, AvatarFallback, AvatarImage } from "../Avatars/avata";
-import { Separator } from "../Avatars/separators";
+import { Avatar, AvatarFallback, AvatarImage } from "../Radix/avata";
+import { Separator } from "../Radix/separators";
 
 const Sidenav: React.FC = () => {
   const location = useLocation();
