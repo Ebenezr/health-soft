@@ -51,7 +51,7 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         }}
       >
         <header className="modal-header">
-          <h2>Modal form</h2>
+          <h2>Doctors CheckUp</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -62,32 +62,46 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         <article>
           <div className="left form">
             <span className="input_group">
-              <label>Patient</label>
+              <Label htmlFor="patient" css={{ lineHeight: "35px" }}>
+                Patient
+              </Label>
               <input type="text" id="patient" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Patient Type</label>
-              <input type="text" id="last_name" className="inputs"></input>
+              <Label htmlFor="patient" css={{ lineHeight: "35px" }}>
+                Patient Type
+              </Label>
+              <input type="text" id="patient_type" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Doctor</label>
-              <input type="number" id="national_id" className="inputs"></input>
+              <Label htmlFor="doctor" css={{ lineHeight: "35px" }}>
+                Doctor
+              </Label>
+              <input type="text" id="doctor" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Checkup Date</label>
-              <input type="text" id="gender" className="inputs"></input>
+              <Label htmlFor="checkup_date" css={{ lineHeight: "35px" }}>
+                Checkup Date
+              </Label>
+              <input type="date" id="checkup_date" className="inputs"></input>
             </span>
             <span className="input_group">
-              <label>Next Visit</label>
-              <input type="date" id="dob" className="inputs"></input>
+              <Label htmlFor="checkup_date" css={{ lineHeight: "35px" }}>
+                Next Visit
+              </Label>
+              <input type="date" id="next_visit" className="inputs"></input>
             </span>
             <span className="input_group notes">
-              <label>Advice</label>
-              <textarea rows={4} id="notes" />
+              <Label htmlFor="advice" css={{ lineHeight: "30px" }}>
+                Advice
+              </Label>
+              <textarea rows={3} id="notes" />
             </span>
             <span className="input_group notes">
-              <label>Comments</label>
-              <textarea rows={4} id="notes" />
+              <Label htmlFor="comments" css={{ lineHeight: "30px" }}>
+                Comments
+              </Label>
+              <textarea rows={3} id="notes" />
             </span>
           </div>
           <div className="right form">
