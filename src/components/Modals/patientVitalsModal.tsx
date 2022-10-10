@@ -47,6 +47,7 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ width: "clamp(30%, 300px, 70%)" }}
       >
         <header className="modal-header">
           <h2>Modal form</h2>
@@ -57,23 +58,25 @@ const VitalsModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
             />
           </button>
         </header>
-        <article>
-          <span className="input_group">
-            <label>Temperature(C)</label>
-            <input type="number" id="temperature"></input>
-          </span>{" "}
-          <span className="input_group">
-            <label>BP Systolic</label>
-            <input type="number" id="bp_systolic"></input>
-          </span>
-          <span className="input_group">
-            <label>BP Diasyolic</label>
-            <input type="number" id="bp_diastolic"></input>
-          </span>
-          <span className="input_group notes">
-            <label>Nurse Notes</label>
-            <textarea rows={4} id="notes" />
-          </span>
+        <article style={{ gridTemplateColumns: "1fr" }}>
+          <div className="form">
+            <span className="input_group">
+              <label>Temperature(°C)</label>
+              <input type="number" id="temperature" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>BP Systolic</label>
+              <input type="number" id="bp_systolic" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>BP Diasyolic</label>
+              <input type="number" id="bp_diastolic" className="inputs"></input>
+            </span>
+            <span className="input_group notes">
+              <label>Nurse Notes</label>
+              <textarea rows={4} id="notes" />
+            </span>
+          </div>
         </article>
         <footer className="modal-footer">
           <button className="btn save">Action</button>

@@ -10,6 +10,8 @@ import {
 import { RiAdminFill } from "react-icons/ri";
 import { Navigation } from "react-minimal-side-navigation";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
+import { Avatar, AvatarFallback, AvatarImage } from "../Avatars/avata";
+import { Separator } from "../Avatars/separators";
 
 const Sidenav: React.FC = () => {
   const location = useLocation();
@@ -17,13 +19,22 @@ const Sidenav: React.FC = () => {
   return (
     <aside>
       <div className="logo">
+        <Avatar>
+          <AvatarImage src="" alt="Pedro Duarte" />
+          <AvatarFallback>HS</AvatarFallback>
+        </Avatar>
         <h2>Healthsoft</h2>
       </div>
+      <Separator css={{ margin: "15px 0" }} />
 
       <div className="userinfo">
-        <img src="" alt="" />
-        <h2>Ebenezar Bukosia</h2>
+        <Avatar>
+          <AvatarImage src="" alt="Pedro Duarte" />
+          <AvatarFallback>NK</AvatarFallback>
+        </Avatar>
+        <h2>Njeri Kadhoni</h2>
       </div>
+      <Separator css={{ margin: "15px 0" }} />
       <Navigation
         activeItemId={location.pathname}
         onSelect={({ itemId }) => {

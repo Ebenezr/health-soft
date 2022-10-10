@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { padding } from "@mui/system";
 
 const dropIn = {
   hidden: {
@@ -47,6 +48,7 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ width: "clamp(30%, 300px, 70%)" }}
       >
         <header className="modal-header">
           <h2>Modal form</h2>
@@ -57,35 +59,37 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
             />
           </button>
         </header>
-        <article>
-          <span className="input_group">
-            <label>First Name</label>
-            <input type="text" id="first_name" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Last Name</label>
-            <input type="text" id="last_name" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Phone Number</label>
-            <input type="number" id="phone" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Email</label>
-            <input type="text" id="eamil" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Designation</label>
-            <input type="text" id="designation" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Password</label>
-            <input type="password" id="password" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Confirm Password</label>
-            <input type="password" id="cpassword" className="inputs"></input>
-          </span>
+        <article style={{ gridTemplateColumns: "1fr", padding: "2rem" }}>
+          <div className="left form">
+            <span className="input_group">
+              <label>First Name</label>
+              <input type="text" id="first_name" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Last Name</label>
+              <input type="text" id="last_name" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Phone Number</label>
+              <input type="number" id="phone" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Email</label>
+              <input type="text" id="eamil" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Designation</label>
+              <input type="text" id="designation" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Password</label>
+              <input type="password" id="password" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Confirm Password</label>
+              <input type="password" id="cpassword" className="inputs"></input>
+            </span>
+          </div>
         </article>
         <footer className="modal-footer">
           <button className="btn save">Action</button>

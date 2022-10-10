@@ -1,4 +1,16 @@
 aside {
   grid-area: aside;
   background: white;
+  .logo {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .userinfo {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 }

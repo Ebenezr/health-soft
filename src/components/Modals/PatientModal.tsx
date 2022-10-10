@@ -58,31 +58,33 @@ const PatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
           </button>
         </header>
         <article>
-          <span className="input_group">
-            <label>First Name</label>
-            <input type="text" id="first_name" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Last Name</label>
-            <input type="text" id="last_name" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>National ID</label>
-            <input type="number" id="national_id" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Gender</label>
-            <input type="text" id="gender" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>DOB</label>
-            <input type="date" id="dob" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Marital Status</label>
-            <input type="text" id="marital_status" className="inputs"></input>
-          </span>
-          <div className="contact" style={{ display: "none" }}>
+          <div className="left form">
+            <span className="input_group">
+              <label>First Name</label>
+              <input type="text" id="first_name" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Last Name</label>
+              <input type="text" id="last_name" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>National ID</label>
+              <input type="number" id="national_id" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Gender</label>
+              <input type="text" id="gender" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>DOB</label>
+              <input type="date" id="dob" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Marital Status</label>
+              <input type="text" id="marital_status" className="inputs"></input>
+            </span>
+          </div>
+          <div className="right form">
             <span className="input_group">
               <label>Phone</label>
               <input type="number" id="phone" className="inputs"></input>

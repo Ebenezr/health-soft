@@ -47,6 +47,7 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ width: "clamp(30%, 300px, 70%)" }}
       >
         <header className="modal-header">
           <h2>Modal form</h2>
@@ -57,27 +58,29 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
             />
           </button>
         </header>
-        <article>
-          <span className="input_group">
-            <label>Patient</label>
-            <input type="text" id="patient" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Doctor</label>
-            <input type="text" id="patient" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Appointment Date</label>
-            <input type="date" id="patient" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Appointment Time</label>
-            <input type="time" id="patient" className="inputs"></input>
-          </span>
-          <span className="input_group">
-            <label>Note</label>
-            <textarea id="patient" className="inputs"></textarea>
-          </span>
+        <article style={{ gridTemplateColumns: "1fr", padding: "2rem" }}>
+          <div className="form">
+            <span className="input_group">
+              <label>Patient</label>
+              <input type="text" id="patient" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Doctor</label>
+              <input type="text" id="patient" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Appointment Date</label>
+              <input type="date" id="patient" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Appointment Time</label>
+              <input type="time" id="patient" className="inputs"></input>
+            </span>
+            <span className="input_group">
+              <label>Note</label>
+              <textarea id="patient" className="inputs"></textarea>
+            </span>
+          </div>
         </article>
         <footer className="modal-footer">
           <button className="btn save">Action</button>
