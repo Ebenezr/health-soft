@@ -6,6 +6,7 @@ export interface patientInterface {
   gender?: string;
   dob?: string;
   marital_status?: string;
+  fullname?: string;
   patient_contacts?: [
     {
       phone?: number;
@@ -28,17 +29,19 @@ export interface userInterface {
   featured_image?: {};
   password?: string;
   cpassword?: string;
+  fullname?: string;
 }
 
 export interface appointmentInterface {
   id?: number;
   patient_type?: string;
   serial_no?: number;
-  appointment_date?: string;
-  appointment_time?: string;
+  appointment_date?: Date;
+  appointment_time?: Date;
   doctor_id?: number;
   patient_id?: number;
   nurse_id?: number;
+  notes?: string;
   doctor?: {
     id?: number;
     first_name?: string;
