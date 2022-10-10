@@ -48,7 +48,7 @@ const PatientModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        style={{ width: "clamp(60%, 700px, 70%)" }}
+        style={{ width: "clamp(55%, 60%, 65%)" }}
       >
         <header className="modal-header">
           <h2>Patient Info Form</h2>

@@ -49,6 +49,7 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={{ height: "70vh" }}
       >
         <header className="modal-header">
           <h2>Doctors CheckUp</h2>

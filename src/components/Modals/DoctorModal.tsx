@@ -49,7 +49,7 @@ const DoctorModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        style={{ width: "clamp(40%, 300px, 70%)" }}
+        style={{ width: "clamp(40%, 400px, 60%)" }}
       >
         <header className="modal-header">
           <h2>User Info</h2>
