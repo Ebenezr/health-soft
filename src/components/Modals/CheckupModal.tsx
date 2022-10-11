@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Radix/Tabs";
 import { Label } from "../Radix/Label";
+import {
+  checkupInterface,
+  patientInterface,
+  patientVitals,
+  userInterface,
+} from "../../interfaces/interfaces";
+import Select from "react-select";
+import axios from "axios";
 
 const dropIn = {
   hidden: {
@@ -28,9 +36,98 @@ const dropIn = {
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
+  currentUser: checkupInterface;
 }
 
-const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
+const CheckupModal: React.FC<ModalProps> = ({
+  openModal,
+  closeModal,
+  currentUser,
+}) => {
+  const [doctorchoice, setDoctorChoice] = useState(0);
+
+  const [patienttypechoice, setPatienttypechoice] = useState("");
+  const [doctors, setDoctors] = useState<{ value: number; label: string }[]>(
+    []
+  );
+  const [patients, setPatients] = useState<{ value: number; label: string }[]>(
+    []
+  );
+  const [patientchoice, setPatientChoice] = useState(0);
+  const [formData, setFormData] = useState<checkupInterface>({
+    doctor_id: 0,
+    patient_id: 0,
+    visit_id: 0,
+    symptoms: "",
+    diagnosis: "",
+    advice: "",
+    checkup_date: "",
+    next_visit: "",
+    comment: "",
+    hpi: "",
+    patient: {
+      fullname: "",
+    },
+    doctor: {
+      fullname: "",
+    },
+  });
+  const [vitalsForm, setVitalForm] = useState<patientVitals>({
+    id: 0,
+    temperature: 0,
+    bp_systolic: 0,
+    bp_diastolic: 0,
+    notes: "",
+  });
+
+  //get patients vitals
+  const getvitals = () => {
+    console.log(currentUser);
+    try {
+      axios
+        .get(`http://127.0.0.1:3000/patient_vitals/${currentUser?.patient_id}`)
+        .then((res: any) => {
+          setVitalForm(res.data);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  openModal && getvitals();
+
+  useEffect(() => {
+    setFormData(currentUser);
+
+    try {
+      const arr: any = [];
+      axios.get("http://127.0.0.1:3000/doctors").then((res: any) => {
+        let results = res.data;
+        results.map((user: userInterface) => {
+          return arr.push({ value: user.id, label: user.fullname });
+        });
+        setDoctors(arr);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }, [currentUser]);
+  //hangle change event
+  const handleChangeVitals = (event: any) => {
+    const key = event.target.id;
+    const value = event.target.value;
+    // patient_contacts[key] = value;
+
+    setVitalForm({ ...vitalsForm, [key]: value });
+  };
+  //hangle change event
+  const handleChange = (event: any) => {
+    const key = event.target.id;
+    const value = event.target.value;
+    // patient_contacts[key] = value;
+
+    setFormData({ ...formData, [key]: value });
+  };
   if (!openModal) return null;
   return (
     <motion.div
@@ -66,43 +163,103 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
               <Label htmlFor="patient" css={{ lineHeight: "35px" }}>
                 Patient
               </Label>
-              <input type="text" id="patient" className="inputs"></input>
+              <Select
+                // id="patient_id"
+                defaultInputValue={currentUser?.patient?.fullname}
+                className="input-cont "
+                placeholder="Select Patient"
+                options={patients}
+                noOptionsMessage={() => "patient not found"}
+                onChange={(event: any) => setPatientChoice(event.value)}
+                value={patients.find((obj) => obj.value === patientchoice)}
+                // onBlur={() =>
+                //   setFormData({ ...formData, patient_id: patientchoice })
+                // }
+              />
             </span>
-            <span className="input_group">
+            {/* <span className="input_group">
               <Label htmlFor="patient" css={{ lineHeight: "35px" }}>
                 Patient Type
               </Label>
-              <input type="text" id="patient_type" className="inputs"></input>
-            </span>
+              <Select
+                id="doctor_id"
+                className="input-cont "
+                placeholder="Select Type"
+                //defaultInputValue={currentUser?.patient?.patient_type}
+                //options={patienttype}
+                noOptionsMessage={() => "Choice not found"}
+                onChange={(event: any) => setPatienttypechoice(event.value)}
+                //value={patienttype.find(
+                //(obj) => obj.value === patienttypechoice
+                //)}
+                // onBlur={() =>
+                //   setFormData({ ...formData, patient_type: patienttypechoice })
+                // }
+              />
+            </span> */}
             <span className="input_group">
               <Label htmlFor="doctor" css={{ lineHeight: "35px" }}>
                 Doctor
               </Label>
-              <input type="text" id="doctor" className="inputs"></input>
+              <Select
+                // id="doctor_id"
+                defaultInputValue={currentUser?.doctor?.fullname}
+                className="input-cont "
+                placeholder="Select Doctor"
+                options={doctors}
+                noOptionsMessage={() => "Doctor not found"}
+                onChange={(event: any) => setDoctorChoice(event.value)}
+                value={doctors.find((obj) => obj.value === doctorchoice)}
+                // onBlur={() =>
+                //   setFormData({ ...formData, doctor_id: doctorchoice })
+                // }
+              />
             </span>
             <span className="input_group">
               <Label htmlFor="checkup_date" css={{ lineHeight: "35px" }}>
                 Checkup Date
               </Label>
-              <input type="date" id="checkup_date" className="inputs"></input>
+              <input
+                type="date"
+                id="checkup_date"
+                className="inputs"
+                onChange={handleChange}
+                value={formData?.checkup_date}
+              ></input>
             </span>
             <span className="input_group">
               <Label htmlFor="checkup_date" css={{ lineHeight: "35px" }}>
                 Next Visit
               </Label>
-              <input type="date" id="next_visit" className="inputs"></input>
+              <input
+                type="date"
+                id="next_visit"
+                className="inputs"
+                onChange={handleChange}
+                value={formData?.next_visit}
+              ></input>
             </span>
             <span className="input_group notes">
               <Label htmlFor="advice" css={{ lineHeight: "30px" }}>
                 Advice
               </Label>
-              <textarea rows={3} id="notes" />
+              <textarea
+                rows={3}
+                id="notes"
+                onChange={handleChange}
+                value={formData?.advice}
+              />
             </span>
             <span className="input_group notes">
               <Label htmlFor="comments" css={{ lineHeight: "30px" }}>
                 Comments
               </Label>
-              <textarea rows={3} id="notes" />
+              <textarea
+                rows={3}
+                id="notes"
+                onChange={handleChange}
+                value={formData?.comment}
+              />
             </span>
           </div>
           <div className="right form">
@@ -151,6 +308,8 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                       type="number"
                       id="temperature"
                       className="inputs"
+                      value={vitalsForm.temperature}
+                      onChange={handleChangeVitals}
                     ></input>
                   </span>
                   <span className="input_group">
@@ -161,6 +320,8 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                       type="number"
                       id="bp_systolic"
                       className="inputs"
+                      value={vitalsForm.bp_systolic}
+                      onChange={handleChangeVitals}
                     ></input>
                   </span>
                   <span className="input_group">
@@ -172,13 +333,20 @@ const CheckupModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                       type="number"
                       id="bp_diastolic"
                       className="inputs"
+                      value={vitalsForm.bp_diastolic}
+                      onChange={handleChangeVitals}
                     ></input>
                   </span>
                   <span className="input_group notes">
                     <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
                       Nurse Notes
                     </Label>
-                    <textarea rows={4} id="notes" />
+                    <textarea
+                      rows={4}
+                      id="notes"
+                      value={vitalsForm.notes}
+                      onChange={handleChangeVitals}
+                    />
                   </span>
                 </div>
               </TabsContent>

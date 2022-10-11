@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import axios from "axios";
-import { userInterface } from "../../interfaces/interfaces";
+import { patientVitals, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
 
 function TriageTBL() {
   const [openModal, setOpenModal] = useState(false);
-
+  const [vitals, setVitals] = useState<patientVitals>({});
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<userInterface[]>([]);
 
-  const handleDelete = (id: number) => {
-    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
-    setRows(deluser);
-    axios.delete(`http://127.0.0.1:3000/patient_vitals/${id}`).then((res) => {
+  const handleEdit = (row: patientVitals) => {
+    setVitals(row);
+    setOpenModal(true);
+  };
 
-    });
-  
+  const handleDelete = (id: number) => {
+    let deluser = rows?.filter((user: patientVitals) => user?.id !== id);
+    setRows(deluser);
+    axios
+      .delete(`http://127.0.0.1:3000/patient_vitals/${id}`)
+      .then((res) => {});
   };
 
   const columns = [
@@ -58,12 +62,12 @@ function TriageTBL() {
     {
       name: "Edit",
       button: true,
-      cell: () => (
+      cell: (row: patientVitals) => (
         <motion.button
           className="table-btn edit"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => setOpenModal(true)}
+          onClick={() => handleEdit(row)}
         >
           Edit
         </motion.button>
@@ -112,6 +116,7 @@ function TriageTBL() {
         progressPending={pending}
       />
       <VitalsModal
+        vitals={vitals}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />

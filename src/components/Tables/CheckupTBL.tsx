@@ -9,11 +9,18 @@ function CheckupTBL() {
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<checkupInterface[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<checkupInterface>({});
 
   const handleDelete = (id: number) => {
     let deluser = rows?.filter((user: userInterface) => user?.id !== id);
     setRows(deluser);
     axios.delete(`http://127.0.0.1:3000/checkups/${id}`).then((res) => {});
+  };
+
+  //handle edit
+  const handleEdit = (row: checkupInterface) => {
+    setCurrentUser(row);
+    setOpenModal(true);
   };
 
   const columns = [
@@ -61,11 +68,11 @@ function CheckupTBL() {
     {
       name: "Edit",
       button: true,
-      cell: () => (
+      cell: (row: checkupInterface) => (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => setOpenModal(true)}
+          onClick={() => handleEdit(row)}
           className="table-btn edit"
           type="button"
         >
@@ -115,6 +122,7 @@ function CheckupTBL() {
         progressPending={pending}
       />
       <CheckupModal
+        currentUser={currentUser}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />

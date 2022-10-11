@@ -7,15 +7,11 @@ export interface patientInterface {
   dob?: string;
   marital_status?: string;
   fullname?: string;
-  patient_contacts?: [
-    {
-      phone?: number;
-      email?: string;
-      address?: string;
-      county?: string;
-      estate?: string;
-    }
-  ];
+  phone?: number;
+  email?: string;
+  address?: string;
+  county?: string;
+  estate?: string;
 }
 
 export interface userInterface {
@@ -43,60 +39,54 @@ export interface appointmentInterface {
   nurse_id?: number;
   notes?: string;
   doctor?: {
+    fullname?: string;
     id?: number;
     first_name?: string;
     last_name?: string;
-    phone?: number;
     email?: string;
     designation?: string;
-    role?: string;
   };
-  patient: {
+  patient?: {
+    fullname?: string;
     id?: 1;
     national_id?: number;
     first_name?: string;
     last_name?: string;
     gender?: string;
-    dob?: string;
-    marital_status?: string;
   };
 }
 
 export interface patientVitals {
   id?: number;
-  patient?: string;
-  temperature?: number;
   bp_systolic?: number;
   bp_diastolic?: number;
+  temperature?: number;
   notes?: string;
-}
-
-export interface checkupInterface {
-  id: number;
-  visit_id: number;
-  symptoms: string;
-  diagnosis: string;
-  advice: string;
-  checkup_date: string;
-  next_visit: string;
-  comment: string;
-  hpi: string;
-  patient: {
+  patient?: {
     id?: 1;
     national_id?: number;
     first_name?: string;
     last_name?: string;
-    gender?: string;
-    dob?: string;
-    marital_status?: string;
+    fullname?: string;
   };
-  doctor: {
-    id?: number;
-    first_name?: string;
-    last_name?: string;
-    phone?: number;
-    email?: string;
-    designation?: string;
-    role?: string;
+}
+
+export interface checkupInterface {
+  doctor_id?: number;
+  patient_id?: number;
+  id?: number;
+  visit_id?: number;
+  symptoms?: string;
+  diagnosis?: string;
+  advice?: string;
+  checkup_date?: string;
+  next_visit?: string;
+  comment?: string;
+  hpi?: string;
+  patient?: {
+    fullname?: string;
+  };
+  doctor?: {
+    fullname?: string;
   };
 }

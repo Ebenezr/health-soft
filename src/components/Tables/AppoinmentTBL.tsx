@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import axios from "axios";
-import {
-  appointmentInterface,
-  patientInterface,
-} from "../../interfaces/interfaces";
+import { appointmentInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import AppointmentModal from "../Modals/AppointmentModal";
 
 function AppointmentTable() {
   const [pending, setPending] = useState(true);
   const [rows, setRows] = useState<appointmentInterface[]>([]);
+  const [currentAppointment, setCurrentAppointment] =
+    useState<appointmentInterface>({});
   const [openModal, setOpenModal] = useState(false);
+
+  const handleEdit = (row: appointmentInterface) => {
+    setCurrentAppointment(row);
+    setOpenModal(true);
+  };
 
   const columns = [
     {
@@ -50,12 +54,12 @@ function AppointmentTable() {
     {
       name: "Edit",
       button: true,
-      cell: () => (
+      cell: (row: any) => (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="table-btn edit"
-          onClick={() => setOpenModal(true)}
+          onClick={() => handleEdit(row)}
           type="button"
         >
           Edit
@@ -104,6 +108,7 @@ function AppointmentTable() {
         progressPending={pending}
       />
       <AppointmentModal
+        appointment={currentAppointment}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
       />

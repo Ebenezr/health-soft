@@ -34,9 +34,14 @@ const dropIn = {
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
+  appointment: appointmentInterface;
 }
 
-const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
+const AppointmentModal: React.FC<ModalProps> = ({
+  openModal,
+  closeModal,
+  appointment,
+}) => {
   //hold user data
   const [formData, setFormData] = useState({
     appointment_date: "",
@@ -48,9 +53,7 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
     serial_no: 0,
   });
   const [doctorchoice, setDoctorChoice] = useState(0);
-  const [notes, setNotes] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+
   const [patienttypechoice, setPatienttypechoice] = useState("");
   const [patientchoice, setPatientChoice] = useState(0);
   const [doctors, setDoctors] = useState<{ value: number; label: string }[]>(
@@ -97,25 +100,15 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
   }, []);
 
   //hangle change event
-  // const handleChange = (event: any) => {
-  //   // const key = event.target.id;
-  //   // const value = event.target.value;
-  //   // setFormData({ ...formData, [key]: value });
-  //   //console.log(doctors
-  //   setDoctorChoice(event.value);
-  // };
+  const handleChange = (event: any) => {
+    const key = event.target.id;
+    const value = event.target.value;
+
+    setFormData({ ...formData, [key]: value });
+  };
 
   //handle for submision
   const handleSubmit = () => {
-    setFormData({
-      appointment_date: date,
-      appointment_time: time,
-      patient_id: patientchoice,
-      doctor_id: doctorchoice,
-      notes: notes,
-      patient_type: patienttypechoice,
-      serial_no: 100,
-    });
     console.log(formData);
   };
 
@@ -156,12 +149,16 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
               </Label>
               <Select
                 // id="patient_id"
+                defaultInputValue={appointment?.patient?.fullname}
                 className="input-cont "
                 placeholder="Select Patient"
                 options={patients}
-                noOptionsMessage={() => "Doctor not found"}
+                noOptionsMessage={() => "patient not found"}
                 onChange={(event: any) => setPatientChoice(event.value)}
                 value={patients.find((obj) => obj.value === patientchoice)}
+                onBlur={() =>
+                  setFormData({ ...formData, patient_id: patientchoice })
+                }
               />
             </span>
             <span className="input_group">
@@ -170,12 +167,16 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
               </Label>
               <Select
                 // id="doctor_id"
+                defaultInputValue={appointment?.doctor?.fullname}
                 className="input-cont "
                 placeholder="Select Doctor"
                 options={doctors}
                 noOptionsMessage={() => "Doctor not found"}
                 onChange={(event: any) => setDoctorChoice(event.value)}
                 value={doctors.find((obj) => obj.value === doctorchoice)}
+                onBlur={() =>
+                  setFormData({ ...formData, doctor_id: doctorchoice })
+                }
               />
             </span>
 
@@ -187,15 +188,32 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                 id="doctor_id"
                 className="input-cont "
                 placeholder="Select Type"
+                defaultInputValue={appointment?.patient_type}
                 options={patienttype}
-                noOptionsMessage={() => "Doctor not found"}
+                noOptionsMessage={() => "Choice not found"}
                 onChange={(event: any) => setPatienttypechoice(event.value)}
                 value={patienttype.find(
                   (obj) => obj.value === patienttypechoice
                 )}
+                onBlur={() =>
+                  setFormData({ ...formData, patient_type: patienttypechoice })
+                }
               />
             </span>
+            <span className="input_group">
+              <Label htmlFor="appointment_time" css={{ lineHeight: "35px" }}>
+                Serial Number
+              </Label>
 
+              <input
+                type="text"
+                disabled
+                id="appointment_time"
+                className="inputs"
+                value={formData?.serial_no}
+                onChange={handleChange}
+              ></input>
+            </span>
             <span className="input_group">
               <Label htmlFor="appointment_date" css={{ lineHeight: "35px" }}>
                 Appointment Date
@@ -206,7 +224,7 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                 id="appointment_date"
                 className="inputs"
                 value={formData?.appointment_date}
-                onChange={(event: any) => setDate(event.value)}
+                onChange={handleChange}
               ></input>
             </span>
 
@@ -220,7 +238,7 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                 id="appointment_time"
                 className="inputs"
                 value={formData?.appointment_time}
-                onChange={(event: any) => setTime(event.value)}
+                onChange={handleChange}
               ></input>
             </span>
             <span className="input_group notes">
@@ -231,7 +249,7 @@ const AppointmentModal: React.FC<ModalProps> = ({ openModal, closeModal }) => {
                 id="notes"
                 className="inputs"
                 value={formData?.notes}
-                onChange={(event: any) => setNotes(event.value)}
+                onChange={handleChange}
               ></textarea>
             </span>
           </div>
