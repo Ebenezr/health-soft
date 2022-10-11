@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { patientVitals, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
@@ -19,15 +19,13 @@ function TriageTBL() {
   const handleDelete = (id: number) => {
     let deluser = rows?.filter((user: patientVitals) => user?.id !== id);
     setRows(deluser);
-    axios
-      .delete(`http://127.0.0.1:3000/patient_vitals/${id}`)
-      .then((res) => {});
+    Axios.delete(`/patient_vitals/${id}`).then((res) => {});
   };
 
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row.id,
+      selector: (row: any) => row?.id,
       sortable: true,
       grow: 0,
       right: true,
@@ -39,25 +37,25 @@ function TriageTBL() {
 
     {
       name: "Patient",
-      selector: (row: any) => row.patient.fullname,
+      selector: (row: any) => row?.patient?.fullname,
       sortable: true,
     },
     {
       name: "Temperature",
-      selector: (row: any) => row.temperature,
+      selector: (row: any) => row?.temperature,
       sortable: true,
     },
     {
       name: "Bp Systolic",
-      selector: (row: any) => row.bp_systolic,
+      selector: (row: any) => row?.bp_systolic,
     },
     {
       name: "Bp Diastolic",
-      selector: (row: any) => row.bp_diastolic,
+      selector: (row: any) => row?.bp_diastolic,
     },
     {
       name: "Notes",
-      selector: (row: any) => row.notes,
+      selector: (row: any) => row?.notes,
     },
     {
       name: "Edit",
@@ -83,7 +81,7 @@ function TriageTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row.id);
+            handleDelete(row?.id);
           }}
         >
           Delete
@@ -94,8 +92,7 @@ function TriageTBL() {
 
   useEffect(() => {
     try {
-      axios
-        .get("http://127.0.0.1:3000/patient_vitals")
+      Axios.get("/patient_vitals")
         .then((res: any) => setRows(res.data))
         .then(() => {
           setPending(false);

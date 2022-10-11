@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { patientInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import PatientModal from "../Modals/PatientModal";
@@ -14,7 +14,7 @@ function PatientTBL() {
   const handleDelete = (id: number) => {
     let deluser = rows?.filter((user: patientInterface) => user?.id !== id);
     setRows(deluser);
-    axios.delete(`http://127.0.0.1:3000/patients/${id}`).then((res) => {});
+    Axios.delete(`/patients/${id}`).then((res) => {});
   };
 
   //handle edit
@@ -26,7 +26,7 @@ function PatientTBL() {
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row.id,
+      selector: (row: any) => row?.id,
       sortable: true,
       grow: 0,
       right: true,
@@ -37,35 +37,35 @@ function PatientTBL() {
     },
     {
       name: "First Name",
-      selector: (row: any) => row.first_name,
+      selector: (row: any) => row?.first_name,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row.last_name,
+      selector: (row: any) => row?.last_name,
       sortable: true,
     },
     {
       name: "Marital Status",
-      selector: (row: any) => row.marital_status,
+      selector: (row: any) => row?.marital_status,
     },
     {
       name: "Gender",
-      selector: (row: any) => row.gender,
+      selector: (row: any) => row?.gender,
     },
     {
       name: "Phone",
-      selector: (row: any) => row.phone,
+      selector: (row: any) => row?.phone,
       sortable: true,
     },
     {
       name: "Email",
-      selector: (row: any) => row.email,
+      selector: (row: any) => row?.email,
       sortable: true,
     },
     {
       name: "Address",
-      selector: (row: any) => row.address,
+      selector: (row: any) => row?.address,
       sortable: true,
     },
     {
@@ -96,7 +96,7 @@ function PatientTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row.id);
+            handleDelete(row?.id);
           }}
         >
           Delete
@@ -106,8 +106,8 @@ function PatientTBL() {
   ];
   useEffect(() => {
     try {
-      axios
-        .get("http://127.0.0.1:3000/patients")
+      Axios
+        .get("/patients")
         .then((res: any) => setRows(res.data))
         .then(() => {
           setPending(false);

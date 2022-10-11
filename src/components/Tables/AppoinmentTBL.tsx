@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { appointmentInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import AppointmentModal from "../Modals/AppointmentModal";
@@ -20,7 +20,7 @@ function AppointmentTable() {
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row.id,
+      selector: (row: any) => row?.id,
       sortable: true,
       grow: 0,
       right: true,
@@ -31,25 +31,25 @@ function AppointmentTable() {
     },
     {
       name: "Serial Number",
-      selector: (row: any) => row.serial_no,
+      selector: (row: any) => row?.serial_no,
     },
     {
       name: "Patient",
-      selector: (row: any) => row.patient.fullname,
+      selector: (row: any) => row?.patient?.fullname,
       sortable: true,
     },
     {
       name: "Doctor",
-      selector: (row: any) => row.doctor.fullname,
+      selector: (row: any) => row?.doctor?.fullname,
       sortable: true,
     },
     {
       name: "Appointment Date",
-      selector: (row: any) => row.appointment_date,
+      selector: (row: any) => row?.appointment_date,
     },
     {
       name: "Appointment Time",
-      selector: (row: any) => row.appointment_time,
+      selector: (row: any) => row?.appointment_time,
     },
     {
       name: "Edit",
@@ -87,9 +87,8 @@ function AppointmentTable() {
 
   useEffect(() => {
     try {
-      axios
-        .get("http://127.0.0.1:3000/appointments")
-        .then((res: any) => setRows(res.data))
+      Axios.get("/appointments")
+        .then((res: any) => setRows(res?.data))
         .then(() => {
           setPending(false);
         });

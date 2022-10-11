@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { patientInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import DoctorModal from "../Modals/DoctorModal";
-import { display } from "@mui/system";
 
 function DoctorTBL() {
   const [pending, setPending] = useState(true);
@@ -15,7 +14,7 @@ function DoctorTBL() {
   const handleDelete = (id: number) => {
     let deluser = rows?.filter((user: userInterface) => user?.id !== id);
     setRows(deluser);
-    axios.delete(`http://127.0.0.1:3000/doctors/${id}`).then((res) => {});
+    Axios.delete(`/doctors/${id}`).then((res) => {});
   };
 
   const handleEdit = (row: userInterface) => {
@@ -25,7 +24,7 @@ function DoctorTBL() {
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row.id,
+      selector: (row: any) => row?.id,
       sortable: true,
       grow: 0,
       right: true,
@@ -37,25 +36,25 @@ function DoctorTBL() {
 
     {
       name: "First Name",
-      selector: (row: any) => row.first_name,
+      selector: (row: any) => row?.first_name,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row.last_name,
+      selector: (row: any) => row?.last_name,
       sortable: true,
     },
     {
       name: "Designation",
-      selector: (row: any) => row.designation,
+      selector: (row: any) => row?.designation,
     },
     {
       name: "Telephone",
-      selector: (row: any) => row.phone,
+      selector: (row: any) => row?.phone,
     },
     {
       name: "Email",
-      selector: (row: any) => row.email,
+      selector: (row: any) => row?.email,
     },
     {
       name: "Edit",
@@ -82,7 +81,7 @@ function DoctorTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row.id);
+            handleDelete(row?.id);
           }}
         >
           Delete
@@ -93,9 +92,8 @@ function DoctorTBL() {
 
   useEffect(() => {
     try {
-      axios
-        .get("http://127.0.0.1:3000/doctors")
-        .then((res: any) => setRows(res.data))
+      Axios.get("/doctors")
+        .then((res: any) => setRows(res?.data))
         .then(() => {
           setPending(false);
         });

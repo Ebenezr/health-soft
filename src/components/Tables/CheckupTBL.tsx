@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { checkupInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import CheckupModal from "../Modals/CheckupModal";
@@ -14,7 +14,7 @@ function CheckupTBL() {
   const handleDelete = (id: number) => {
     let deluser = rows?.filter((user: userInterface) => user?.id !== id);
     setRows(deluser);
-    axios.delete(`http://127.0.0.1:3000/checkups/${id}`).then((res) => {});
+    Axios.delete(`/checkups/${id}`).then((res) => {});
   };
 
   //handle edit
@@ -26,7 +26,7 @@ function CheckupTBL() {
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row.id,
+      selector: (row: any) => row?.id,
       sortable: true,
       grow: 0,
       right: true,
@@ -37,33 +37,33 @@ function CheckupTBL() {
     },
     {
       name: "Visit Id",
-      selector: (row: any) => row.visit_id,
+      selector: (row: any) => row?.visit_id,
     },
     {
       name: "Doctor",
-      selector: (row: any) => row.doctor.fullname,
+      selector: (row: any) => row?.doctor?.fullname,
       sortable: true,
     },
     {
       name: "Patient",
-      selector: (row: any) => row.patient.fullname,
+      selector: (row: any) => row?.patient?.fullname,
       sortable: true,
     },
     {
       name: "Symptoms",
-      selector: (row: any) => row.symptoms,
+      selector: (row: any) => row?.symptoms,
     },
     {
       name: "Diagnosis",
-      selector: (row: any) => row.diagnosis,
+      selector: (row: any) => row?.diagnosis,
     },
     {
       name: "Check Up Date",
-      selector: (row: any) => row.checkup_date,
+      selector: (row: any) => row?.checkup_date,
     },
     {
       name: "Next Visit",
-      selector: (row: any) => row.next_visit,
+      selector: (row: any) => row?.next_visit,
     },
     {
       name: "Edit",
@@ -100,16 +100,14 @@ function CheckupTBL() {
   ];
   useEffect(() => {
     try {
-      axios
-        .get("http://127.0.0.1:3000/checkups")
-        .then((res: any) => setRows(res.data))
+      Axios.get("/checkups")
+        .then((res: any) => setRows(res?.data))
         .then(() => {
           setPending(false);
         });
     } catch (err) {
       console.error(err);
     }
-    //console.log(rows[0].patient_contacts[0].phone);
   }, []);
 
   return (
