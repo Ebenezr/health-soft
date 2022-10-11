@@ -4,16 +4,24 @@ import Axios from "../../Api/axios";
 import { patientInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import DoctorModal from "../Modals/DoctorModal";
+import { useQuery } from "@tanstack/react-query";
 
 function DoctorTBL() {
-  const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<userInterface[]>([]);
+  async function getData() {
+    const { data } = await Axios.get("/doctors");
+    return data;
+  }
+  const {
+    data: doctors,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["doctors"], () => getData());
+
   const [currentUser, setCurrentUser] = useState<userInterface>({});
   const [openModal, setOpenModal] = useState(false);
 
   const handleDelete = (id: number) => {
-    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
-    setRows(deluser);
     Axios.delete(`/doctors/${id}`).then((res) => {});
   };
 
@@ -90,26 +98,14 @@ function DoctorTBL() {
     },
   ];
 
-  useEffect(() => {
-    try {
-      Axios.get("/doctors")
-        .then((res: any) => setRows(res?.data))
-        .then(() => {
-          setPending(false);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
   return (
     <div className="table">
       <DataTable
         title="Doctor List"
         columns={columns}
-        data={rows}
+        data={doctors}
         dense
-        progressPending={pending}
+        progressPending={isLoading}
       />
       <DoctorModal
         currentUser={currentUser}

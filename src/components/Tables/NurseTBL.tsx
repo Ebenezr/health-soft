@@ -3,18 +3,28 @@ import DataTable from "./DataTable";
 import Axios from "../../Api/axios";
 import { userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
-import DoctorModal from "../Modals/DoctorModal";
+
 import NurseModal from "../Modals/NurseModal";
+import { useQuery } from "@tanstack/react-query";
 
 function NurseTBL() {
-  const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<userInterface[]>([]);
+  async function getData() {
+    const { data } = await Axios.get("/nurses");
+    return data;
+  }
+  const {
+    data: nurses,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["nurses"], () => getData());
+
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<userInterface>({});
 
   const handleDelete = (id: number) => {
-    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
-    setRows(deluser);
+    // let deluser = rows?.filter((user: userInterface) => user?.id !== id);
+    // setRows(deluser);
     Axios.delete(`/nurses/${id}`).then((res) => {});
   };
 
@@ -90,26 +100,15 @@ function NurseTBL() {
       ),
     },
   ];
-  useEffect(() => {
-    try {
-      Axios.get("/nurses")
-        .then((res: any) => setRows(res?.data))
-        .then(() => {
-          setPending(false);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
 
   return (
     <div className="table">
       <DataTable
         title="Nurse List"
         columns={columns}
-        data={rows}
+        data={nurses}
         dense
-        progressPending={pending}
+        progressPending={isLoading}
       />
       <NurseModal
         currentUser={currentUser}

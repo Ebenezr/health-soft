@@ -4,17 +4,25 @@ import Axios from "../../Api/axios";
 import { checkupInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import CheckupModal from "../Modals/CheckupModal";
+import { useQuery } from "@tanstack/react-query";
 
 function CheckupTBL() {
-  const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<checkupInterface[]>([]);
+  async function getCheckups() {
+    const { data } = await Axios.get("/checkups");
+    return data;
+  }
+  const {
+    data: checkups,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["checkups"], () => getCheckups());
+
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<checkupInterface>({});
 
-  const handleDelete = (id: number) => {
-    let deluser = rows?.filter((user: userInterface) => user?.id !== id);
-    setRows(deluser);
-    Axios.delete(`/checkups/${id}`).then((res) => {});
+  const handleDelete = async (id: number) => {
+    await Axios.delete(`/checkups/${id}`).then((res) => refetch);
   };
 
   //handle edit
@@ -98,26 +106,15 @@ function CheckupTBL() {
       ),
     },
   ];
-  useEffect(() => {
-    try {
-      Axios.get("/checkups")
-        .then((res: any) => setRows(res?.data))
-        .then(() => {
-          setPending(false);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
 
   return (
     <div className="table">
       <DataTable
         title="Patient Vitals"
         columns={columns}
-        data={rows}
+        data={checkups}
         dense
-        progressPending={pending}
+        progressPending={isLoading}
       />
       <CheckupModal
         currentUser={currentUser}

@@ -4,12 +4,21 @@ import Axios from "../../Api/axios";
 import { patientVitals, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
+import { useQuery } from "@tanstack/react-query";
 
 function TriageTBL() {
+  async function getData() {
+    const { data } = await Axios.get("/patient_vitals");
+    return data;
+  }
+  const {
+    data: patients,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["patients"], () => getData());
   const [openModal, setOpenModal] = useState(false);
   const [vitals, setVitals] = useState<patientVitals>({});
-  const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<userInterface[]>([]);
 
   const handleEdit = (row: patientVitals) => {
     setVitals(row);
@@ -17,8 +26,8 @@ function TriageTBL() {
   };
 
   const handleDelete = (id: number) => {
-    let deluser = rows?.filter((user: patientVitals) => user?.id !== id);
-    setRows(deluser);
+    // let deluser = rows?.filter((user: patientVitals) => user?.id !== id);
+    // setRows(deluser);
     Axios.delete(`/patient_vitals/${id}`).then((res) => {});
   };
 
@@ -90,27 +99,14 @@ function TriageTBL() {
     },
   ];
 
-  useEffect(() => {
-    try {
-      Axios.get("/patient_vitals")
-        .then((res: any) => setRows(res.data))
-        .then(() => {
-          setPending(false);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-    //console.log(rows[0].patient_contacts[0].phone);
-  }, []);
-
   return (
     <div className="table">
       <DataTable
         title="Patient Vitals"
         columns={columns}
-        data={rows}
+        data={patients}
         dense
-        progressPending={pending}
+        progressPending={isLoading}
       />
       <VitalsModal
         vitals={vitals}

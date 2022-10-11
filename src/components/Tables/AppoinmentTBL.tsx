@@ -4,10 +4,20 @@ import Axios from "../../Api/axios";
 import { appointmentInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import AppointmentModal from "../Modals/AppointmentModal";
+import { useQuery } from "@tanstack/react-query";
 
 function AppointmentTable() {
-  const [pending, setPending] = useState(true);
-  const [rows, setRows] = useState<appointmentInterface[]>([]);
+  async function getAppointments() {
+    const { data } = await Axios.get("/appointments");
+    return data;
+  }
+  const {
+    data: appointments,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["appointments"], () => getAppointments());
+
   const [currentAppointment, setCurrentAppointment] =
     useState<appointmentInterface>({});
   const [openModal, setOpenModal] = useState(false);
@@ -15,6 +25,14 @@ function AppointmentTable() {
   const handleEdit = (row: appointmentInterface) => {
     setCurrentAppointment(row);
     setOpenModal(true);
+  };
+
+  const handleDelete = (id: number) => {
+    // let deluser = appointments?.filter((user) => user?.id !== id);
+
+    Axios.delete(`/checkups/${id}`).then((res) => {
+      refetch;
+    });
   };
 
   const columns = [
@@ -69,14 +87,14 @@ function AppointmentTable() {
     {
       name: "Delete",
       button: true,
-      cell: () => (
+      cell: (row) => (
         <motion.button
           className="table-btn delete"
           type="button"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => {
-            alert("mbuss");
+            handleDelete(row?.id);
           }}
         >
           Delete
@@ -85,26 +103,14 @@ function AppointmentTable() {
     },
   ];
 
-  useEffect(() => {
-    try {
-      Axios.get("/appointments")
-        .then((res: any) => setRows(res?.data))
-        .then(() => {
-          setPending(false);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
   return (
     <div className="table">
       <DataTable
         title="Appointment List"
         columns={columns}
-        data={rows}
+        data={appointments}
         dense
-        progressPending={pending}
+        progressPending={isLoading}
       />
       <AppointmentModal
         appointment={currentAppointment}
