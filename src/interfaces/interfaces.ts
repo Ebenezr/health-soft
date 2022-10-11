@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface patientInterface {
   id?: number;
   national_id?: number;
@@ -32,8 +34,8 @@ export interface appointmentInterface {
   id?: number;
   patient_type?: string;
   serial_no?: number;
-  appointment_date?: Date;
-  appointment_time?: Date;
+  appointment_date?: Dayjs;
+  appointment_time?: Dayjs;
   doctor_id?: number;
   patient_id?: number;
   nurse_id?: number;

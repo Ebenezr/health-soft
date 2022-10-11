@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
+import { Dayjs } from "dayjs";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
 import Select from "react-select";
-import axios from "axios";
+
+import Axios from "../../Api/axios";
 import {
   appointmentInterface,
   patientInterface,
   userInterface,
 } from "../../interfaces/interfaces";
+import { MobileTimePicker } from "@mui/x-date-pickers";
 
 const dropIn = {
   hidden: {
@@ -42,6 +49,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   closeModal,
   appointment,
 }) => {
+  const [time, setTime] = useState();
   //hold user data
   const [formData, setFormData] = useState({
     appointment_date: "",
@@ -75,7 +83,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   useEffect(() => {
     try {
       const arr: any = [];
-      axios.get("http://127.0.0.1:3000/doctors").then((res: any) => {
+      Axios.get("/doctors").then((res: any) => {
         let results = res.data;
         results.map((user: userInterface) => {
           return arr.push({ value: user.id, label: user.fullname });
@@ -87,7 +95,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
     }
     try {
       const arr: any = [];
-      axios.get("http://127.0.0.1:3000/patients").then((res: any) => {
+      Axios.get("/patients").then((res: any) => {
         let results = res.data;
         results.map((user: patientInterface) => {
           return arr.push({ value: user.id, label: user.fullname });
@@ -110,6 +118,9 @@ const AppointmentModal: React.FC<ModalProps> = ({
   //handle for submision
   const handleSubmit = () => {
     console.log(formData);
+    Axios.post("/appointments", formData).then((res) => {
+      console.log(res.data);
+    });
   };
 
   if (!openModal) return null;
@@ -232,14 +243,26 @@ const AppointmentModal: React.FC<ModalProps> = ({
               <Label htmlFor="appointment_time" css={{ lineHeight: "35px" }}>
                 Appointment Time
               </Label>
-
-              <input
-                type="time"
-                id="appointment_time"
-                className="inputs"
-                value={formData?.appointment_time}
-                onChange={handleChange}
-              ></input>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileTimePicker
+                  value={time}
+                  onChange={(newValue) => {
+                    setTime(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      onBlur={() =>
+                        setFormData({
+                          ...formData,
+                          appointment_time: time,
+                        })
+                      }
+                      defaultValue={appointment?.appointment_time}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </span>
             <span className="input_group notes">
               <Label htmlFor="notes" css={{ lineHeight: "35px" }}>
