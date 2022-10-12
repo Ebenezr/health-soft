@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { padding } from "@mui/system";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
-import axios from "axios";
+import Axios from "../../Api/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {
   hidden: {
@@ -38,6 +39,7 @@ const NurseModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  const queryClient = useQueryClient();
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
     first_name: "",
@@ -54,7 +56,6 @@ const NurseModal: React.FC<ModalProps> = ({
   useEffect(() => {
     setFormData(currentUser);
   }, [currentUser]);
-
   //hangle change event
   const handleChange = (event: any) => {
     const key = event.target.id;
@@ -64,34 +65,38 @@ const NurseModal: React.FC<ModalProps> = ({
     setFormData({ ...formData, [key]: value });
   };
 
+  const patchNurse = async (id: number) => {
+    await Axios.patch(`/nurses/${id}`, formData).then((res) => {});
+  };
+
+  const postNurse = async (formData) => {
+    await Axios.post(`/nurses`, formData).then((res) => {});
+  };
+  const { mutate: post } = useMutation(postNurse, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["nursers"]);
+      closeModal();
+    },
+  });
+
+  const { mutate: patch } = useMutation(patchNurse, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["nurses"]);
+      closeModal();
+    },
+  });
+
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // const post_nurse_url: string = "http://127.0.0.1:3000/nurses";
-    // const post_doctor_url: string = "http://127.0.0.1:3000/doctors";
-    //if currentUser object if empty do a post operation otherwise patch request
-    if (JSON.stringify(currentUser) === "{}") {
-      try {
-        axios
-          .post("http://127.0.0.1:3000/nurses", formData)
-          .then((response) => {
-            console.log(response.data);
-          });
-      } catch (err) {
-        console.error(err);
-      }
-
+    console.log(currentUser);
+    if (currentUser === undefined) {
+      post(formData);
       return;
     }
-    try {
-      axios
-        .patch(`http://127.0.0.1:3000/nurses/${currentUser.id}`, formData)
-        .then((response) => {
-          console.log(response.data);
-        });
-    } catch (err) {
-      console.error(err);
-    }
+    patch(currentUser?.id);
   };
   if (!openModal) return null;
   return (

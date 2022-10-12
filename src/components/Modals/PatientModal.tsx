@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
 import Select from "react-select";
 import { patientInterface } from "../../interfaces/interfaces";
-import axios from "axios";
+import Axios from "../../Api/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {
   hidden: {
@@ -38,6 +39,7 @@ const PatientModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  const queryClient = useQueryClient();
   const gender: { value: string; label: string }[] = [
     {
       value: "Male",
@@ -87,32 +89,39 @@ const PatientModal: React.FC<ModalProps> = ({
 
     setFormData({ ...formData, [key]: value });
   };
+
+  const patchPatient = async (id: number) => {
+    await Axios.patch(`/patients/${id}`, formData).then((res) => {});
+  };
+
+  const postPatient = async (formData) => {
+    await Axios.post(`/patients`, formData).then((res) => {});
+  };
+  const { mutate: post } = useMutation(postPatient, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["patients"]);
+      closeModal();
+    },
+  });
+
+  const { mutate: patch } = useMutation(patchPatient, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["patients"]);
+      closeModal();
+    },
+  });
+
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    //if currentUser object if empty do a post operation otherwise patch request
-    if (JSON.stringify(currentUser) === "{}") {
-      try {
-        axios
-          .post("http://127.0.0.1:3000/patients", formData)
-          .then((response) => {
-            console.log(response.data);
-          });
-      } catch (err) {
-        console.error(err);
-      }
-
+    console.log(currentUser);
+    if (currentUser === undefined) {
+      post(formData);
       return;
     }
-    try {
-      axios
-        .patch(`http://127.0.0.1:3000/patients/${currentUser.id}`, formData)
-        .then((response) => {
-          console.log(response.data);
-        });
-    } catch (err) {
-      console.error(err);
-    }
+    patch(currentUser?.id);
   };
 
   if (!openModal) return null;

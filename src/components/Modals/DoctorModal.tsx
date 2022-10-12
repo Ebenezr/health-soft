@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { padding } from "@mui/system";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
-import axios from "axios";
+import Axios from "../../Api/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {
   hidden: {
@@ -38,6 +39,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  const queryClient = useQueryClient();
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
     first_name: "",
@@ -64,33 +66,40 @@ const DoctorModal: React.FC<ModalProps> = ({
     setFormData({ ...formData, [key]: value });
   };
 
+  const patchDoctor = async (id: number) => {
+    await Axios.patch(`/doctors/${id}`, formData).then((res) => {});
+  };
+
+  const postDoctor = async (formData) => {
+    await Axios.post(`/doctors`, formData).then((res) => {});
+  };
+  const { mutate: post } = useMutation(postDoctor, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["doctors"]);
+      closeModal();
+    },
+  });
+
+  const { mutate: patch } = useMutation(patchDoctor, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["doctors"]);
+      closeModal();
+    },
+  });
+
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    //if currentUser object if empty do a post operation otherwise patch request
-    if (JSON.stringify(currentUser) === "{}") {
-      try {
-        axios
-          .post("http://127.0.0.1:3000/doctors", formData)
-          .then((response) => {
-            console.log(response.data);
-          });
-      } catch (err) {
-        console.error(err);
-      }
-
+    console.log(currentUser);
+    if (currentUser === undefined) {
+      post(formData);
       return;
     }
-    try {
-      axios
-        .patch(`http://127.0.0.1:3000/doctors/${currentUser.id}`, formData)
-        .then((response) => {
-          console.log(response.data);
-        });
-    } catch (err) {
-      console.error(err);
-    }
+    patch(currentUser?.id);
   };
+
   if (!openModal) return null;
   return (
     <motion.div
