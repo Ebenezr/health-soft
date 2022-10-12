@@ -4,9 +4,10 @@ import Axios from "../../Api/axios";
 import { patientVitals, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 function TriageTBL() {
+  const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/patient_vitals");
     return data;
@@ -16,7 +17,7 @@ function TriageTBL() {
     isLoading,
     refetch,
     error,
-  } = useQuery(["patients"], () => getData());
+  } = useQuery(["patientsvitals"], () => getData());
   const [openModal, setOpenModal] = useState(false);
   const [vitals, setVitals] = useState<patientVitals>({});
 
@@ -25,16 +26,21 @@ function TriageTBL() {
     setOpenModal(true);
   };
 
-  const handleDelete = (id: number) => {
-    // let deluser = rows?.filter((user: patientVitals) => user?.id !== id);
-    // setRows(deluser);
-    Axios.delete(`/patient_vitals/${id}`).then((res) => {});
+  const handleDelete = async (id: number) => {
+    await Axios.delete(`/patient_vitals/${id}`).then((res) => {});
   };
+
+  const { mutate: destroy } = useMutation(handleDelete, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["patientsvitals"]);
+    },
+  });
 
   const columns = [
     {
       name: "Id",
-      selector: (row: any) => row?.id,
+      selector: (row: any) => row?.patient_id,
       sortable: true,
       grow: 0,
       right: true,
@@ -90,7 +96,7 @@ function TriageTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row?.id);
+            destroy(row?.id);
           }}
         >
           Delete

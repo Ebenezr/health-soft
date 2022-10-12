@@ -4,8 +4,9 @@ import Axios from "../../Api/axios";
 import { patientInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import PatientModal from "../Modals/PatientModal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 function PatientTBL() {
+  const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/patients");
     return data;
@@ -19,11 +20,16 @@ function PatientTBL() {
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<patientInterface>({});
 
-  const handleDelete = (id: number) => {
-    // let deluser = rows?.filter((user: patientInterface) => user?.id !== id);
-    // setRows(deluser);
-    Axios.delete(`/patients/${id}`).then((res) => {});
+  const handleDelete = async (id: number) => {
+    await Axios.delete(`/patients/${id}`).then((res) => {});
   };
+
+  const { mutate: destroy } = useMutation(handleDelete, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["patients"]);
+    },
+  });
 
   //handle edit
   const handleEdit = (row: patientInterface) => {
@@ -100,15 +106,17 @@ function PatientTBL() {
       name: "Delete",
       button: true,
       cell: (row: any) => (
-        <button
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row?.id);
+            destroy(row?.id);
           }}
         >
           Delete
-        </button>
+        </motion.button>
       ),
     },
   ];

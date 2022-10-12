@@ -4,9 +4,10 @@ import Axios from "../../Api/axios";
 import { patientInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import DoctorModal from "../Modals/DoctorModal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function DoctorTBL() {
+  const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/doctors");
     return data;
@@ -21,9 +22,17 @@ function DoctorTBL() {
   const [currentUser, setCurrentUser] = useState<userInterface>({});
   const [openModal, setOpenModal] = useState(false);
 
-  const handleDelete = (id: number) => {
-    Axios.delete(`/doctors/${id}`).then((res) => {});
+  const handleDelete = async (id: number) => {
+    await Axios.delete(`/doctors/${id}`).then((res) => {});
   };
+   const { mutate: destroy } = useMutation(handleDelete, {
+     onMutate: () => {},
+     onSuccess: () => {
+       queryClient.invalidateQueries(["doctors"]);
+     },
+   });
+
+    
 
   const handleEdit = (row: userInterface) => {
     setCurrentUser(row);
@@ -89,7 +98,7 @@ function DoctorTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row?.id);
+            destroy(row?.id);
           }}
         >
           Delete

@@ -5,9 +5,10 @@ import { userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 
 import NurseModal from "../Modals/NurseModal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function NurseTBL() {
+  const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/nurses");
     return data;
@@ -22,11 +23,16 @@ function NurseTBL() {
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<userInterface>({});
 
-  const handleDelete = (id: number) => {
-    // let deluser = rows?.filter((user: userInterface) => user?.id !== id);
-    // setRows(deluser);
-    Axios.delete(`/nurses/${id}`).then((res) => {});
+  const handleDelete = async (id: number) => {
+    await Axios.delete(`/nurses/${id}`).then((res) => {});
   };
+
+  const { mutate: destroy } = useMutation(handleDelete, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["nurses"]);
+    },
+  });
 
   const handleEdit = (row: userInterface) => {
     setOpenModal(true);
@@ -92,7 +98,7 @@ function NurseTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row?.id);
+            destroy(row?.id);
           }}
         >
           Delete

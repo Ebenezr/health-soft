@@ -4,9 +4,10 @@ import Axios from "../../Api/axios";
 import { checkupInterface, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import CheckupModal from "../Modals/CheckupModal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function CheckupTBL() {
+  const queryClient = useQueryClient();
   async function getCheckups() {
     const { data } = await Axios.get("/checkups");
     return data;
@@ -30,6 +31,13 @@ function CheckupTBL() {
     setCurrentUser(row);
     setOpenModal(true);
   };
+
+  const { mutate: destroy } = useMutation(handleDelete, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["checkups"]);
+    },
+  });
 
   const columns = [
     {
@@ -98,7 +106,7 @@ function CheckupTBL() {
           className="table-btn delete"
           type="button"
           onClick={() => {
-            handleDelete(row.id);
+            destroy(row.id);
           }}
         >
           Delete
