@@ -78,6 +78,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   ];
   //fetch and populate patients dropdown
   const { data: patients } = useQuery(["patientsdata"], () => getPatients());
+
   //fetch and populate doctors dropdown
   const {
     data: doctors,

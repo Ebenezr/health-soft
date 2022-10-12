@@ -11,7 +11,7 @@ import {
 } from "../../interfaces/interfaces";
 import Select from "react-select";
 import Axios from "../../Api/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Vitalsform from "../Forms/vitalsform";
 import Diagnosisform from "../Forms/diagnosis";
 
@@ -37,9 +37,9 @@ const dropIn = {
 };
 
 interface ModalProps {
-  openModal: boolean;
+  openModal?: boolean;
   closeModal(): void;
-  currentUser: checkupInterface;
+  currentUser?: checkupInterface;
 }
 
 const CheckupModal: React.FC<ModalProps> = ({
@@ -47,20 +47,14 @@ const CheckupModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  const queryClient = useQueryClient();
   //fetch and populate patients dropdown
   const { data: patientsdata } = useQuery(["patientsdata"], () =>
     getPatients()
   );
   //fetch and populate doctors dropdown
-  const {
-    data: doctorsdata,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery(["doctorsdata"], () => getDoctors());
+  const { data: doctorsdata } = useQuery(["doctorsdata"], () => getDoctors());
   const [doctorchoice, setDoctorChoice] = useState(0);
-
-  const [patienttypechoice, setPatienttypechoice] = useState("");
   const [doctors, setDoctors] = useState<{ value: number; label: string }[]>(
     []
   );
@@ -90,7 +84,11 @@ const CheckupModal: React.FC<ModalProps> = ({
   useEffect(() => {
     setFormData(currentUser);
   }, [currentUser]);
-
+  //generate visitid
+  function genVisitId() {
+    const number = Math.floor(1000 + Math.random() * 10);
+    return number;
+  }
   //fetch patients
   async function getPatients() {
     const arr: any = [];
@@ -119,6 +117,41 @@ const CheckupModal: React.FC<ModalProps> = ({
 
     setFormData({ ...formData, [key]: value });
   };
+
+  const patchCheckup = async (id: number) => {
+    await Axios.patch(`/checkups/${id}`, formData).then((res) => {});
+  };
+
+  const postCheckup = async (formData) => {
+    await Axios.post(`/checkups`, formData).then((res) => {});
+  };
+  const { mutate: post } = useMutation(postCheckup, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["checkups"]);
+      closeModal();
+    },
+  });
+
+  const { mutate: patch } = useMutation(patchCheckup, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["checkups"]);
+      closeModal();
+    },
+  });
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    setFormData({ ...formData, visit_id: genVisitId() });
+    console.log(formData);
+    if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
+      post(formData);
+      return;
+    }
+    patch(currentUser?.id);
+  };
+
   if (!openModal) return null;
   return (
     <motion.div
@@ -168,26 +201,7 @@ const CheckupModal: React.FC<ModalProps> = ({
                 }
               />
             </span>
-            {/* <span className="input_group">
-              <Label htmlFor="patient" css={{ lineHeight: "35px" }}>
-                Patient Type
-              </Label>
-              <Select
-                id="doctor_id"
-                className="input-cont "
-                placeholder="Select Type"
-                //defaultInputValue={currentUser?.patient?.patient_type}
-                //options={patienttype}
-                noOptionsMessage={() => "Choice not found"}
-                onChange={(event: any) => setPatienttypechoice(event.value)}
-                //value={patienttype.find(
-                //(obj) => obj.value === patienttypechoice
-                //)}
-                // onBlur={() =>
-                //   setFormData({ ...formData, patient_type: patienttypechoice })
-                // }
-              />
-            </span> */}
+
             <span className="input_group">
               <Label htmlFor="doctor" css={{ lineHeight: "35px" }}>
                 Doctor
@@ -230,6 +244,19 @@ const CheckupModal: React.FC<ModalProps> = ({
                 value={formData?.next_visit}
               ></input>
             </span>
+            {/* <span className="input_group">
+              <Label htmlFor="checkup_date" css={{ lineHeight: "35px" }}>
+                Visit Id
+              </Label>
+              <input
+                type="number"
+                disabled
+                id="next_visit"
+                className="inputs"
+                //  onChange={handleChange}
+                value={formData?.next_visit}
+              ></input>
+            </span> */}
             <span className="input_group notes">
               <Label htmlFor="advice" css={{ lineHeight: "30px" }}>
                 Advice
@@ -261,7 +288,10 @@ const CheckupModal: React.FC<ModalProps> = ({
                 <TabsTrigger value="tab3">Treatment</TabsTrigger>
               </TabsList>
               <TabsContent value="tab1">
-                <Diagnosisform currentPatient={currentUser} />
+                <Diagnosisform
+                  checkUpData={formData}
+                  setFormData={setFormData}
+                />
               </TabsContent>
               <TabsContent value="tab2">
                 <Vitalsform patientId={currentUser?.patient_id} />
@@ -271,7 +301,9 @@ const CheckupModal: React.FC<ModalProps> = ({
           </div>
         </article>
         <footer className="modal-footer">
-          <button className="btn save">Action</button>
+          <button className="btn save" onClick={handleSubmit}>
+            Action
+          </button>
           <button className="btn close" onClick={closeModal}>
             Close
           </button>

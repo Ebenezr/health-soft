@@ -51,10 +51,7 @@ function CheckupTBL() {
         color: "white",
       },
     },
-    {
-      name: "Visit Id",
-      selector: (row: any) => row?.visit_id,
-    },
+
     {
       name: "Doctor",
       selector: (row: any) => row?.doctor?.fullname,

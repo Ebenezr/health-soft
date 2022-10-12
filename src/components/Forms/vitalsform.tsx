@@ -50,6 +50,7 @@ const Vitalsform: React.FC<vitalsprops> = ({ patientId }) => {
           </Label>
 
           <input
+            disabled
             type="text"
             id="temperature"
             className="inputs"
@@ -62,6 +63,7 @@ const Vitalsform: React.FC<vitalsprops> = ({ patientId }) => {
             BP Systolic
           </Label>
           <input
+            disabled
             type="text"
             id="bp_systolic"
             className="inputs"
@@ -75,6 +77,7 @@ const Vitalsform: React.FC<vitalsprops> = ({ patientId }) => {
           </Label>
 
           <input
+            disabled
             type="text"
             id="bp_diastolic"
             className="inputs"
@@ -87,6 +90,7 @@ const Vitalsform: React.FC<vitalsprops> = ({ patientId }) => {
             Nurse Notes
           </Label>
           <textarea
+            disabled
             rows={4}
             id="notes"
             value={patientVitals?.notes}

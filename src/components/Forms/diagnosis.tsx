@@ -1,45 +1,25 @@
 import { Label } from "../Radix/Label";
 import Axios from "../../Api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { checkupInterface, patientVitals } from "../../interfaces/interfaces";
 
 interface props {
-  currentPatient: checkupInterface;
+  currentPatient?: checkupInterface;
+  checkUpData?: checkupInterface;
+  setFormData(obj): void;
 }
 
-const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
-  const [formData, setFormData] = useState<checkupInterface>({
-    doctor_id: 0,
-    patient_id: 0,
-    visit_id: 0,
-    symptoms: "",
-    diagnosis: "",
-    advice: "",
-    checkup_date: "",
-    next_visit: "",
-    comment: "",
-    hpi: "",
-    patient: {
-      fullname: "",
-    },
-    doctor: {
-      fullname: "",
-    },
-  });
+const Diagnosisform: React.FC<props> = ({
+  currentPatient,
+  checkUpData,
+  setFormData,
+}) => {
   //get patients diagnosis
   async function getData(id: number) {
     const { data } = await Axios.get(`/checkups/${id}`);
     return data;
   }
-  //get vitals query
-  const { data: checkups } = useQuery(
-    ["patientscheckup", currentPatient?.id],
-    () => getData(currentPatient?.id),
-    {
-      enabled: Boolean(currentPatient),
-    }
-  );
 
   //hangle change event
   const handleChange = (event: any) => {
@@ -47,7 +27,7 @@ const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
     const value = event.target.value;
     // patient_contacts[key] = value;
 
-    setFormData({ ...formData, [key]: value });
+    setFormData({ ...checkUpData, [key]: value });
   };
 
   return (
@@ -60,7 +40,7 @@ const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
           <textarea
             rows={3}
             id="symptoms"
-            value={checkups?.symptoms}
+            value={checkUpData?.symptoms}
             onChange={handleChange}
           />
         </span>
@@ -71,7 +51,7 @@ const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
           <textarea
             rows={2}
             id="diagnosis"
-            value={checkups?.diagnosis}
+            value={checkUpData?.diagnosis}
             onChange={handleChange}
           />
         </span>
@@ -82,7 +62,7 @@ const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
           <textarea
             rows={3}
             id="hpi"
-            value={checkups?.hpi}
+            value={checkUpData?.hpi}
             onChange={handleChange}
           />
         </span>
@@ -93,7 +73,7 @@ const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
           <textarea
             rows={3}
             id="examination"
-            value={checkups?.examination}
+            value={checkUpData?.examination}
             onChange={handleChange}
           />
         </span>
