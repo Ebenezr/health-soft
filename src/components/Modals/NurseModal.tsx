@@ -73,15 +73,13 @@ const NurseModal: React.FC<ModalProps> = ({
     await Axios.post(`/nurses`, formData).then((res) => {});
   };
   const { mutate: post } = useMutation(postNurse, {
-    onMutate: () => {},
     onSuccess: () => {
-      queryClient.invalidateQueries(["nursers"]);
+      queryClient.invalidateQueries(["nurses"]);
       closeModal();
     },
   });
 
   const { mutate: patch } = useMutation(patchNurse, {
-    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["nurses"]);
       closeModal();
@@ -91,8 +89,8 @@ const NurseModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(currentUser);
-    if (currentUser === undefined) {
+    //check if edit mode or registration
+    if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
       return;
     }

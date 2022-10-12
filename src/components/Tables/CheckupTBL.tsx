@@ -41,10 +41,10 @@ function CheckupTBL() {
 
   const columns = [
     {
-      name: "Id",
+      name: "Serial Number",
       selector: (row: any) => row?.id,
       sortable: true,
-      grow: 0,
+      grow: 0.7,
       right: true,
       style: {
         backgroundColor: "rgba(50, 50, 50, 0.5)",

@@ -25,14 +25,12 @@ function DoctorTBL() {
   const handleDelete = async (id: number) => {
     await Axios.delete(`/doctors/${id}`).then((res) => {});
   };
-   const { mutate: destroy } = useMutation(handleDelete, {
-     onMutate: () => {},
-     onSuccess: () => {
-       queryClient.invalidateQueries(["doctors"]);
-     },
-   });
-
-    
+  const { mutate: destroy } = useMutation(handleDelete, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries(["doctors"]);
+    },
+  });
 
   const handleEdit = (row: userInterface) => {
     setCurrentUser(row);
@@ -40,10 +38,10 @@ function DoctorTBL() {
   };
   const columns = [
     {
-      name: "Id",
+      name: "Serial Number",
       selector: (row: any) => row?.id,
       sortable: true,
-      grow: 0,
+      grow: 0.7,
       right: true,
       style: {
         backgroundColor: "rgba(50, 50, 50, 0.5)",
@@ -110,7 +108,6 @@ function DoctorTBL() {
   return (
     <div className="table">
       <DataTable
-        title="Doctor List"
         columns={columns}
         data={doctors}
         dense

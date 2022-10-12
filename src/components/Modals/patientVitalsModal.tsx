@@ -69,21 +69,9 @@ const VitalsModal: React.FC<ModalProps> = ({
     bp_diastolic: 0,
     notes: "",
   });
-  const [patients, setPatients] = useState<{ value: number; label: string }[]>(
-    []
-  );
 
   useEffect(() => {
     setFormData(vitals);
-
-    const arr: any = [];
-    Axios.get("/patients").then((res: any) => {
-      let results = res.data;
-      results.map((user: patientInterface) => {
-        return arr.push({ value: user.id, label: user.fullname });
-      });
-      setPatients(arr);
-    });
   }, [vitals]);
   //hangle change event
   const handleChange = (event: any) => {
@@ -92,6 +80,18 @@ const VitalsModal: React.FC<ModalProps> = ({
 
     setFormData({ ...formData, [key]: value });
   };
+
+  //fetch patients
+  async function getPatients() {
+    const arr: any = [];
+    const { data } = await Axios.get("/patients");
+    data.map((user: patientInterface) => {
+      return arr.push({ value: user.id, label: user.fullname });
+    });
+    return arr;
+  }
+  //fetch and populate patients dropdown
+  const { data: patients } = useQuery(["patientsdata"], () => getPatients());
 
   //patch vitals
   const patchVitals = async (patient_id: number) => {
@@ -107,11 +107,8 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   //update pationt's vitals query
   const { mutate: patch } = useMutation(patchVitals, {
-    onMutate: () => {},
-    onSuccess: (data) => {
-      queryClient.setQueryData(["patientsvitals"], data);
-      //TODO
-      //close modal
+    onSuccess: () => {
+      queryClient.invalidateQueries(["patientsvitals"]);
       closeModal();
       //update details on success response
     },
@@ -119,27 +116,21 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   //post pationt's vitals query
   const { isLoading, mutate: post } = useMutation(postVitals, {
-    onSuccess: async (data) => {
-      queryClient.setQueryData(["patientsvitals"], data);
-      //TODO
-      //close modal
-      closeModal();
+    onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
-      //update details on success response
+      closeModal();
     },
   });
 
   //submission
-
   const handleSubmit = (event: any) => {
     event.preventDefault();
-
-    patch(vitals?.patient_id);
-    //post(formData);
-
-    if (vitals?.patient_id === undefined || vitals?.patient_id === 0) {
+    //check if edit mode or registration
+    if (vitals === undefined || JSON.stringify(vitals) === "{}") {
+      post(formData);
       return;
     }
+    patch(vitals?.patient_id);
   };
 
   if (!openModal) return null;

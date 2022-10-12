@@ -92,8 +92,8 @@ const DoctorModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(currentUser);
-    if (currentUser === undefined) {
+    //check if edit mode or registration
+    if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
       return;
     }

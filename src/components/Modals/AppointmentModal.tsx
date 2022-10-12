@@ -16,6 +16,7 @@ import {
   userInterface,
 } from "../../interfaces/interfaces";
 import { MobileTimePicker } from "@mui/x-date-pickers";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {
   hidden: {
@@ -41,7 +42,7 @@ const dropIn = {
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
-  appointment: appointmentInterface;
+  appointment: any;
 }
 
 const AppointmentModal: React.FC<ModalProps> = ({
@@ -60,16 +61,11 @@ const AppointmentModal: React.FC<ModalProps> = ({
     patient_type: "",
     serial_no: 0,
   });
+  const queryClient = useQueryClient();
   const [doctorchoice, setDoctorChoice] = useState(0);
 
   const [patienttypechoice, setPatienttypechoice] = useState("");
   const [patientchoice, setPatientChoice] = useState(0);
-  const [doctors, setDoctors] = useState<{ value: number; label: string }[]>(
-    []
-  );
-  const [patients, setPatients] = useState<{ value: number; label: string }[]>(
-    []
-  );
   const patienttype: { value: string; label: string }[] = [
     {
       value: "out-patinet",
@@ -80,32 +76,67 @@ const AppointmentModal: React.FC<ModalProps> = ({
       label: "In Patient",
     },
   ];
+  //fetch and populate patients dropdown
+  const { data: patients } = useQuery(["patientsdata"], () => getPatients());
+  //fetch and populate doctors dropdown
+  const {
+    data: doctors,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["doctorsdata"], () => getDoctors());
+
+  //fetch patients
+  async function getPatients() {
+    const arr: any = [];
+    const { data } = await Axios.get("/patients");
+    data.map((user: patientInterface) => {
+      return arr.push({ value: user.id, label: user.fullname });
+    });
+    return arr;
+  }
+  //fetch doctors
+  async function getDoctors() {
+    const arr: any = [];
+    const { data } = await Axios.get("/doctors");
+    data.map((user: userInterface) => {
+      return arr.push({ value: user.id, label: user.fullname });
+    });
+    return arr;
+  }
+
+  //patch appointments
+  const patchAppointments = async (patient_id: number) => {
+    await Axios.patch(`/appointments/${patient_id}`, formData).then(
+      (res) => res.data
+    );
+  };
+
+  //post appointment
+  const postVitals = async (formData: any) => {
+    await Axios.post(`/appointments`, formData).then((res) => res.data);
+  };
+
+  //update appoinment query
+  const { mutate: patch } = useMutation(patchAppointments, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appointments"]);
+      closeModal();
+      //update details on success response
+    },
+  });
+
+  //post appointments query
+  const { mutate: post } = useMutation(postVitals, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appointments"]);
+      closeModal();
+    },
+  });
+
   useEffect(() => {
-    try {
-      const arr: any = [];
-      Axios.get("/doctors").then((res: any) => {
-        let results = res.data;
-        results.map((user: userInterface) => {
-          return arr.push({ value: user.id, label: user.fullname });
-        });
-        setDoctors(arr);
-      });
-    } catch (err) {
-      console.error(err);
-    }
-    try {
-      const arr: any = [];
-      Axios.get("/patients").then((res: any) => {
-        let results = res.data;
-        results.map((user: patientInterface) => {
-          return arr.push({ value: user.id, label: user.fullname });
-        });
-        setPatients(arr);
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+    setFormData(appointment);
+  }, [appointment]);
 
   //hangle change event
   const handleChange = (event: any) => {
@@ -116,10 +147,14 @@ const AppointmentModal: React.FC<ModalProps> = ({
   };
 
   //handle for submision
-  const handleSubmit = async () => {
-    await Axios.post("/appointments", formData).then((res) => {
-      console.log(res.data);
-    });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    //check if edit mode or registration
+    if (appointment === undefined || JSON.stringify(appointment) === "{}") {
+      post(formData);
+      return;
+    }
+    patch(appointment?.id);
   };
 
   if (!openModal) return null;
