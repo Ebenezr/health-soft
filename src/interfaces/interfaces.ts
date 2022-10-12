@@ -59,6 +59,7 @@ export interface appointmentInterface {
 }
 
 export interface patientVitals {
+  id?: number;
   patient_id?: number;
   bp_systolic?: number;
   bp_diastolic?: number;

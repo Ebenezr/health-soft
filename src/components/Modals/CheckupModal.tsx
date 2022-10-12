@@ -264,7 +264,7 @@ const CheckupModal: React.FC<ModalProps> = ({
                 <Diagnosisform currentPatient={currentUser} />
               </TabsContent>
               <TabsContent value="tab2">
-                <Vitalsform id={currentUser?.patient_id} />
+                <Vitalsform patientId={currentUser?.patient_id} />
               </TabsContent>
               <TabsContent value="tab3"></TabsContent>
             </Tabs>

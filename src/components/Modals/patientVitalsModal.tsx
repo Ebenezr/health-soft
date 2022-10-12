@@ -8,6 +8,7 @@ import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {
   hidden: {
@@ -49,28 +50,17 @@ const schema = yup.object().shape({
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
-  vitals: patientVitals;
+  vitals?: patientVitals;
+  patientId?: number;
 }
 
 const VitalsModal: React.FC<ModalProps> = ({
   openModal,
   closeModal,
   vitals,
+  patientId,
 }) => {
-  // const {
-  //   setValue,
-  //   watch,
-  //   reset,
-  //   control,
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm({
-  //   mode: "onBlur",
-  //   reValidateMode: "onChange",
-  //   shouldUnregister: true,
-  //   resolver: yupResolver(schema),
-  // });
+  const queryClient = useQueryClient();
   const [userChoice, setUserChoice] = useState<any>();
   const [formData, setFormData] = useState<patientVitals>({
     patient_id: 0,
@@ -85,7 +75,7 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     setFormData(vitals);
-    console.log(vitals);
+
     const arr: any = [];
     Axios.get("/patients").then((res: any) => {
       let results = res.data;
@@ -103,37 +93,53 @@ const VitalsModal: React.FC<ModalProps> = ({
     setFormData({ ...formData, [key]: value });
   };
 
+  //patch vitals
+  const patchVitals = async (patient_id: number) => {
+    await Axios.patch(`/patient_vitals/${patient_id}`, formData).then(
+      (res) => res.data
+    );
+  };
+
+  //post vitals
+  const postVitals = async (formData: patientVitals) => {
+    await Axios.post(`/patient_vitals`, formData).then((res) => res.data);
+  };
+
+  //update pationt's vitals query
+  const { mutate: patch } = useMutation(patchVitals, {
+    onMutate: () => {},
+    onSuccess: (data) => {
+      queryClient.setQueryData(["patientsvitals"], data);
+      //TODO
+      //close modal
+      closeModal();
+      //update details on success response
+    },
+  });
+
+  //post pationt's vitals query
+  const { isLoading, mutate: post } = useMutation(postVitals, {
+    onSuccess: async (data) => {
+      queryClient.setQueryData(["patientsvitals"], data);
+      //TODO
+      //close modal
+      closeModal();
+      queryClient.invalidateQueries(["patientsvitals"]);
+      //update details on success response
+    },
+  });
+
   //submission
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(formData);
 
-    // if (vitals?.patient_id === undefined || vitals?.patient_id === 0) {
-    //   try {
-    //     await Axios.post("/patient_vitals", formData).then((res) => {
-    //       console.log(res.data);
-    //     });
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
+    patch(vitals?.patient_id);
+    //post(formData);
 
-    //   return;
-    // }
-    // try {
-    //   await Axios.post(`/patient_vitals/${vitals?.patient_id}`, formData).then(
-    //     (res) => {
-    //       console.log(res.data);
-    //     }
-    //   );
-    // } catch (err) {
-    //   console.error(err);
-    // }
-  };
-
-  const onSubmit = () => {
-    //  console.log(data);
-    console.log(formData);
+    if (vitals?.patient_id === undefined || vitals?.patient_id === 0) {
+      return;
+    }
   };
 
   if (!openModal) return null;
@@ -250,7 +256,7 @@ const VitalsModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" type="submit">
-            Action
+            {isLoading ? "Saveing..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

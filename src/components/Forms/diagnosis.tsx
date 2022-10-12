@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { checkupInterface, patientVitals } from "../../interfaces/interfaces";
 
-interface vitalsprops {
+interface props {
   currentPatient: checkupInterface;
 }
 
-export default function Diagnosisform({ currentPatient }) {
+const Diagnosisform: React.FC<props> = ({ currentPatient }) => {
   const [formData, setFormData] = useState<checkupInterface>({
     doctor_id: 0,
     patient_id: 0,
@@ -33,12 +33,13 @@ export default function Diagnosisform({ currentPatient }) {
     return data;
   }
   //get vitals query
-  const {
-    data: checkups,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery(["patientscheckup"], () => getData(currentPatient?.id));
+  const { data: checkups } = useQuery(
+    ["patientscheckup", currentPatient?.id],
+    () => getData(currentPatient?.id),
+    {
+      enabled: Boolean(currentPatient),
+    }
+  );
 
   //hangle change event
   const handleChange = (event: any) => {
@@ -99,4 +100,6 @@ export default function Diagnosisform({ currentPatient }) {
       </div>
     </>
   );
-}
+};
+
+export default Diagnosisform;

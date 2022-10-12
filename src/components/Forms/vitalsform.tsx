@@ -5,10 +5,10 @@ import { useState } from "react";
 import { patientVitals } from "../../interfaces/interfaces";
 
 interface vitalsprops {
-  id: number;
+  patientId: number;
 }
 
-export default function Vitalsform({ id }) {
+const Vitalsform: React.FC<vitalsprops> = ({ patientId }) => {
   const [vitalsForm, setVitalForm] = useState<patientVitals>({
     patient_id: 0,
     temperature: 0,
@@ -22,12 +22,14 @@ export default function Vitalsform({ id }) {
     return data;
   }
   //get vitals query
-  const {
-    data: patientVitals,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery(["patientsvitals"], () => getVitals(id));
+
+  const { data: patientVitals } = useQuery(
+    ["patientsvitals", patientId],
+    () => getVitals(patientId),
+    {
+      enabled: Boolean(patientId),
+    }
+  );
 
   //hangle change event
   const handleChangeVitals = (event: any) => {
@@ -94,4 +96,5 @@ export default function Vitalsform({ id }) {
       </div>{" "}
     </>
   );
-}
+};
+export default Vitalsform;
