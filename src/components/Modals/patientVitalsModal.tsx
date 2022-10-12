@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import axios from "axios";
+import Axios from "../../Api/axios";
 import { patientInterface, patientVitals } from "../../interfaces/interfaces";
 import Select from "react-select";
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const dropIn = {
   hidden: {
@@ -29,6 +30,22 @@ const dropIn = {
   },
 };
 
+//form validatiion schema
+const schema = yup.object().shape({
+  temperature: yup
+    .number()
+    .required("temperature is required")
+    .positive()
+    .integer()
+    .min(33)
+    .max(40),
+  bp_systolic: yup.number().positive().integer().min(100).max(150),
+  bp_diastolic: yup.number().positive().integer().min(50).max(100),
+  notes: yup.string(),
+});
+
+//.oneOf([yup.ref('password),null])
+
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
@@ -40,9 +57,23 @@ const VitalsModal: React.FC<ModalProps> = ({
   closeModal,
   vitals,
 }) => {
+  // const {
+  //   setValue,
+  //   watch,
+  //   reset,
+  //   control,
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   mode: "onBlur",
+  //   reValidateMode: "onChange",
+  //   shouldUnregister: true,
+  //   resolver: yupResolver(schema),
+  // });
   const [userChoice, setUserChoice] = useState<any>();
   const [formData, setFormData] = useState<patientVitals>({
-    id: 0,
+    patient_id: 0,
     temperature: 0,
     bp_systolic: 0,
     bp_diastolic: 0,
@@ -54,18 +85,15 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     setFormData(vitals);
-    try {
-      const arr: any = [];
-      axios.get("http://127.0.0.1:3000/patients").then((res: any) => {
-        let results = res.data;
-        results.map((user: patientInterface) => {
-          return arr.push({ value: user.id, label: user.fullname });
-        });
-        setPatients(arr);
+    console.log(vitals);
+    const arr: any = [];
+    Axios.get("/patients").then((res: any) => {
+      let results = res.data;
+      results.map((user: patientInterface) => {
+        return arr.push({ value: user.id, label: user.fullname });
       });
-    } catch (err) {
-      console.error(err);
-    }
+      setPatients(arr);
+    });
   }, [vitals]);
   //hangle change event
   const handleChange = (event: any) => {
@@ -75,8 +103,36 @@ const VitalsModal: React.FC<ModalProps> = ({
     setFormData({ ...formData, [key]: value });
   };
 
+  //submission
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    console.log(formData);
+
+    // if (vitals?.patient_id === undefined || vitals?.patient_id === 0) {
+    //   try {
+    //     await Axios.post("/patient_vitals", formData).then((res) => {
+    //       console.log(res.data);
+    //     });
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+
+    //   return;
+    // }
+    // try {
+    //   await Axios.post(`/patient_vitals/${vitals?.patient_id}`, formData).then(
+    //     (res) => {
+    //       console.log(res.data);
+    //     }
+    //   );
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  };
+
+  const onSubmit = () => {
+    //  console.log(data);
     console.log(formData);
   };
 
@@ -89,7 +145,8 @@ const VitalsModal: React.FC<ModalProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <motion.section
+      <motion.form
+        onSubmit={handleSubmit}
         variants={dropIn}
         initial="hidden"
         animate="visible"
@@ -115,16 +172,24 @@ const VitalsModal: React.FC<ModalProps> = ({
               <Label htmlFor="patient_id" css={{ lineHeight: "35px" }}>
                 Patient
               </Label>
+
               <Select
                 defaultInputValue={vitals?.patient?.fullname}
                 className="input-cont"
                 placeholder="Select Type"
                 options={patients}
                 noOptionsMessage={() => "Doctor not found"}
+                // onChange={(options: any) =>
+                //   onChange(options?.map((option) => option.value))
+                // }
                 onChange={(event) => {
                   setUserChoice(event?.value);
                 }}
-                onBlur={() => setFormData({ ...formData, id: userChoice })}
+                onBlur={() =>
+                  setFormData({ ...formData, patient_id: userChoice })
+                }
+                //    value={patients.find((c) => c.value === value)}
+
                 value={patients.find((obj) => obj.value === userChoice)}
                 classNamePrefix="select"
               />
@@ -139,6 +204,7 @@ const VitalsModal: React.FC<ModalProps> = ({
                 className="inputs"
                 value={formData?.temperature}
                 onChange={handleChange}
+                // {...register("temperature")}
               ></input>
             </span>
             <span className="input_group">
@@ -151,8 +217,10 @@ const VitalsModal: React.FC<ModalProps> = ({
                 className="inputs"
                 value={formData?.bp_systolic}
                 onChange={handleChange}
+                // {...register("bp_systolic")}
               ></input>
             </span>
+            {/* <small>{errors.temperature?.message}</small> */}
             <span className="input_group">
               <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
                 BP Diasyolic
@@ -163,6 +231,7 @@ const VitalsModal: React.FC<ModalProps> = ({
                 className="inputs"
                 value={formData?.bp_diastolic}
                 onChange={handleChange}
+                // {...register("bp_diastolic")}
               ></input>
             </span>
             <span className="input_group notes">
@@ -174,19 +243,20 @@ const VitalsModal: React.FC<ModalProps> = ({
                 id="notes"
                 value={formData?.notes}
                 onChange={handleChange}
+                // {...register("notes")}
               />
             </span>
           </div>
         </article>
         <footer className="modal-footer">
-          <button className="btn save" onClick={handleSubmit}>
+          <button className="btn save" type="submit">
             Action
           </button>
           <button className="btn close" onClick={closeModal}>
             Close
           </button>
         </footer>
-      </motion.section>
+      </motion.form>
     </motion.div>
   );
 };

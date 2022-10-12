@@ -59,7 +59,7 @@ export interface appointmentInterface {
 }
 
 export interface patientVitals {
-  id?: number;
+  patient_id?: number;
   bp_systolic?: number;
   bp_diastolic?: number;
   temperature?: number;
@@ -77,6 +77,7 @@ export interface checkupInterface {
   doctor_id?: number;
   patient_id?: number;
   id?: number;
+  examination?: string;
   visit_id?: number;
   symptoms?: string;
   diagnosis?: string;
@@ -87,8 +88,10 @@ export interface checkupInterface {
   hpi?: string;
   patient?: {
     fullname?: string;
+    id?: number;
   };
   doctor?: {
     fullname?: string;
+    id?: number;
   };
 }

@@ -4,19 +4,37 @@ import Axios from "../../Api/axios";
 import { appointmentInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import AppointmentModal from "../Modals/AppointmentModal";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 
 function AppointmentTable() {
+  const [message, setMessage] = useState("");
+  //get data
   async function getAppointments() {
     const { data } = await Axios.get("/appointments");
     return data;
   }
+  //handle delete
+  const handleDelete = async (id: number) => {
+    // let deluser = appointments?.filter((user) => user?.id !== id);
+
+    const response = await Axios.delete(`/appointments/${id}`);
+    setMessage(response.data);
+    refetch;
+  };
+  //fetch query
   const {
     data: appointments,
     isLoading,
     refetch,
-    error,
   } = useQuery(["appointments"], () => getAppointments());
+
+  const {
+    error,
+    isError,
+    mutate: deleteData,
+  } = useMutation(handleDelete, {
+    retry: 3,
+  });
 
   const [currentAppointment, setCurrentAppointment] =
     useState<appointmentInterface>({});
@@ -25,14 +43,6 @@ function AppointmentTable() {
   const handleEdit = (row: appointmentInterface) => {
     setCurrentAppointment(row);
     setOpenModal(true);
-  };
-
-  const handleDelete = (id: number) => {
-    // let deluser = appointments?.filter((user) => user?.id !== id);
-
-    Axios.delete(`/checkups/${id}`).then((res) => {
-      refetch;
-    });
   };
 
   const columns = [
@@ -94,7 +104,8 @@ function AppointmentTable() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => {
-            handleDelete(row?.id);
+            deleteData(row?.id);
+            //  handleDelete(row?.id);
           }}
         >
           Delete

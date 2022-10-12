@@ -10,7 +10,10 @@ import {
   userInterface,
 } from "../../interfaces/interfaces";
 import Select from "react-select";
-import axios from "axios";
+import Axios from "../../Api/axios";
+import { useQuery } from "@tanstack/react-query";
+import Vitalsform from "../Forms/vitalsform";
+import Diagnosisform from "../Forms/diagnosis";
 
 const dropIn = {
   hidden: {
@@ -44,6 +47,17 @@ const CheckupModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  //fetch and populate patients dropdown
+  const { data: patientsdata } = useQuery(["patientsdata"], () =>
+    getPatients()
+  );
+  //fetch and populate doctors dropdown
+  const {
+    data: doctorsdata,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery(["doctorsdata"], () => getDoctors());
   const [doctorchoice, setDoctorChoice] = useState(0);
 
   const [patienttypechoice, setPatienttypechoice] = useState("");
@@ -72,54 +86,31 @@ const CheckupModal: React.FC<ModalProps> = ({
       fullname: "",
     },
   });
-  const [vitalsForm, setVitalForm] = useState<patientVitals>({
-    id: 0,
-    temperature: 0,
-    bp_systolic: 0,
-    bp_diastolic: 0,
-    notes: "",
-  });
-
-  //get patients vitals
-  const getvitals = () => {
-    console.log(currentUser);
-    try {
-      axios
-        .get(`http://127.0.0.1:3000/patient_vitals/${currentUser?.patient_id}`)
-        .then((res: any) => {
-          setVitalForm(res.data);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  openModal && getvitals();
 
   useEffect(() => {
     setFormData(currentUser);
-
-    try {
-      const arr: any = [];
-      axios.get("http://127.0.0.1:3000/doctors").then((res: any) => {
-        let results = res.data;
-        results.map((user: userInterface) => {
-          return arr.push({ value: user.id, label: user.fullname });
-        });
-        setDoctors(arr);
-      });
-    } catch (err) {
-      console.error(err);
-    }
   }, [currentUser]);
-  //hangle change event
-  const handleChangeVitals = (event: any) => {
-    const key = event.target.id;
-    const value = event.target.value;
-    // patient_contacts[key] = value;
 
-    setVitalForm({ ...vitalsForm, [key]: value });
-  };
+  //fetch patients
+  async function getPatients() {
+    const arr: any = [];
+    const { data } = await Axios.get("/patients");
+    data.map((user: patientInterface) => {
+      return arr.push({ value: user.id, label: user.fullname });
+    });
+    return arr;
+  }
+
+  //fetch doctors
+  async function getDoctors() {
+    const arr: any = [];
+    const { data } = await Axios.get("/doctors");
+    data.map((user: userInterface) => {
+      return arr.push({ value: user.id, label: user.fullname });
+    });
+    return arr;
+  }
+
   //hangle change event
   const handleChange = (event: any) => {
     const key = event.target.id;
@@ -168,13 +159,13 @@ const CheckupModal: React.FC<ModalProps> = ({
                 defaultInputValue={currentUser?.patient?.fullname}
                 className="input-cont "
                 placeholder="Select Patient"
-                options={patients}
+                options={patientsdata}
                 noOptionsMessage={() => "patient not found"}
                 onChange={(event: any) => setPatientChoice(event.value)}
                 value={patients.find((obj) => obj.value === patientchoice)}
-                // onBlur={() =>
-                //   setFormData({ ...formData, patient_id: patientchoice })
-                // }
+                onBlur={() =>
+                  setFormData({ ...formData, patient_id: patientchoice })
+                }
               />
             </span>
             {/* <span className="input_group">
@@ -206,13 +197,13 @@ const CheckupModal: React.FC<ModalProps> = ({
                 defaultInputValue={currentUser?.doctor?.fullname}
                 className="input-cont "
                 placeholder="Select Doctor"
-                options={doctors}
+                options={doctorsdata}
                 noOptionsMessage={() => "Doctor not found"}
                 onChange={(event: any) => setDoctorChoice(event.value)}
                 value={doctors.find((obj) => obj.value === doctorchoice)}
-                // onBlur={() =>
-                //   setFormData({ ...formData, doctor_id: doctorchoice })
-                // }
+                onBlur={() =>
+                  setFormData({ ...formData, doctor_id: doctorchoice })
+                }
               />
             </span>
             <span className="input_group">
@@ -270,85 +261,10 @@ const CheckupModal: React.FC<ModalProps> = ({
                 <TabsTrigger value="tab3">Treatment</TabsTrigger>
               </TabsList>
               <TabsContent value="tab1">
-                <div className="form">
-                  <span className="input_group notes">
-                    <Label htmlFor="symptoms" css={{ lineHeight: "30px" }}>
-                      Symptoms
-                    </Label>
-                    <textarea rows={3} id="symptoms" />
-                  </span>
-                  <span className="input_group notes">
-                    <Label htmlFor="diagnosis" css={{ lineHeight: "30px" }}>
-                      Diagnosis
-                    </Label>
-                    <textarea rows={2} id="diagnosis" />
-                  </span>
-                  <span className="input_group notes">
-                    <Label htmlFor="hpi" css={{ lineHeight: "30px" }}>
-                      HPI
-                    </Label>
-                    <textarea rows={3} id="hpi" />
-                  </span>
-                  <span className="input_group notes">
-                    <Label htmlFor="examination" css={{ lineHeight: "30px" }}>
-                      Physical Examinations
-                    </Label>
-                    <textarea rows={3} id="examination" />
-                  </span>
-                </div>
+                <Diagnosisform currentPatient={currentUser} />
               </TabsContent>
               <TabsContent value="tab2">
-                <div className="form">
-                  <span className="input_group">
-                    <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
-                      Temperature(°C)
-                    </Label>
-
-                    <input
-                      type="number"
-                      id="temperature"
-                      className="inputs"
-                      value={vitalsForm.temperature}
-                      onChange={handleChangeVitals}
-                    ></input>
-                  </span>
-                  <span className="input_group">
-                    <Label htmlFor="bp_systolic" css={{ lineHeight: "35px" }}>
-                      BP Systolic
-                    </Label>
-                    <input
-                      type="number"
-                      id="bp_systolic"
-                      className="inputs"
-                      value={vitalsForm.bp_systolic}
-                      onChange={handleChangeVitals}
-                    ></input>
-                  </span>
-                  <span className="input_group">
-                    <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
-                      BP Diasyolic
-                    </Label>
-
-                    <input
-                      type="number"
-                      id="bp_diastolic"
-                      className="inputs"
-                      value={vitalsForm.bp_diastolic}
-                      onChange={handleChangeVitals}
-                    ></input>
-                  </span>
-                  <span className="input_group notes">
-                    <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
-                      Nurse Notes
-                    </Label>
-                    <textarea
-                      rows={4}
-                      id="notes"
-                      value={vitalsForm.notes}
-                      onChange={handleChangeVitals}
-                    />
-                  </span>
-                </div>
+                <Vitalsform id={currentUser?.patient_id} />
               </TabsContent>
               <TabsContent value="tab3"></TabsContent>
             </Tabs>

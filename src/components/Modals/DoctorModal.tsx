@@ -67,9 +67,6 @@ const DoctorModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const post_nurse_url: string = "http://127.0.0.1:3000/nurses";
-    const post_doctor_url: string = "http://127.0.0.1:3000/doctors";
-
     //if currentUser object if empty do a post operation otherwise patch request
     if (JSON.stringify(currentUser) === "{}") {
       try {

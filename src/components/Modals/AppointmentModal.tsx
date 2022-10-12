@@ -116,9 +116,8 @@ const AppointmentModal: React.FC<ModalProps> = ({
   };
 
   //handle for submision
-  const handleSubmit = () => {
-    console.log(formData);
-    Axios.post("/appointments", formData).then((res) => {
+  const handleSubmit = async () => {
+    await Axios.post("/appointments", formData).then((res) => {
       console.log(res.data);
     });
   };

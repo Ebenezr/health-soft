@@ -44,7 +44,7 @@ const PatientModal: React.FC<ModalProps> = ({
       label: "Male",
     },
     {
-      value: "Memale",
+      value: "Female",
       label: "Female",
     },
   ];
