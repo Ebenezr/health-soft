@@ -10,7 +10,6 @@ const Header = () => {
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
     setAcc(loggedUser);
-    console.log(acc);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

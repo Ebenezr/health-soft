@@ -40,12 +40,14 @@ interface ModalProps {
   openModal?: boolean;
   closeModal(): void;
   currentUser?: checkupInterface;
+  setCurrentUser(obj: checkupInterface): void;
 }
 
 const CheckupModal: React.FC<ModalProps> = ({
   openModal,
   closeModal,
   currentUser,
+  setCurrentUser,
 }) => {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<boolean>(null);
@@ -62,6 +64,7 @@ const CheckupModal: React.FC<ModalProps> = ({
   const [patients, setPatients] = useState<{ value: number; label: string }[]>(
     []
   );
+  const [patientsID, setPatientsID] = useState<number>(0);
   const [patientchoice, setPatientChoice] = useState(0);
   const [formData, setFormData] = useState<checkupInterface>({
     doctor_id: 0,
@@ -148,7 +151,6 @@ const CheckupModal: React.FC<ModalProps> = ({
   });
 
   const { mutate: patch } = useMutation(patchCheckup, {
-    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["checkups"]);
       setStatus(true);
@@ -171,7 +173,6 @@ const CheckupModal: React.FC<ModalProps> = ({
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setFormData({ ...formData, visit_id: genVisitId() });
-    console.log(formData);
     if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
       return;
@@ -321,7 +322,11 @@ const CheckupModal: React.FC<ModalProps> = ({
                 />
               </TabsContent>
               <TabsContent value="tab2">
-                <Vitalsform patientId={currentUser?.patient_id} />
+                <Vitalsform
+                  patientId={
+                    patientchoice <= 1 ? currentUser?.patient_id : patientchoice
+                  }
+                />
               </TabsContent>
               <TabsContent value="tab3"></TabsContent>
             </Tabs>

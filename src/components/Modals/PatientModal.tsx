@@ -144,7 +144,7 @@ const PatientModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(currentUser);
+
     if (currentUser === undefined) {
       post(formData);
       return;

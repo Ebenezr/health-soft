@@ -31,7 +31,7 @@ function TriageTBL() {
   };
 
   const { mutate: destroy } = useMutation(handleDelete, {
-    onMutate: () => {},
+   
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
     },

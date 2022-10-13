@@ -45,9 +45,7 @@ const Signin: React.FC<formData> = () => {
   const { mutate: post } = useMutation(logIn, {
     onMutate: () => {},
     onSuccess: (data) => {
-      localStorage.setItem("authenticated", JSON.stringify(true));
-      console.log(data);
-      //
+  
 
       setStatus(true);
       setTimeout(() => {

@@ -121,6 +121,7 @@ function CheckupTBL() {
         progressPending={isLoading}
       />
       <CheckupModal
+        setCurrentUser={setCurrentUser}
         currentUser={currentUser}
         openModal={openModal}
         closeModal={() => setOpenModal(false)}
