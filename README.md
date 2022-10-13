@@ -159,23 +159,33 @@ languages used are:
 
 clone the repo using the command
 
-- `git clone git@github.com:Ebenezr/health-soft.git`
+```shell
+git clone git@github.com:Ebenezr/health-soft.git
+```
 
 change directory using command
 
-- `cd health-soft`
+```shell
+cd health-soft
+```
 
 open project in vscode texteditor
 
-- `code .`
+```shell
+code .
+```
 
 install dependancies
 
-- `npm install`
+```shell
+npm install
+```
 
 run front end
 
-- `npm run dev`
+```shell
+npm run dev
+```
 
 ---
 
@@ -183,23 +193,53 @@ run front end
 
 clone the repo using the command
 
-- `git clone git@github.com:Ebenezr/health-soft-api.git`
+```shell
+git clone git@github.com:Ebenezr/health-soft-api.git
+```
 
 change directory using command
 
-- `cd health-soft-api`
+```shell
+cd health-soft-api
+```
 
 open project in vscode texteditor
 
-- `code .`
+```shell
+code .
+```
+
+Check your Ruby version
+
+```shell
+ruby -v
+```
+
+The ouput should start with something like `ruby 2.5.1`
+
+If not, install the right ruby version using [rbenv](https://github.com/rbenv/rbenv) (it could take a while):
+
+```shell
+rbenv install 2.7.0
+```
 
 install dependancies packages
 
-- `bundle install`
+```shell
+bundle install
+```
+
+Initialize the database
+
+```shell
+rails db:create db:migrate db:seed
+```
 
 run api server
 
-- `rails server`
+```shell
+rails s
+```
 
 ---
 
@@ -210,20 +250,26 @@ run api server
 
 #### login Auths..
 
-- admin:
+admin:
 
+```shell
 email: admin@admin.com
 password: admin@admin.com
+```
 
-- nurse:
+nurse:
 
+```shell
 email: leah@gmail.com
 password: leah1990
+```
 
-- doctor
+doctor
 
+```shell
 emai: emmanuel@gmail.com
 password: emmanuel
+```
 
 ## How to use the project
 
