@@ -20,6 +20,11 @@
     align-items: center;
     padding: 0 2rem;
     justify-content: space-between;
+    h2 {
+      font-weight: 400;
+      color: $color-info-dark;
+      font-size: 1.2rem;
+    }
     button {
       padding: 0.5rem 0.5rem;
       background: transparent;
@@ -35,6 +40,7 @@
     }
   }
   article {
+    position: relative;
     flex-grow: 1;
     background-color: rgb(228, 228, 228);
     display: grid;
@@ -67,6 +73,7 @@
         border-radius: 0.3rem;
         border: 0.1rem solid gray;
         outline: none;
+        color: $color-dark;
       }
       input[type="text-area"] {
         width: 90%;
@@ -75,6 +82,24 @@
       &.notes {
         display: flex;
         flex-direction: column;
+      }
+    }
+    .form__status {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      color: $color-dark;
+      font-weight: 500;
+      background-color: $color-danger;
+      width: 60%;
+      border-radius: $border-radius-1;
+      padding: $space-2xs;
+      text-align: center;
+      transition: 300ms ease;
+      &.active {
+        background: $color-success !important;
+        color: $color-dark !important;
       }
     }
   }

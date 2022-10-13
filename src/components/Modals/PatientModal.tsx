@@ -60,6 +60,7 @@ const PatientModal: React.FC<ModalProps> = ({
       label: "Married",
     },
   ];
+  const [status, setStatus] = useState<boolean>(null);
   const [genderchoice, setGender] = useState("");
   const [marriedchoice, setMarriedChoice] = useState("");
   const [formData, setFormData] = useState<patientInterface>({
@@ -101,7 +102,20 @@ const PatientModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["patients"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -109,7 +123,21 @@ const PatientModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["patients"]);
-      closeModal();
+
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -302,10 +330,17 @@ const PatientModal: React.FC<ModalProps> = ({
               ></input>
             </span>
           </div>
+          {status ? (
+            <div className="form__status active">Save Success</div>
+          ) : status === false ? (
+            <div className="form__status">
+              Failed To Save Data Check to see if all details are correct
+            </div>
+          ) : null}
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Action
+            Save
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

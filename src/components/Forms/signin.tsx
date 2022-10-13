@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "../../Api/axios";
 import { ReactSession } from "react-client-session";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 ReactSession.setStoreType("localStorage");
 
@@ -11,6 +12,7 @@ interface formData {
   remember_me?: boolean;
 }
 const Signin: React.FC<formData> = () => {
+  const queryClient = useQueryClient();
   const [status, setStatus] = useState<boolean>(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<formData>({
@@ -19,13 +21,6 @@ const Signin: React.FC<formData> = () => {
     remember_me: true,
   });
   const userRef = React.useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (null !== userRef.current) {
-      userRef.current.focus();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   //hangle change event
   const handleChange = (event: any): void => {
@@ -38,36 +33,47 @@ const Signin: React.FC<formData> = () => {
     setFormData({ ...formData, [key]: value });
   };
 
+  //login post request
+  const logIn = async (formData) => {
+    await Axios.post(`/users`, formData).then((res) => {
+      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+      localStorage.setItem("token", JSON.stringify(res?.data?.token));
+      localStorage.setItem("role", JSON.stringify(res?.data?.user?.role_cd));
+    });
+  };
+
+  const { mutate: post } = useMutation(logIn, {
+    onMutate: () => {},
+    onSuccess: (data) => {
+      localStorage.setItem("authenticated", JSON.stringify(true));
+      console.log(data);
+      //
+
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        navigate("/home/patients");
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setFormData({
+        email: "",
+        password: "",
+      });
+    },
+  });
+
   //submission form function
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
-    Axios.post("/users", formData).then((response) => {
-      if (Object.values(response.data).length > 1) {
-        ReactSession.set("usertype", response.data?.usertype);
-        ReactSession.set("sessionUser", response?.data);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        localStorage.setItem("token", JSON.stringify(response.data.token));
-        localStorage.setItem("authenticated", JSON.stringify(true));
-        setStatus(true);
-        setTimeout(() => {
-          setStatus(null);
-        }, 2500);
-        setStatus(true);
-        setTimeout(() => {
-          navigate("/home/dashboard");
-        }, 1000);
-      } else {
-        setStatus(false);
-        setTimeout(() => {
-          setStatus(null);
-        }, 2500);
-        setFormData({
-          email: "",
-          password: "",
-        });
-      }
-    });
+    post(formData);
   };
 
   return (

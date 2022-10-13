@@ -51,6 +51,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   appointment,
 }) => {
   const [time, setTime] = useState();
+  const [status, setStatus] = useState<boolean>(null);
   //hold user data
   const [formData, setFormData] = useState({
     appointment_date: "",
@@ -122,8 +123,20 @@ const AppointmentModal: React.FC<ModalProps> = ({
   const { mutate: patch } = useMutation(patchAppointments, {
     onSuccess: () => {
       queryClient.invalidateQueries(["appointments"]);
-      closeModal();
-      //update details on success response
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -131,7 +144,20 @@ const AppointmentModal: React.FC<ModalProps> = ({
   const { mutate: post } = useMutation(postVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["appointments"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -179,7 +205,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
         style={{ width: "clamp(40%, 300px, 70%)" }}
       >
         <header className="modal-header">
-          <h2>Modal form</h2>
+          <h2>Patient's Appointment</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -311,6 +337,13 @@ const AppointmentModal: React.FC<ModalProps> = ({
               ></textarea>
             </span>
           </div>
+          {status ? (
+            <div className="form__status active">Save Success</div>
+          ) : status === false ? (
+            <div className="form__status">
+              Failed To Save Data Check to see if all details are correct
+            </div>
+          ) : null}
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>

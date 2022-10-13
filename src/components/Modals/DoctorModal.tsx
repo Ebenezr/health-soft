@@ -40,6 +40,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   currentUser,
 }) => {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState<boolean>(null);
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
     first_name: "",
@@ -77,7 +78,20 @@ const DoctorModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["doctors"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -85,7 +99,20 @@ const DoctorModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["doctors"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -121,7 +148,7 @@ const DoctorModal: React.FC<ModalProps> = ({
         style={{ width: "clamp(40%, 400px, 60%)" }}
       >
         <header className="modal-header">
-          <h2>User Info</h2>
+          <h2>Doctors Info</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -137,6 +164,7 @@ const DoctorModal: React.FC<ModalProps> = ({
               </Label>
 
               <input
+                required
                 type="text"
                 id="first_name"
                 className="inputs"
@@ -149,6 +177,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 Last Name
               </Label>
               <input
+                required
                 type="text"
                 id="last_name"
                 className="inputs"
@@ -161,6 +190,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 Phone Number
               </Label>
               <input
+                required
                 type="number"
                 id="phone"
                 className="inputs"
@@ -173,6 +203,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 Email
               </Label>
               <input
+                required
                 type="email"
                 id="email"
                 className="inputs"
@@ -186,6 +217,7 @@ const DoctorModal: React.FC<ModalProps> = ({
               </Label>
 
               <input
+                required
                 type="text"
                 id="designation"
                 className="inputs"
@@ -198,6 +230,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 Password
               </Label>
               <input
+                required
                 type="password"
                 id="password"
                 className="inputs"
@@ -210,6 +243,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 Cornfirm Password
               </Label>
               <input
+                required
                 type="password"
                 id="cpassword"
                 className="inputs"
@@ -232,6 +266,13 @@ const DoctorModal: React.FC<ModalProps> = ({
               />
             </span>
           </div>
+          {status ? (
+            <div className="form__status active">Save Success</div>
+          ) : status === false ? (
+            <div className="form__status">
+              Failed To Save Data Check to see if all details are correct
+            </div>
+          ) : null}
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>

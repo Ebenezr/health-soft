@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { padding } from "@mui/system";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
 import Axios from "../../Api/axios";
@@ -39,6 +38,7 @@ const NurseModal: React.FC<ModalProps> = ({
   closeModal,
   currentUser,
 }) => {
+  const [status, setStatus] = useState<boolean>(null);
   const queryClient = useQueryClient();
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
@@ -75,14 +75,40 @@ const NurseModal: React.FC<ModalProps> = ({
   const { mutate: post } = useMutation(postNurse, {
     onSuccess: () => {
       queryClient.invalidateQueries(["nurses"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
   const { mutate: patch } = useMutation(patchNurse, {
     onSuccess: () => {
       queryClient.invalidateQueries(["nurses"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -117,7 +143,7 @@ const NurseModal: React.FC<ModalProps> = ({
         style={{ width: "clamp(40%, 400px, 60%)" }}
       >
         <header className="modal-header">
-          <h2>User Info</h2>
+          <h2>Nurse Info</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -133,6 +159,7 @@ const NurseModal: React.FC<ModalProps> = ({
               </Label>
 
               <input
+                required
                 type="text"
                 id="first_name"
                 className="inputs"
@@ -145,6 +172,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Last Name
               </Label>
               <input
+                required
                 type="text"
                 id="last_name"
                 className="inputs"
@@ -157,6 +185,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Phone Number
               </Label>
               <input
+                required
                 type="number"
                 id="phone"
                 className="inputs"
@@ -169,6 +198,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Email
               </Label>
               <input
+                required
                 type="email"
                 id="email"
                 className="inputs"
@@ -182,6 +212,7 @@ const NurseModal: React.FC<ModalProps> = ({
               </Label>
 
               <input
+                required
                 type="text"
                 id="designation"
                 className="inputs"
@@ -194,6 +225,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Password
               </Label>
               <input
+                required
                 type="password"
                 id="password"
                 className="inputs"
@@ -206,6 +238,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Cornfirm Password
               </Label>
               <input
+                required
                 type="password"
                 id="cpassword"
                 className="inputs"
@@ -218,6 +251,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 Profile Picture
               </Label>
               <input
+                required
                 id="featured_image"
                 type="file"
                 accept="image/*"
@@ -228,6 +262,13 @@ const NurseModal: React.FC<ModalProps> = ({
               />
             </span>
           </div>
+          {status ? (
+            <div className="form__status active">Save Success</div>
+          ) : status === false ? (
+            <div className="form__status">
+              Failed To Save Data Check to see if all details are correct
+            </div>
+          ) : null}
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>

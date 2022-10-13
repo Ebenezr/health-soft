@@ -43,7 +43,7 @@ const PasswordRecovery: React.FC<formData> = () => {
       return alert("passwords do not match");
     }
 
-    Axios.patch(`/passwordrecovery/email="${formData?.email}"`, formData).then(
+    Axios.patch(`/passwordreset/email="${formData?.email}"`, formData).then(
       (response) => {
         if (Object.values(response.data).length > 1) {
           setStatus(true);

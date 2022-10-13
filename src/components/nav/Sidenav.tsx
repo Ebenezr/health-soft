@@ -18,15 +18,18 @@ import { userInterface } from "../../interfaces/interfaces";
 const Sidenav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [acc, setAcc] = useState<any>({});
+  const [acc, setAcc] = useState<userInterface>({});
+  const [role, setRole] = useState<string>("");
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const userRole = JSON.parse(localStorage.getItem("role") || "");
     setAcc(loggedUser);
-    console.log(acc);
+    setRole(userRole);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(acc);
+
   return (
     <aside>
       <div className="logo">
@@ -42,8 +45,8 @@ const Sidenav: React.FC = () => {
         <Avatar>
           <AvatarImage src="" alt="Pedro Duarte" />
           <AvatarFallback>
-            {acc?.user?.first_name.slice(0, 1)}
-            {acc?.user?.last_name.slice(0, 1)}
+            {acc?.first_name?.slice(0, 1)}
+            {acc?.last_name?.slice(0, 1)}
           </AvatarFallback>
         </Avatar>
         <h2>
@@ -54,8 +57,13 @@ const Sidenav: React.FC = () => {
       <Navigation
         activeItemId={location.pathname}
         onSelect={({ itemId }) => {
-          //navigate to selected path
-          navigate(itemId);
+          role !== "admin" &&
+          (itemId === "/home/management/doctors" ||
+            itemId === "/home/management/nurses" ||
+            itemId === "/home/management/admins" ||
+            itemId === "/home/management")
+            ? navigate(null)
+            : navigate(itemId);
         }}
         items={[
           {

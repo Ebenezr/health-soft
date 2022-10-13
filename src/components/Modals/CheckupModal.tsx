@@ -48,6 +48,7 @@ const CheckupModal: React.FC<ModalProps> = ({
   currentUser,
 }) => {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState<boolean>(null);
   //fetch and populate patients dropdown
   const { data: patientsdata } = useQuery(["patientsdata"], () =>
     getPatients()
@@ -129,7 +130,20 @@ const CheckupModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["checkups"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -137,7 +151,20 @@ const CheckupModal: React.FC<ModalProps> = ({
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["checkups"]);
-      closeModal();
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    },
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -299,6 +326,13 @@ const CheckupModal: React.FC<ModalProps> = ({
               <TabsContent value="tab3"></TabsContent>
             </Tabs>
           </div>
+          {status ? (
+            <div className="form__status active">Save Success</div>
+          ) : status === false ? (
+            <div className="form__status">
+              Failed To Save Data Check to see if all details are correct
+            </div>
+          ) : null}
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>

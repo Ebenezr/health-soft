@@ -70,6 +70,7 @@ const VitalsModal: React.FC<ModalProps> = ({
   patientId,
 }) => {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState<boolean>(null);
   const [open, setOpen] = useState(false);
   const [userChoice, setUserChoice] = useState<any>();
   const [formData, setFormData] = useState<patientVitals>({
@@ -123,29 +124,41 @@ const VitalsModal: React.FC<ModalProps> = ({
   const { mutate: patch } = useMutation(patchVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
-      closeModal();
-      setOpen(false);
-      window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => {
-        setOpen(true);
-      }, 100);
-
-      //update details on success response
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
     },
-    onError: (err: any) => {
-      setError(err);
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
   //post pationt's vitals query
   const { isLoading, mutate: post } = useMutation(postVitals, {
     onSuccess: () => {
-      closeModal();
-
       queryClient.invalidateQueries(["patientsvitals"]);
+      setStatus(true);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
+      setStatus(true);
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
     },
-    onMutate: () => {
-      setOpen(true);
+    onError: (error: any) => {
+      setStatus(false);
+      setTimeout(() => {
+        setStatus(null);
+      }, 2500);
     },
   });
 
@@ -224,6 +237,7 @@ const VitalsModal: React.FC<ModalProps> = ({
                   Temperature(°C)
                 </Label>
                 <input
+                  required
                   type="number"
                   id="temperature"
                   className="inputs"
@@ -272,6 +286,13 @@ const VitalsModal: React.FC<ModalProps> = ({
                 />
               </span>
             </div>
+            {status ? (
+              <div className="form__status active">Save Success</div>
+            ) : status === false ? (
+              <div className="form__status">
+                Failed To Save Data Check to see if all details are correct
+              </div>
+            ) : null}
           </article>
           <footer className="modal-footer">
             <button className="btn save" type="submit">
