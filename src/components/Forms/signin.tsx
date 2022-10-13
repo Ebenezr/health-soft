@@ -42,11 +42,14 @@ const Signin: React.FC<formData> = () => {
     });
   };
 
-  const { mutate: post } = useMutation(logIn, {
+  const {
+    mutate: post,
+    isLoading,
+    isSuccess,
+  } = useMutation(logIn, {
     onMutate: () => {},
     onSuccess: (data) => {
-  
-
+      localStorage.setItem("authenticated", JSON.stringify(true));
       setStatus(true);
       setTimeout(() => {
         setStatus(null);
@@ -126,7 +129,10 @@ const Signin: React.FC<formData> = () => {
         {status ? (
           <div className="form__status active">Login Succesfuly</div>
         ) : status === false ? (
-          <div className="form__status">Login details incorrect</div>
+          <div className="form__status">Incorect Email or Password!</div>
+        ) : null}
+        {isLoading ? (
+          <div className="form__status loading">Signing you in...</div>
         ) : null}
       </form>
     </>

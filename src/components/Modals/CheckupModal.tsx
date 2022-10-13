@@ -129,7 +129,7 @@ const CheckupModal: React.FC<ModalProps> = ({
   const postCheckup = async (formData) => {
     await Axios.post(`/checkups`, formData).then((res) => {});
   };
-  const { mutate: post } = useMutation(postCheckup, {
+  const { isLoading, mutate: post } = useMutation(postCheckup, {
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["checkups"]);
@@ -150,7 +150,7 @@ const CheckupModal: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: patch } = useMutation(patchCheckup, {
+  const { mutate: patch, isLoading: load } = useMutation(patchCheckup, {
     onSuccess: () => {
       queryClient.invalidateQueries(["checkups"]);
       setStatus(true);
@@ -341,7 +341,7 @@ const CheckupModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Save
+            {isLoading || load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

@@ -66,13 +66,18 @@ const NurseModal: React.FC<ModalProps> = ({
   };
 
   const patchNurse = async (id: number) => {
-    await Axios.patch(`/nurses/${id}`, formData).then((res) => {});
+    await Axios.patch(`/nurses/${id}`, formData).then((res) => res.data);
   };
 
   const postNurse = async (formData) => {
-    await Axios.post(`/nurses`, formData).then((res) => {});
+    await Axios.post(`/nurses`, formData).then((res) => res.data);
   };
-  const { mutate: post } = useMutation(postNurse, {
+  const {
+    isLoading,
+    mutate: post,
+    error,
+    isError,
+  } = useMutation(postNurse, {
     onSuccess: () => {
       queryClient.invalidateQueries(["nurses"]);
       setStatus(true);
@@ -92,7 +97,7 @@ const NurseModal: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: patch } = useMutation(patchNurse, {
+  const { mutate: patch, isLoading: load } = useMutation(patchNurse, {
     onSuccess: () => {
       queryClient.invalidateQueries(["nurses"]);
       setStatus(true);
@@ -105,6 +110,7 @@ const NurseModal: React.FC<ModalProps> = ({
       }, 1000);
     },
     onError: (error: any) => {
+      console.log(error);
       setStatus(false);
       setTimeout(() => {
         setStatus(null);
@@ -272,7 +278,7 @@ const NurseModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Save
+            {isLoading || load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

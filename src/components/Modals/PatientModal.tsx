@@ -98,8 +98,7 @@ const PatientModal: React.FC<ModalProps> = ({
   const postPatient = async (formData) => {
     await Axios.post(`/patients`, formData).then((res) => {});
   };
-  const { mutate: post } = useMutation(postPatient, {
-    onMutate: () => {},
+  const { isLoading, mutate: post } = useMutation(postPatient, {
     onSuccess: () => {
       queryClient.invalidateQueries(["patients"]);
       setStatus(true);
@@ -119,7 +118,7 @@ const PatientModal: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: patch } = useMutation(patchPatient, {
+  const { isLoading: load, mutate: patch } = useMutation(patchPatient, {
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["patients"]);
@@ -340,7 +339,7 @@ const PatientModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Save
+            {isLoading || load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

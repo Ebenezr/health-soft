@@ -121,7 +121,7 @@ const VitalsModal: React.FC<ModalProps> = ({
   };
 
   //update pationt's vitals query
-  const { mutate: patch } = useMutation(patchVitals, {
+  const { isLoading: load, mutate: patch } = useMutation(patchVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
       setStatus(true);
@@ -296,7 +296,7 @@ const VitalsModal: React.FC<ModalProps> = ({
           </article>
           <footer className="modal-footer">
             <button className="btn save" type="submit">
-              {isLoading ? "Saveing..." : "Save"}
+              {isLoading || load  ? "Saving..." : "Save"}
             </button>
             <button className="btn close" onClick={closeModal}>
               Close

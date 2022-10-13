@@ -83,7 +83,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   //fetch and populate doctors dropdown
   const {
     data: doctors,
-    isLoading,
+
     refetch,
     error,
   } = useQuery(["doctorsdata"], () => getDoctors());
@@ -120,7 +120,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   };
 
   //update appoinment query
-  const { mutate: patch } = useMutation(patchAppointments, {
+  const { mutate: patch, isLoading } = useMutation(patchAppointments, {
     onSuccess: () => {
       queryClient.invalidateQueries(["appointments"]);
       setStatus(true);
@@ -141,7 +141,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
   });
 
   //post appointments query
-  const { mutate: post } = useMutation(postVitals, {
+  const { mutate: post, isLoading: load } = useMutation(postVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["appointments"]);
       setStatus(true);
@@ -347,7 +347,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Save
+            {isLoading || load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

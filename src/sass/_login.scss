@@ -17,7 +17,7 @@
 }
 .container__login {
   min-width: 20%;
-  height: 53%;
+  height: 54%;
   display: flex;
   flex-direction: column;
   display: flex;
@@ -123,6 +123,10 @@
       &.active {
         background: $color-success !important;
         color: $color-dark !important;
+      }
+      &.loading {
+        background: $color-dark-variant;
+        color: white;
       }
     }
   }

@@ -74,7 +74,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   const postDoctor = async (formData) => {
     await Axios.post(`/doctors`, formData).then((res) => {});
   };
-  const { mutate: post } = useMutation(postDoctor, {
+  const { isLoading, mutate: post } = useMutation(postDoctor, {
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["doctors"]);
@@ -95,7 +95,7 @@ const DoctorModal: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: patch } = useMutation(patchDoctor, {
+  const { mutate: patch, isLoading: load } = useMutation(patchDoctor, {
     onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries(["doctors"]);
@@ -276,7 +276,7 @@ const DoctorModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Save
+            {isLoading ||load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close
