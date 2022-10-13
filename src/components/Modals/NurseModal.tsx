@@ -272,7 +272,7 @@ const NurseModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            Action
+            Save
           </button>
           <button className="btn close" onClick={closeModal}>
             Close

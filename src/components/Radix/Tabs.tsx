@@ -34,10 +34,10 @@ const StyledTrigger = styled(TabsPrimitive.Trigger, {
   "&:last-child": { borderTopRightRadius: 6 },
   "&:hover": { color: violet.violet11 },
   '&[data-state="active"]': {
-    color: violet.violet11,
+    color: violet,
     boxShadow: "inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor",
   },
-  "&:focus": { position: "relative", boxShadow: `0 0 0 2px black` },
+  // "&:focus": { position: "relative", boxShadow: `0 0 0 2px black` },
 });
 
 const StyledContent = styled(TabsPrimitive.Content, {

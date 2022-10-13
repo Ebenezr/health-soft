@@ -57,6 +57,7 @@ const Sidenav: React.FC = () => {
       <Navigation
         activeItemId={location.pathname}
         onSelect={({ itemId }) => {
+          //conditional routing if user is not admin prevent...
           role !== "admin" &&
           (itemId === "/home/management/doctors" ||
             itemId === "/home/management/nurses" ||
@@ -70,42 +71,44 @@ const Sidenav: React.FC = () => {
             title: "Patient Info",
             itemId: "/home/patients",
 
-            elemBefore: () => <FaUserClock />,
+            elemBefore: () => <FaUserClock color="#7380ec" size="1.4rem" />,
           },
           {
             title: "Patient Appointment",
             itemId: "/home/appointments",
-            elemBefore: () => <FaClock />,
+            elemBefore: () => <FaClock color="#7380ec" size="1.4rem" />,
           },
           {
             title: "Nursing Triage",
             itemId: "/home/triage",
-            elemBefore: () => <FaUserNurse />,
+            elemBefore: () => <FaUserNurse color="#7380ec" size="1.4rem" />,
           },
           {
             title: "Check Up",
             itemId: "/home/checkup",
-            elemBefore: () => <FaStethoscope />,
+            elemBefore: () => <FaStethoscope color="#7380ec" size="1.4rem" />,
           },
           {
             title: "User Management",
             itemId: "/home/management",
-            elemBefore: () => <FaUnlock />,
+            elemBefore: () => <FaUnlock color="#7380ec" size="1.4rem" />,
             subNav: [
               {
                 title: "Doctors",
                 itemId: "/home/management/doctors",
-                elemBefore: () => <FaStethoscope />,
+                elemBefore: () => (
+                  <FaStethoscope color="#7380ec" size="1.3rem" />
+                ),
               },
               {
                 title: "Nurses",
                 itemId: "/home/management/nurses",
-                elemBefore: () => <FaUserNurse />,
+                elemBefore: () => <FaUserNurse color="#7380ec" size="1.3rem" />,
               },
               {
                 title: "Admins",
                 itemId: "/home/management/admins",
-                elemBefore: () => <RiAdminFill />,
+                elemBefore: () => <RiAdminFill color="#7380ec" size="1.3rem" />,
               },
             ],
           },

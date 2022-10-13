@@ -34,7 +34,7 @@ interface ModalProps {
   currentUser: userInterface;
 }
 
-const DoctorModal: React.FC<ModalProps> = ({
+const AdminModal: React.FC<ModalProps> = ({
   openModal,
   closeModal,
   currentUser,
@@ -68,16 +68,16 @@ const DoctorModal: React.FC<ModalProps> = ({
   };
 
   const patchDoctor = async (id: number) => {
-    await Axios.patch(`/doctors/${id}`, formData).then((res) => {});
+    await Axios.patch(`/admins/${id}`, formData).then((res) => {});
   };
 
   const postDoctor = async (formData) => {
-    await Axios.post(`/doctors`, formData).then((res) => {});
+    await Axios.post(`/admins`, formData).then((res) => {});
   };
   const { mutate: post } = useMutation(postDoctor, {
     onMutate: () => {},
     onSuccess: () => {
-      queryClient.invalidateQueries(["doctors"]);
+      queryClient.invalidateQueries(["admins"]);
       setStatus(true);
       setTimeout(() => {
         setStatus(null);
@@ -98,7 +98,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   const { mutate: patch } = useMutation(patchDoctor, {
     onMutate: () => {},
     onSuccess: () => {
-      queryClient.invalidateQueries(["doctors"]);
+      queryClient.invalidateQueries(["admins"]);
       setStatus(true);
       setTimeout(() => {
         setStatus(null);
@@ -148,7 +148,7 @@ const DoctorModal: React.FC<ModalProps> = ({
         style={{ width: "clamp(40%, 400px, 60%)" }}
       >
         <header className="modal-header">
-          <h2>Doctors Info</h2>
+          <h2>Admin's Info</h2>
           <button>
             <AiFillCloseSquare
               className="modal-close-icon"
@@ -287,4 +287,4 @@ const DoctorModal: React.FC<ModalProps> = ({
   );
 };
 
-export default DoctorModal;
+export default AdminModal;
