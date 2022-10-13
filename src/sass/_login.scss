@@ -1,0 +1,140 @@
+@import "./variables";
+#login {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background-image: url("../assets/bgseiko.png");
+  background-size: cover;
+  background-position: center;
+  background-color: $color-info-dark;
+}
+.container__login {
+  min-width: 20%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  color: $color-info-dark;
+  border-radius: $border-radius-3;
+
+  h2 {
+    color: $color-info-light;
+    font-size: $step-2;
+    font-weight: 500;
+    span {
+      font-weight: 300;
+      font-size: $step-2;
+      color: $color-primary;
+    }
+  }
+  form {
+    background: $color-background;
+    width: 100%;
+    height: 70%;
+    padding: 1rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    opacity: 0.98;
+    border-radius: $border-radius-1;
+    h4 {
+      text-align: center;
+      color: $color-info-dark;
+      font-size: $step--1;
+      font-weight: 500;
+    }
+    label {
+      color: $color-info-dark;
+      font-size: $step--1;
+      font-weight: 500;
+    }
+    .inputs {
+      border: $color-info-dark 1.5px solid;
+      width: 100%;
+      font-size: $step--2;
+      padding: 0.5rem;
+      outline: none;
+      background: transparent;
+      border-radius: $border-radius-1;
+      color: $color-info-dark;
+    }
+    .invalid {
+      border: $color-danger 1.5px solid;
+    }
+    .error {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: $color-danger;
+      text-align: center;
+    }
+    .nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem;
+      h3 strong {
+        font-weight: 700;
+        font-size: $step--1;
+      }
+      span {
+        display: flex;
+        gap: 0.4rem;
+      }
+    }
+    .btn-pry {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      background-color: $color-primary;
+      color: white;
+      border-radius: $border-radius-1;
+      font-weight: 500;
+      font-size: $step--1;
+    }
+    p {
+      color: $color-primary;
+      font-size: $step--1;
+    }
+    .misc {
+      padding-top: 0.3rem;
+    }
+    .form__status {
+      align-self: center;
+      color: $color-dark;
+      font-weight: 500;
+      background-color: $color-danger;
+      width: 60%;
+      border-radius: $border-radius-1;
+      padding: $space-2xs;
+      text-align: center;
+      transition: 300ms ease;
+      &.active {
+        background: $color-success !important;
+        color: $color-dark !important;
+      }
+    }
+  }
+}
+@media (max-width: 1400px) {
+  #login {
+    height: 100%;
+    .container__login {
+      min-width: 30%;
+      height: 55%;
+    }
+  }
+}
+@media (max-width: $breakpoint-mobile) {
+  #login {
+    .container__login {
+      min-width: 80%;
+      height: 55%;
+    }
+  }
+}

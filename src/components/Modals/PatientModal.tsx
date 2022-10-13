@@ -31,7 +31,7 @@ const dropIn = {
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
-  currentUser: patientInterface;
+  currentUser?: patientInterface;
 }
 
 const PatientModal: React.FC<ModalProps> = ({

@@ -1,26 +1,56 @@
 $color-primary: #7380ec;
+$color-save: #138496;
+$color-close: #dc3545;
+$color-info-dark: #7d8da1;
+
 $color-danger: #ff7782;
 $color-success: #41f1b6;
 $color-warning: #ffbb55;
 
-$color-info-dark: #7d8da1;
 $color-info-light: #dce1eb;
 $color-primary-variant: #111e88;
 
-// $color-dark: #363949;
-// $color-white: #fff;
-// $color-light: rgba(132,139,200,0.18);
-// $color-dark-variant:#677483;
-// $color-background:#f6f6f9;
+$color-dark: #363949;
+$color-white: #fff;
+$color-light: rgba(132, 139, 200, 0.18);
+$color-dark-variant: #677483;
+$color-background: #f6f6f9;
 
 $color-background: #f4f6f9;
 $color-white: #202528;
-$color-dark: #edeffd;
+//$color-dark: #edeffd;
 $color-dark-variant: #a3bdcc;
-$color-light: rgba(0, 0, 0, 0.4);
-$box-shadow: 0 2rem 3rem $color-light;
+//$color-light: rgba(0, 0, 0, 0.4);
+//$box-shadow: 0 2rem 3rem $color-light;
 
 //breaking point
 $breakpoint-tablet: 850px;
 $breakpoint-mobile: 700px;
 $breakpoint-ipad: 1280px;
+
+//border radius
+$card-border-radius: 2rem;
+$border-radius-1: 0.4rem;
+$border-radius-2: 0.8rem;
+$border-radius-3: 1.2rem;
+
+//Fonts scale
+$step--2: clamp(0.91rem, calc(0.89rem + 0.1vw), 0.96rem);
+$step--1: clamp(1.09rem, calc(1.05rem + 0.21vw), 1.2rem);
+$step-0: clamp(1.31rem, calc(1.24rem + 0.37vw), 1.5rem);
+$step-1: clamp(1.58rem, calc(1.46rem + 0.59vw), 1.88rem);
+$step-2: clamp(1.89rem, calc(1.71rem + 0.89vw), 2.34rem);
+$step-3: clamp(2.27rem, calc(2.01rem + 1.29vw), 2.93rem);
+$step-4: clamp(2.72rem, calc(2.36rem + 1.83vw), 3.66rem);
+$step-5: clamp(3.27rem, calc(2.75rem + 2.56vw), 4.58rem);
+
+//spaces
+$space-3xs: clamp(0.31rem, calc(0.27rem + 0.15vw), 0.38rem);
+$space-2xs: clamp(0.69rem, calc(0.64rem + 0.15vw), 0.75rem);
+$space-xs: clamp(1rem, calc(0.91rem + 0.3vw), 1.13rem);
+$space-s: clamp(1.31rem, calc(1.18rem + 0.45vw), 1.5rem);
+$space-m: clamp(2rem, calc(1.82rem + 0.61vw), 2.25rem);
+$space-l: clamp(2.63rem, calc(2.35rem + 0.91vw), 3rem);
+$space-xl: clamp(3.94rem, calc(3.53rem + 1.36vw), 4.5rem);
+$space-2xl: clamp(5.25rem, calc(4.7rem + 1.82vw), 6rem);
+$space-3xl: clamp(7.88rem, calc(7.06rem + 2.73vw), 9rem);

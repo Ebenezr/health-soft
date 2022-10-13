@@ -115,7 +115,6 @@ function CheckupTBL() {
   return (
     <div className="table">
       <DataTable
-        title="Patient Vitals"
         columns={columns}
         data={checkups}
         dense

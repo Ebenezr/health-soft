@@ -4,7 +4,11 @@
 @import "./variables";
 
 @import "./side";
+@import "./header";
 
+@import "./login";
+
+@import "./footer";
 @import "./main";
 
 @import "./vitalmodal";
@@ -51,10 +55,10 @@ main {
   border-radius: 1rem;
   color: #fff;
   &.edit {
-    background: green;
+    background: $color-save;
   }
   &.delete {
-    background: crimson;
+    background: $color-close;
   }
 }
 
@@ -62,4 +66,8 @@ main {
   display: inline-block;
   padding: 0.5rem 2.5rem;
   border: none;
+}
+
+.react-icons {
+  color: $color-dark;
 }

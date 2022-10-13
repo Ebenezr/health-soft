@@ -42,7 +42,7 @@ const dropIn = {
 interface ModalProps {
   openModal: boolean;
   closeModal(): void;
-  appointment: any;
+  appointment?: any;
 }
 
 const AppointmentModal: React.FC<ModalProps> = ({

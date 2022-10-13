@@ -1,0 +1,20 @@
+@import "./variables";
+.main-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  h3 {
+    font-weight: 400;
+  }
+  h2 {
+    font-weight: 500;
+    font-size: 1.2rem;
+    a {
+      text-decoration: none;
+      color: $color-primary;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+  }
+}

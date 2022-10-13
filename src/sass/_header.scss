@@ -1,0 +1,15 @@
+@import "./variables";
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 2rem;
+  .signout {
+    padding: 0.2rem 0.6rem;
+    border: none;
+    border-radius: 0.2rem;
+    background: $color-close;
+    color: white;
+    font-weight: 600;
+  }
+}

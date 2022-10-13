@@ -40,7 +40,7 @@ const customStyles = {
   },
   headRow: {
     style: {
-      background: "steelblue",
+      background: "#7380ec",
       color: "#FFF",
       borderTopStyle: "solid",
       borderTopWidth: "1px",

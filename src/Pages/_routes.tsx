@@ -10,7 +10,7 @@ import Triage from "./Triage";
 import Users from "./Users";
 const Routing = () => (
   <Routes>
-    <Route path="dashboard" element={<Dashboard />} />
+    <Route path="/" element={<Dashboard />} />
 
     <Route path="patients" element={<Patients />} />
 

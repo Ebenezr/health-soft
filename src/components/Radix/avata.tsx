@@ -30,7 +30,7 @@ const StyledFallback = styled(AvatarPrimitive.Fallback, {
   alignItems: "center",
   justifyContent: "center",
   backgroundColor: "#f4f6f9",
-  color: violet.violet11,
+  color: "#7380ec",
   fontSize: 15,
   lineHeight: 1,
   fontWeight: 500,

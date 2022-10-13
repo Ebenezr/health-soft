@@ -9,6 +9,15 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  Toast,
+  ToastAction,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "../Radix/Toast";
+import * as ToastPrimitive from "@radix-ui/react-toast";
 
 const dropIn = {
   hidden: {
@@ -61,6 +70,7 @@ const VitalsModal: React.FC<ModalProps> = ({
   patientId,
 }) => {
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
   const [userChoice, setUserChoice] = useState<any>();
   const [formData, setFormData] = useState<patientVitals>({
     patient_id: 0,
@@ -70,8 +80,12 @@ const VitalsModal: React.FC<ModalProps> = ({
     notes: "",
   });
 
+  const timerRef = React.useRef(0);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     setFormData(vitals);
+    return () => clearTimeout(timerRef.current);
   }, [vitals]);
   //hangle change event
   const handleChange = (event: any) => {
@@ -110,15 +124,28 @@ const VitalsModal: React.FC<ModalProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
       closeModal();
+      setOpen(false);
+      window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => {
+        setOpen(true);
+      }, 100);
+
       //update details on success response
+    },
+    onError: (err: any) => {
+      setError(err);
     },
   });
 
   //post pationt's vitals query
   const { isLoading, mutate: post } = useMutation(postVitals, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["patientsvitals"]);
       closeModal();
+
+      queryClient.invalidateQueries(["patientsvitals"]);
+    },
+    onMutate: () => {
+      setOpen(true);
     },
   });
 
@@ -135,126 +162,136 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   if (!openModal) return null;
   return (
-    <motion.div
-      className="overlay"
-      onClick={closeModal}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <motion.form
-        onSubmit={handleSubmit}
-        variants={dropIn}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="modal"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        style={{ width: "clamp(40%, 300px, 70%)" }}
+    <ToastProvider swipeDirection="right">
+      <motion.div
+        className="overlay"
+        onClick={closeModal}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <header className="modal-header">
-          <h2>Patient Vitals form</h2>
-          <button>
-            <AiFillCloseSquare
-              className="modal-close-icon"
-              onClick={closeModal}
-            />
-          </button>
-        </header>
-        <article style={{ gridTemplateColumns: "1fr" }}>
-          <div className="form">
-            <span className="input_group">
-              <Label htmlFor="patient_id" css={{ lineHeight: "35px" }}>
-                Patient
-              </Label>
-
-              <Select
-                defaultInputValue={vitals?.patient?.fullname}
-                className="input-cont"
-                placeholder="Select Type"
-                options={patients}
-                noOptionsMessage={() => "Doctor not found"}
-                // onChange={(options: any) =>
-                //   onChange(options?.map((option) => option.value))
-                // }
-                onChange={(event) => {
-                  setUserChoice(event?.value);
-                }}
-                onBlur={() =>
-                  setFormData({ ...formData, patient_id: userChoice })
-                }
-                //    value={patients.find((c) => c.value === value)}
-
-                value={patients.find((obj) => obj.value === userChoice)}
-                classNamePrefix="select"
+        <motion.form
+          onSubmit={handleSubmit}
+          variants={dropIn}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="modal"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          style={{ width: "clamp(40%, 300px, 70%)" }}
+        >
+          <header className="modal-header">
+            <h2>Patient Vitals form</h2>
+            <button>
+              <AiFillCloseSquare
+                className="modal-close-icon"
+                onClick={closeModal}
               />
-            </span>
-            <span className="input_group">
-              <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
-                Temperature(°C)
-              </Label>
-              <input
-                type="number"
-                id="temperature"
-                className="inputs"
-                value={formData?.temperature}
-                onChange={handleChange}
-                // {...register("temperature")}
-              ></input>
-            </span>
-            <span className="input_group">
-              <Label htmlFor="bp_systolic" css={{ lineHeight: "35px" }}>
-                BP Systolic
-              </Label>
-              <input
-                type="number"
-                id="bp_systolic"
-                className="inputs"
-                value={formData?.bp_systolic}
-                onChange={handleChange}
-                // {...register("bp_systolic")}
-              ></input>
-            </span>
-            {/* <small>{errors.temperature?.message}</small> */}
-            <span className="input_group">
-              <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
-                BP Diasyolic
-              </Label>
-              <input
-                type="number"
-                id="bp_diastolic"
-                className="inputs"
-                value={formData?.bp_diastolic}
-                onChange={handleChange}
-                // {...register("bp_diastolic")}
-              ></input>
-            </span>
-            <span className="input_group notes">
-              <Label htmlFor="notes" css={{ lineHeight: "35px" }}>
-                Nurse Notes
-              </Label>
-              <textarea
-                rows={4}
-                id="notes"
-                value={formData?.notes}
-                onChange={handleChange}
-                // {...register("notes")}
-              />
-            </span>
-          </div>
-        </article>
-        <footer className="modal-footer">
-          <button className="btn save" type="submit">
-            {isLoading ? "Saveing..." : "Save"}
-          </button>
-          <button className="btn close" onClick={closeModal}>
-            Close
-          </button>
-        </footer>
-      </motion.form>
-    </motion.div>
+            </button>
+          </header>
+          <article style={{ gridTemplateColumns: "1fr" }}>
+            <div className="form">
+              <span className="input_group">
+                <Label htmlFor="patient_id" css={{ lineHeight: "35px" }}>
+                  Patient
+                </Label>
+
+                <Select
+                  defaultInputValue={vitals?.patient?.fullname}
+                  className="input-cont"
+                  placeholder="Select Type"
+                  options={patients}
+                  noOptionsMessage={() => "Doctor not found"}
+                  // onChange={(options: any) =>
+                  //   onChange(options?.map((option) => option.value))
+                  // }
+                  onChange={(event) => {
+                    setUserChoice(event?.value);
+                  }}
+                  onBlur={() =>
+                    setFormData({ ...formData, patient_id: userChoice })
+                  }
+                  //    value={patients.find((c) => c.value === value)}
+
+                  value={patients.find((obj) => obj.value === userChoice)}
+                  classNamePrefix="select"
+                />
+              </span>
+              <span className="input_group">
+                <Label htmlFor="temperature" css={{ lineHeight: "35px" }}>
+                  Temperature(°C)
+                </Label>
+                <input
+                  type="number"
+                  id="temperature"
+                  className="inputs"
+                  value={formData?.temperature}
+                  onChange={handleChange}
+                  // {...register("temperature")}
+                ></input>
+              </span>
+              <span className="input_group">
+                <Label htmlFor="bp_systolic" css={{ lineHeight: "35px" }}>
+                  BP Systolic
+                </Label>
+                <input
+                  type="number"
+                  id="bp_systolic"
+                  className="inputs"
+                  value={formData?.bp_systolic}
+                  onChange={handleChange}
+                  // {...register("bp_systolic")}
+                ></input>
+              </span>
+              {/* <small>{errors.temperature?.message}</small> */}
+              <span className="input_group">
+                <Label htmlFor="bp_diastolic" css={{ lineHeight: "35px" }}>
+                  BP Diasyolic
+                </Label>
+                <input
+                  type="number"
+                  id="bp_diastolic"
+                  className="inputs"
+                  value={formData?.bp_diastolic}
+                  onChange={handleChange}
+                  // {...register("bp_diastolic")}
+                ></input>
+              </span>
+              <span className="input_group notes">
+                <Label htmlFor="notes" css={{ lineHeight: "35px" }}>
+                  Nurse Notes
+                </Label>
+                <textarea
+                  rows={4}
+                  id="notes"
+                  value={formData?.notes}
+                  onChange={handleChange}
+                  // {...register("notes")}
+                />
+              </span>
+            </div>
+          </article>
+          <footer className="modal-footer">
+            <button className="btn save" type="submit">
+              {isLoading ? "Saveing..." : "Save"}
+            </button>
+            <button className="btn close" onClick={closeModal}>
+              Close
+            </button>
+          </footer>
+        </motion.form>
+      </motion.div>
+      <Toast open={open} onOpenChange={setOpen}>
+        <ToastTitle>Success!</ToastTitle>
+        <ToastDescription asChild></ToastDescription>
+        <ToastAction asChild altText="Goto schedule to undo">
+          <button>ok</button>
+        </ToastAction>
+      </Toast>
+      <ToastViewport />
+    </ToastProvider>
   );
 };
 
