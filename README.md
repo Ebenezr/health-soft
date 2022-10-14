@@ -260,8 +260,8 @@ password: admin@admin.com
 nurse:
 
 ```shell
-email: nurse@mail.com
-password: nurse@mail.com
+email: nurse@nurse.com
+password: nurse@nurse.com
 ```
 
 doctor
