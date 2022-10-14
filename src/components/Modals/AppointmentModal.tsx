@@ -272,7 +272,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
                 }
               />
             </span>
-            <span className="input_group">
+            {/* <span className="input_group">
               <Label htmlFor="appointment_time" css={{ lineHeight: "35px" }}>
                 Serial Number
               </Label>
@@ -285,7 +285,7 @@ const AppointmentModal: React.FC<ModalProps> = ({
                 value={formData?.serial_no}
                 onChange={handleChange}
               ></input>
-            </span>
+            </span> */}
             <span className="input_group">
               <Label htmlFor="appointment_date" css={{ lineHeight: "35px" }}>
                 Appointment Date

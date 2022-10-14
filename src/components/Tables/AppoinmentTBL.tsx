@@ -16,7 +16,7 @@ function AppointmentTable() {
   const [message, setMessage] = useState("");
   //get data
   async function getAppointments() {
-    const { data } = await Axios.get("/appointments");
+    const { data } = await Axios.get("/myappointments");
     return data;
   }
   //handle delete
@@ -58,10 +58,7 @@ function AppointmentTable() {
         color: "white",
       },
     },
-    {
-      name: "Serial Number",
-      selector: (row: any) => row?.serial_no,
-    },
+
     {
       name: "Patient",
       selector: (row: any) => row?.patient?.fullname,
@@ -71,6 +68,10 @@ function AppointmentTable() {
       name: "Doctor",
       selector: (row: any) => row?.doctor?.fullname,
       sortable: true,
+    },
+    {
+      name: "Nurse",
+      selector: (row: any) => row?.nurse?.fullname,
     },
     {
       name: "Appointment Date",
