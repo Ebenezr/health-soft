@@ -50,7 +50,7 @@ const NurseModal: React.FC<ModalProps> = ({
     role: "",
     featured_image: {},
     password: "",
-    cpassword: "",
+    confirm_password: "",
   });
 
   useEffect(() => {
@@ -61,7 +61,9 @@ const NurseModal: React.FC<ModalProps> = ({
     const key = event.target.id;
 
     const value =
-      event.target.type === "file" ? event.target.files[0] : event.target.value;
+      event.target.type === "file"
+        ? event.target.image.files[0]
+        : event.target.value;
     setFormData({ ...formData, [key]: value });
   };
 
@@ -119,9 +121,15 @@ const NurseModal: React.FC<ModalProps> = ({
   });
 
   //handle form submission
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
     //check if edit mode or registration
+    // const data = new FormData();
+    // data.append("nurse[first_name]", event?.target?.first_name?.value);
+    // console.log(formData);
+    // data.append("nurse[featured_image]", event.target.featured_image.files[0]);
+    console.log(formData);
     if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
       return;
@@ -168,6 +176,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="text"
                 id="first_name"
+                name="first_name"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.first_name}
@@ -181,6 +190,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="text"
                 id="last_name"
+                name="last_name"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.last_name}
@@ -194,6 +204,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="number"
                 id="phone"
+                name="phone"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.phone}
@@ -207,6 +218,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="email"
                 id="email"
+                name="email"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.email}
@@ -221,6 +233,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="text"
                 id="designation"
+                name="designation"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.designation}
@@ -234,6 +247,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 required
                 type="password"
                 id="password"
+                name="password"
                 className="inputs"
                 onChange={handleChange}
                 value={formData?.password}
@@ -246,10 +260,11 @@ const NurseModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="password"
-                id="cpassword"
+                id="confirm_password"
+                name="confirm_password"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.cpassword}
+                value={formData?.confirm_password}
               ></input>
             </span>
             <span className="input_group">
@@ -258,6 +273,7 @@ const NurseModal: React.FC<ModalProps> = ({
               </Label>
               <input
                 required
+                name="featured_image"
                 id="featured_image"
                 type="file"
                 accept="image/*"

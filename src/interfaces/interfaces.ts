@@ -26,7 +26,7 @@ export interface userInterface {
   role?: string;
   featured_image?: {};
   password?: string;
-  cpassword?: string;
+  confirm_password?: string;
   fullname?: string;
 }
 

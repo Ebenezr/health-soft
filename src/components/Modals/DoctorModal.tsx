@@ -51,7 +51,7 @@ const DoctorModal: React.FC<ModalProps> = ({
     role: "",
     featured_image: {},
     password: "",
-    cpassword: "",
+    confirm_password: "",
   });
 
   useEffect(() => {
@@ -62,8 +62,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   const handleChange = (event: any) => {
     const key = event.target.id;
 
-    const value =
-      event.target.type === "file" ? event.target.files[0] : event.target.value;
+    const value = event.target.value;
     setFormData({ ...formData, [key]: value });
   };
 
@@ -119,6 +118,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    console.log(formData);
     //check if edit mode or registration
     if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
@@ -245,10 +245,10 @@ const DoctorModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="password"
-                id="cpassword"
+                id="confirm_password"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.cpassword}
+                value={formData?.confirm_password}
               ></input>
             </span>
             <span className="input_group">
@@ -260,7 +260,12 @@ const DoctorModal: React.FC<ModalProps> = ({
                 type="file"
                 accept="image/*"
                 multiple={false}
-                onChange={handleChange}
+                onChange={(event) =>
+                  setFormData({
+                    ...formData,
+                    featured_image: event.target?.files[0],
+                  })
+                }
                 //value={formData?.featured_image}
                 //files={formData?.featured_image}
               />
@@ -276,7 +281,7 @@ const DoctorModal: React.FC<ModalProps> = ({
         </article>
         <footer className="modal-footer">
           <button className="btn save" onClick={handleSubmit}>
-            {isLoading ||load ? "Saving..." : "Save"}
+            {isLoading || load ? "Saving..." : "Save"}
           </button>
           <button className="btn close" onClick={closeModal}>
             Close
