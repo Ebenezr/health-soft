@@ -12,9 +12,9 @@ Health soft is a hospital management system module ment to manage patient admint
 
 ---
 
-<!-- ## Demo
+## Demo
 
-#### ![Demo](./src/assets/demo-clock-me.gif) -->
+#### ![Demo](./src/assets/demo-healthsoft.gif)
 
 ## SCREENSHOTS
 
