@@ -49,11 +49,15 @@ const Sidenav: React.FC = () => {
             {acc?.last_name?.slice(0, 1)}
           </AvatarFallback>
         </Avatar>
-        <h2>
-          {acc?.first_name} {acc?.last_name}
-        </h2>
+        <div className="text-info">
+          <h2>
+            {acc?.first_name} {acc?.last_name}
+          </h2>
+          <small>{role}</small>
+        </div>
       </div>
       <Separator css={{ margin: "15px 0" }} />
+
       <Navigation
         activeItemId={location.pathname}
         onSelect={({ itemId }) => {

@@ -61,14 +61,12 @@ const NurseModal: React.FC<ModalProps> = ({
     const key = event.target.id;
 
     const value =
-      event.target.type === "file"
-        ? event.target.image.files[0]
-        : event.target.value;
+      event.target.type === "file" ? event.target.files[0] : event.target.value;
     setFormData({ ...formData, [key]: value });
   };
 
   const patchNurse = async (id: number) => {
-    await Axios.patch(`/nurses/${id}`, formData).then((res) => res.data);
+    await Axios.patch(`/nurses/${id}`, formData);
   };
 
   const postNurse = async (formData) => {
@@ -77,10 +75,10 @@ const NurseModal: React.FC<ModalProps> = ({
   const {
     isLoading,
     mutate: post,
-    error,
+
     isError,
   } = useMutation(postNurse, {
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries(["nurses"]);
       setStatus(true);
       setTimeout(() => {
@@ -91,7 +89,7 @@ const NurseModal: React.FC<ModalProps> = ({
         closeModal();
       }, 1000);
     },
-    onError: (error: any) => {
+    onError: async (err: any) => {
       setStatus(false);
       setTimeout(() => {
         setStatus(null);
@@ -111,8 +109,8 @@ const NurseModal: React.FC<ModalProps> = ({
         closeModal();
       }, 1000);
     },
-    onError: (error: any) => {
-      console.log(error);
+    onError: async (error: any) => {
+      //  console.log(error);
       setStatus(false);
       setTimeout(() => {
         setStatus(null);
@@ -123,13 +121,7 @@ const NurseModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (event: any) => {
     event.preventDefault();
-
     //check if edit mode or registration
-    // const data = new FormData();
-    // data.append("nurse[first_name]", event?.target?.first_name?.value);
-    // console.log(formData);
-    // data.append("nurse[featured_image]", event.target.featured_image.files[0]);
-    console.log(formData);
     if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
       return;
