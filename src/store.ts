@@ -1,6 +1,5 @@
 //redux toolkit store
 import { configureStore } from "@reduxjs/toolkit";
-// import questionReducer from "./features/questions/questionSlice";
 import patientReducer from "./features/patients/patientSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";

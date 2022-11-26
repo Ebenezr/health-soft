@@ -17,7 +17,6 @@ import {
   ToastTitle,
   ToastViewport,
 } from "../Radix/Toast";
-import * as ToastPrimitive from "@radix-ui/react-toast";
 
 const dropIn = {
   hidden: {
@@ -88,11 +87,10 @@ const VitalsModal: React.FC<ModalProps> = ({
     setFormData(vitals);
     return () => clearTimeout(timerRef.current);
   }, [vitals]);
-  //hangle change event
+  //handle change event
   const handleChange = (event: any) => {
     const key = event.target.id;
     const value = event.target.value;
-
     setFormData({ ...formData, [key]: value });
   };
 
@@ -296,7 +294,7 @@ const VitalsModal: React.FC<ModalProps> = ({
           </article>
           <footer className="modal-footer">
             <button className="btn save" type="submit">
-              {isLoading || load  ? "Saving..." : "Save"}
+              {isLoading || load ? "Saving..." : "Save"}
             </button>
             <button className="btn close" onClick={closeModal}>
               Close
