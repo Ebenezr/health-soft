@@ -24,7 +24,7 @@ export interface userInterface {
   email?: string;
   designation?: string;
   role?: string;
-  featured_image?: {};
+  photo?: any;
   password?: string;
   confirm_password?: string;
   fullname?: string;

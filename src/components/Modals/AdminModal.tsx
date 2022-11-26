@@ -6,7 +6,8 @@ import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
 import Axios from "../../Api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { Image } from "cloudinary-react";
+import { Avatar, AvatarFallback, AvatarImage } from "../Radix/avata";
 const dropIn = {
   hidden: {
     y: "-100vh",
@@ -40,6 +41,7 @@ const AdminModal: React.FC<ModalProps> = ({
   currentUser,
 }) => {
   const queryClient = useQueryClient();
+  const [selectedFile, setSelectedFile] = useState();
   const [status, setStatus] = useState<boolean>(null);
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
@@ -49,9 +51,9 @@ const AdminModal: React.FC<ModalProps> = ({
     email: "",
     designation: "",
     role: "",
-    featured_image: {},
+    photo: null,
     password: "",
-    cpassword: "",
+    confirm_password: "",
   });
 
   useEffect(() => {
@@ -68,7 +70,9 @@ const AdminModal: React.FC<ModalProps> = ({
   };
 
   const patchDoctor = async (id: number) => {
-    await Axios.patch(`/admins/${id}`, formData).then((res) => {});
+    await Axios.post(`/admins/${id}/upload_photo`, formData).then((res) =>
+      console.log(res.data)
+    );
   };
 
   const postDoctor = async (formData) => {
@@ -119,6 +123,7 @@ const AdminModal: React.FC<ModalProps> = ({
   //handle form submission
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    console.log(formData);
     //check if edit mode or registration
     if (currentUser === undefined || JSON.stringify(currentUser) === "{}") {
       post(formData);
@@ -127,6 +132,10 @@ const AdminModal: React.FC<ModalProps> = ({
     patch(currentUser?.id);
   };
 
+  const filePreview = () => {
+    let url = URL.createObjectURL(formData?.photo);
+    return url;
+  };
   if (!openModal) return null;
   return (
     <motion.div
@@ -248,7 +257,7 @@ const AdminModal: React.FC<ModalProps> = ({
                 id="cpassword"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.cpassword}
+                value={formData?.confirm_password}
               ></input>
             </span>
             <span className="input_group">
@@ -256,7 +265,8 @@ const AdminModal: React.FC<ModalProps> = ({
                 Profile Picture
               </Label>
               <input
-                id="featured_image"
+                id="photo"
+                name="photo"
                 type="file"
                 accept="image/*"
                 multiple={false}
@@ -264,6 +274,22 @@ const AdminModal: React.FC<ModalProps> = ({
                 //value={formData?.featured_image}
                 //files={formData?.featured_image}
               />
+              {formData.photo ? (
+                <>
+                  <Avatar>
+                    <AvatarImage src={filePreview()} alt="Pedro Duarte" />
+                    <AvatarFallback>HS</AvatarFallback>
+                  </Avatar>
+                </>
+              ) : null}
+              {/* <Image
+                cloudName="dbkeoqmg5"
+                width="100"
+                height="100"
+                crop="thumb"
+                publicId={formData?.photo}
+                gravity="face"
+              ></Image> */}
             </span>
           </div>
           {status ? (

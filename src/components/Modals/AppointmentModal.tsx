@@ -100,11 +100,19 @@ const AppointmentModal: React.FC<ModalProps> = ({
   //fetch doctors
   async function getDoctors() {
     const arr: any = [];
+    //fetch from api
     const { data } = await Axios.get("/doctors");
+    //map value and label to be used in select
     data.map((user: userInterface) => {
       return arr.push({ value: user.id, label: user.fullname });
     });
+    //return array of lable and vale
     return arr;
+    //sample data..
+    //[ {
+    //  value: 1,
+    //  label: "Elvis Kim",
+    //}]
   }
 
   //patch appointments
@@ -220,7 +228,6 @@ const AppointmentModal: React.FC<ModalProps> = ({
                 Patient
               </Label>
               <Select
-                // id="patient_id"
                 defaultInputValue={appointment?.patient?.fullname}
                 className="input-cont "
                 placeholder="Select Patient"
@@ -260,13 +267,17 @@ const AppointmentModal: React.FC<ModalProps> = ({
                 id="doctor_id"
                 className="input-cont "
                 placeholder="Select Type"
-                defaultInputValue={appointment?.patient_type}
+                //value to set when fetching user data .i.e edit form
+                defaultInputValue={formData?.patient_type}
+                //array list of values
                 options={patienttype}
                 noOptionsMessage={() => "Choice not found"}
                 onChange={(event: any) => setPatienttypechoice(event.value)}
+                //find your selected value on array
                 value={patienttype.find(
                   (obj) => obj.value === patienttypechoice
                 )}
+                //add your choice in formData obj
                 onBlur={() =>
                   setFormData({ ...formData, patient_type: patienttypechoice })
                 }
