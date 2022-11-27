@@ -1,6 +1,7 @@
 //It was Hard to write So it should be hard to Read!!
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Api/axios";
+import { patientInterface, patientVitals } from "../../interfaces/interfaces";
 
 //gets user notifications
 export const patchVitals = createAsyncThunk(
@@ -24,7 +25,7 @@ export const patchVitals = createAsyncThunk(
 //gets user notifications
 export const postVitals = createAsyncThunk(
   "patients/postVitals",
-  async (formData, thunkAPI) => {
+  async ({ ...formData }: patientVitals, thunkAPI) => {
     try {
       const resp = await Axios.post(`/patient_vitals`, formData);
       return resp.data;

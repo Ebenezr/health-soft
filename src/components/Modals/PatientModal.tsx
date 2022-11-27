@@ -6,6 +6,7 @@ import Select from "react-select";
 import { patientInterface } from "../../interfaces/interfaces";
 import Axios from "../../Api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
 const dropIn = {
   hidden: {
@@ -60,6 +61,7 @@ const PatientModal: React.FC<ModalProps> = ({
       label: "Married",
     },
   ];
+
   const [status, setStatus] = useState<boolean>(null);
   const [genderchoice, setGender] = useState("");
   const [marriedchoice, setMarriedChoice] = useState("");
