@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { patientInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import PatientModal from "../Modals/PatientModal";

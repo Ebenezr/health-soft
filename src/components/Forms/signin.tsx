@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { ReactSession } from "react-client-session";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

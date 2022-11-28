@@ -11,7 +11,7 @@ const client = new QueryClient();
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "./store";
+import { persistor, store } from "./app/store";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

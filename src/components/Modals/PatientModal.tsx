@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
 import Select from "react-select";
 import { patientInterface } from "../../interfaces/interfaces";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 

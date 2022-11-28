@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 
 interface formData {
   email?: string;

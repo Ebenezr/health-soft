@@ -1,5 +1,5 @@
 import { Label } from "../Radix/Label";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { checkupInterface, patientVitals } from "../../interfaces/interfaces";

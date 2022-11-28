@@ -1,43 +1,36 @@
 //It was Hard to write So it should be hard to Read!!
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Axios from "../../Api/axios";
+import {
+  createSlice,
+  PayloadAction,
+  createSelector,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
+import Axios from "../../app/api";
 import { patientInterface, patientVitals } from "../../interfaces/interfaces";
+import { RootState } from "../../app/store";
 
 //gets user notifications
 export const patchVitals = createAsyncThunk(
   "patients/patchVitals",
-  async ({ formData, id }: { id: number; formData: {} }, thunkAPI) => {
+  async (formData, thunkAPI) => {
     try {
-      const resp = await Axios.patch(`/patient_vitals/${id}`, formData);
-      return resp.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+      const state = thunkAPI.getState() as RootState;
+      const { data } = await Axios.patch(`/patient_vitals/${id}`, formData);
+      return data;
+    } catch (error) {}
   }
 );
 
 //gets user notifications
 export const postVitals = createAsyncThunk(
   "patients/postVitals",
-  async ({ ...formData }: patientVitals, thunkAPI) => {
+  async (formData: patientVitals, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+
     try {
-      const resp = await Axios.post(`/patient_vitals`, formData);
-      return resp.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+      const { data } = await Axios.post(`/patient_vitals`, formData);
+      return data;
+    } catch (error) {}
   }
 );
 
@@ -46,9 +39,9 @@ interface initialStateProps {
   error: any;
   isSuccess: boolean;
   isError: boolean;
-  message: string;
-  vitals: {};
-  info: {};
+  errorMessage: string;
+  vitals: patientVitals;
+  info: patientInterface;
 }
 
 const initialState: initialStateProps = {
@@ -56,7 +49,7 @@ const initialState: initialStateProps = {
   error: null,
   isSuccess: false,
   isError: false,
-  message: "",
+  errorMessage: "",
   vitals: {},
   info: {},
 };
@@ -72,17 +65,21 @@ const patientSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(postVitals.pending, (state, action) => {
+      .addCase(postVitals.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(postVitals.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.vitals = action.payload;
-      })
+      .addCase(
+        postVitals.fulfilled,
+        (state, action: PayloadAction<patientVitals>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.vitals = action.payload;
+        }
+      )
       .addCase(postVitals.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.errorMessage = action.error.message || "";
       })
       .addCase(patchVitals.pending, (state, action) => {
         state.isLoading = true;
@@ -95,6 +92,7 @@ const patientSlice = createSlice({
       .addCase(patchVitals.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.errorMessage = action.error.message || "";
       });
   },
 });

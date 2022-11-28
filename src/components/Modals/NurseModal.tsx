@@ -3,7 +3,7 @@ import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const dropIn = {

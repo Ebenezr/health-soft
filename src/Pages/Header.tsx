@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Axios from "../Api/axios";
+import Axios from "../app/api";
 import { useMutation } from "@tanstack/react-query";
 const Header = () => {
   const navigate = useNavigate();

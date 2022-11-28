@@ -10,7 +10,7 @@ import {
   userInterface,
 } from "../../interfaces/interfaces";
 import Select from "react-select";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Vitalsform from "../Forms/vitalsform";
 import Diagnosisform from "../Forms/diagnosis";

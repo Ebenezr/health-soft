@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
 import Select from "react-select";
 
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import {
   appointmentInterface,
   patientInterface,

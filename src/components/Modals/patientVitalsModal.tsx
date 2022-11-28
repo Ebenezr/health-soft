@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Label } from "../Radix/Label";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { patientInterface, patientVitals } from "../../interfaces/interfaces";
 import Select from "react-select";
 import * as yup from "yup";
@@ -12,8 +12,8 @@ import {
   postVitals,
   patchVitals,
 } from "../../features/patients/patientSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { RootState } from "../../app/store";
 
 const dropIn = {
   hidden: {
@@ -65,8 +65,8 @@ const VitalsModal: React.FC<ModalProps> = ({
   vitals,
   patientId,
 }) => {
-  const dispatch = useDispatch();
-  const { isLoading, isSuccess } = useSelector(
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, isError } = useAppSelector(
     (store: RootState) => store.patient
   );
   const queryClient = useQueryClient();
@@ -108,42 +108,77 @@ const VitalsModal: React.FC<ModalProps> = ({
   const { data: patients } = useQuery(["patientsdata"], () => getPatients());
 
   //patch vitals
-  const patchVitals = async () => {
-    // try{
-    //   await dispatch(patchVitals)
-    // }
-    // await Axios.patch(`/patient_vitals/${patient_id}`, formData).then(
-    //   (res) => res.data
-    // );
+  const patchVital = async ({ id:number, formData:patientVitals }) => {
+    try {
+      await dispatch(patchVitals({id,formData}))
+        .unwrap()
+        .then(() => {
+          queryClient.invalidateQueries(["patientsvitals"]);
+          setStatus(true);
+          setTimeout(() => {
+            setStatus(null);
+          }, 2500);
+          setStatus(true);
+          setTimeout(() => {
+            closeModal();
+          }, 1000);
+        });
+    } catch (err) {
+      if (isError) {
+        setStatus(false);
+        setTimeout(() => {
+          setStatus(null);
+        }, 2500);
+      }
+    }
   };
 
   //post vitals
   const postVital = async (formData: patientVitals) => {
-    // try{
-    //   await dispatch(postVitals(formData))
-    // }
+    try {
+      await dispatch(postVitals(formData))
+        .unwrap()
+        .then(() => {
+          queryClient.invalidateQueries(["patientsvitals"]);
+          setStatus(true);
+          setTimeout(() => {
+            setStatus(null);
+          }, 2500);
+          setStatus(true);
+          setTimeout(() => {
+            closeModal();
+          }, 1000);
+        });
+    } catch (err) {
+      if (isError) {
+        setStatus(false);
+        setTimeout(() => {
+          setStatus(null);
+        }, 2500);
+      }
+    }
   };
 
   //update pationt's vitals query
-  const { isLoading: load, mutate: patch } = useMutation(patchVitals, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["patientsvitals"]);
-      setStatus(true);
-      setTimeout(() => {
-        setStatus(null);
-      }, 2500);
-      setStatus(true);
-      setTimeout(() => {
-        closeModal();
-      }, 1000);
-    },
-    onError: (error: any) => {
-      setStatus(false);
-      setTimeout(() => {
-        setStatus(null);
-      }, 2500);
-    },
-  });
+  // const { isLoading: load, mutate: patch } = useMutation(patchVitals, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["patientsvitals"]);
+  //     setStatus(true);
+  //     setTimeout(() => {
+  //       setStatus(null);
+  //     }, 2500);
+  //     setStatus(true);
+  //     setTimeout(() => {
+  //       closeModal();
+  //     }, 1000);
+  //   },
+  //   onError: (error: any) => {
+  //     setStatus(false);
+  //     setTimeout(() => {
+  //       setStatus(null);
+  //     }, 2500);
+  //   },
+  // });
 
   //post pationt's vitals query
   // const { isLoading, mutate: post } = useMutation(postVitals, {
@@ -171,10 +206,10 @@ const VitalsModal: React.FC<ModalProps> = ({
     event.preventDefault();
     //check if edit mode or registration
     if (vitals === undefined || JSON.stringify(vitals) === "{}") {
-      // postVital(formData);
+      postVital(formData);
       return;
     }
-    // patch(vitals?.patient_id);
+    patchVital({vitals?.patient_id,formData});
   };
 
   if (!openModal) return null;
@@ -289,9 +324,9 @@ const VitalsModal: React.FC<ModalProps> = ({
               />
             </span>
           </div>
-          {status ? (
+          {isSuccess && status ? (
             <div className="form__status active">Save Success</div>
-          ) : status === false ? (
+          ) : isError && status === false ? (
             <div className="form__status">
               Failed To Save Data Check to see if all details are correct
             </div>

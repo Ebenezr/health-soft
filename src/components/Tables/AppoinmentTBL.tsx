@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { appointmentInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import AppointmentModal from "../Modals/AppointmentModal";

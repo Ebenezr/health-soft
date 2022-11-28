@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { padding } from "@mui/system";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Image } from "cloudinary-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../Radix/avata";

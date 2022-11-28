@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import Axios from "../../Api/axios";
+import Axios from "../../app/api";
 import { patientVitals, userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
@@ -31,7 +31,6 @@ function TriageTBL() {
   };
 
   const { mutate: destroy } = useMutation(handleDelete, {
-   
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
     },
