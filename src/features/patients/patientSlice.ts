@@ -12,10 +12,13 @@ import { RootState } from "../../app/store";
 //gets user notifications
 export const patchVitals = createAsyncThunk(
   "patients/patchVitals",
-  async (formData, thunkAPI) => {
+  async (formData: any, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const { data } = await Axios.patch(`/patient_vitals/${id}`, formData);
+      const { data } = await Axios.patch(
+        `/patient_vitals/${formData?.id}`,
+        formData
+      );
       return data;
     } catch (error) {}
   }
@@ -24,7 +27,7 @@ export const patchVitals = createAsyncThunk(
 //gets user notifications
 export const postVitals = createAsyncThunk(
   "patients/postVitals",
-  async (formData: patientVitals, thunkAPI) => {
+  async (formData: any, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
 
     try {

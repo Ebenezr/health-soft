@@ -108,9 +108,9 @@ const VitalsModal: React.FC<ModalProps> = ({
   const { data: patients } = useQuery(["patientsdata"], () => getPatients());
 
   //patch vitals
-  const patchVital = async ({ id:number, formData:patientVitals }) => {
+  const patchVital = async (formData: any) => {
     try {
-      await dispatch(patchVitals({id,formData}))
+      await dispatch(patchVitals(formData))
         .unwrap()
         .then(() => {
           queryClient.invalidateQueries(["patientsvitals"]);
@@ -209,7 +209,7 @@ const VitalsModal: React.FC<ModalProps> = ({
       postVital(formData);
       return;
     }
-    patchVital({vitals?.patient_id,formData});
+    patchVital({ ...formData, id: vitals?.patient_id, formData });
   };
 
   if (!openModal) return null;
