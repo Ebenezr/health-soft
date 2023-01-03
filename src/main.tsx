@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </Route>
           <Route path="/home/*" element={<App />} />
         </Routes>
-        {/* <ReactQueryDevtools /> */}
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </Router>
   </React.StrictMode>

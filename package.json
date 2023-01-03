@@ -50,7 +50,6 @@
     "react-select": "^5.4.0",
     "sass": "^1.55.0",
     "styled-components": "^5.3.6",
-    "yup": "^0.32.11",
     "zustand": "^4.1.1"
   },
   "devDependencies": {
