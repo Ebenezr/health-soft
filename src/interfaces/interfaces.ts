@@ -2,13 +2,13 @@ import { Dayjs } from "dayjs";
 
 export interface patientInterface {
   id?: number;
-  national_id?: number;
-  first_name?: string;
-  last_name?: string;
+  nationalId?: number;
+  firstName?: string;
+  lastName?: string;
   gender?: string;
   dob?: string;
-  marital_status?: string;
-  fullname?: string;
+  maritalStatus?: string;
+  fullName?: string;
   phone?: number;
   email?: string;
   address?: string;
@@ -18,27 +18,26 @@ export interface patientInterface {
 
 export interface userInterface {
   id?: number;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   phone?: number;
   email?: string;
   designation?: string;
   role?: string;
   featured_image?: {};
   password?: string;
-  confirm_password?: string;
-  fullname?: string;
+  fullName?: string;
 }
 
 export interface appointmentInterface {
   id?: number;
-  patient_type?: string;
+  patientType?: string;
   serial_no?: number;
-  appointment_date?: Dayjs;
-  appointment_time?: Dayjs;
-  doctor_id?: number;
-  patient_id?: number;
-  nurse_id?: number;
+  appointmentdate?: Dayjs;
+  appointmentTime?: Dayjs;
+  doctorID?: number;
+  patientID?: number;
+  nurseID?: number;
   notes?: string;
   doctor?: {
     fullname?: string;
@@ -60,9 +59,9 @@ export interface appointmentInterface {
 
 export interface patientVitals {
   id?: number;
-  patient_id?: number;
-  bp_systolic?: number;
-  bp_diastolic?: number;
+  patientID?: number;
+  bpSystolic?: number;
+  bpDiastolic?: number;
   temperature?: number;
   notes?: string;
   patient?: {
@@ -70,21 +69,21 @@ export interface patientVitals {
     national_id?: number;
     first_name?: string;
     last_name?: string;
-    fullname?: string;
+    fullName?: string;
   };
 }
 
 export interface checkupInterface {
-  doctor_id?: number;
-  patient_id?: number;
+  doctorID?: number;
+  patientID?: number;
   id?: number;
   examination?: string;
   visit_id?: number;
   symptoms?: string;
   diagnosis?: string;
   advice?: string;
-  checkup_date?: string;
-  next_visit?: string;
+  checkupDate?: string;
+  nextVisit?: string;
   comment?: string;
   hpi?: string;
   patient?: {
