@@ -12,7 +12,7 @@ function AdminTBL() {
   const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/admins");
-    return data;
+    return data?.payload;
   }
   const { data: nurses, isLoading } = useQuery(["admins"], () => getData());
 
@@ -20,7 +20,7 @@ function AdminTBL() {
   const [currentUser, setCurrentUser] = useState<userInterface>({});
 
   const handleDelete = async (id: number) => {
-    await Axios.delete(`/admins/${id}`).then((res) => {});
+    await Axios.delete(`/admin/${id}`).then((res) => {});
   };
 
   const { mutate: destroy } = useMutation(handleDelete, {
@@ -49,12 +49,12 @@ function AdminTBL() {
 
     {
       name: "First Name",
-      selector: (row: any) => row?.first_name,
+      selector: (row: any) => row?.firstName,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row?.last_name,
+      selector: (row: any) => row?.lastName,
       sortable: true,
     },
     {

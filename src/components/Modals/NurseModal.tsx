@@ -42,15 +42,14 @@ const NurseModal: React.FC<ModalProps> = ({
   const queryClient = useQueryClient();
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     phone: 0,
     email: "",
     designation: "",
     role: "",
     featured_image: {},
     password: "",
-    confirm_password: "",
   });
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const NurseModal: React.FC<ModalProps> = ({
   };
 
   const patchNurse = async (id: number) => {
-    await Axios.patch(`/nurses/${id}`, formData);
+    await Axios.patch(`/nurse/${id}`, formData);
   };
 
   const postNurse = async (formData) => {
@@ -167,11 +166,11 @@ const NurseModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="first_name"
+                id="firstName"
                 name="first_name"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.first_name}
+                value={formData?.firstName}
               ></input>
             </span>
             <span className="input_group">
@@ -181,11 +180,11 @@ const NurseModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="last_name"
+                id="lastName"
                 name="last_name"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.last_name}
+                value={formData?.lastName}
               ></input>
             </span>
             <span className="input_group">
@@ -245,9 +244,9 @@ const NurseModal: React.FC<ModalProps> = ({
                 value={formData?.password}
               ></input>
             </span>
-            <span className="input_group">
+            {/* <span className="input_group">
               <Label htmlFor="cpassword" css={{ lineHeight: "35px" }}>
-                Cornfirm Password
+                Confirm Password
               </Label>
               <input
                 required
@@ -258,7 +257,7 @@ const NurseModal: React.FC<ModalProps> = ({
                 onChange={handleChange}
                 value={formData?.confirm_password}
               ></input>
-            </span>
+            </span> */}
             <span className="input_group">
               <Label htmlFor="featured_image" css={{ lineHeight: "35px" }}>
                 Profile Picture

@@ -10,7 +10,7 @@ function DoctorTBL() {
   const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/doctors");
-    return data;
+    return data?.payload;
   }
   const {
     data: doctors,
@@ -23,7 +23,7 @@ function DoctorTBL() {
   const [openModal, setOpenModal] = useState(false);
 
   const handleDelete = async (id: number) => {
-    await Axios.delete(`/doctors/${id}`).then((res) => {});
+    await Axios.delete(`/doctor/${id}`).then((res) => {});
   };
   const { mutate: destroy } = useMutation(handleDelete, {
     onMutate: () => {},
@@ -51,12 +51,12 @@ function DoctorTBL() {
 
     {
       name: "First Name",
-      selector: (row: any) => row?.first_name,
+      selector: (row: any) => row?.firstName,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row?.last_name,
+      selector: (row: any) => row?.lastName,
       sortable: true,
     },
     {

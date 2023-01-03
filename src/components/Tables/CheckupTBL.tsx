@@ -10,7 +10,7 @@ function CheckupTBL() {
   const queryClient = useQueryClient();
   async function getCheckups() {
     const { data } = await Axios.get("/checkups");
-    return data;
+    return data?.payload;
   }
   const {
     data: checkups,

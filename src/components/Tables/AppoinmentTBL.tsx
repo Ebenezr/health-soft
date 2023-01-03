@@ -17,7 +17,7 @@ function AppointmentTable() {
   //get data
   async function getAppointments() {
     const { data } = await Axios.get("/myappointments");
-    return data;
+    return data?.payload;
   }
   //handle delete
   const handleDelete = async (id: number) => {

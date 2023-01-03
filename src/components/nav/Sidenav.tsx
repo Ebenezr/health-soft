@@ -45,13 +45,13 @@ const Sidenav: React.FC = () => {
         <Avatar>
           <AvatarImage src="" alt="Pedro Duarte" />
           <AvatarFallback>
-            {acc?.first_name?.slice(0, 1)}
-            {acc?.last_name?.slice(0, 1)}
+            {acc?.firstName?.slice(0, 1)}
+            {acc?.lastName?.slice(0, 1)}
           </AvatarFallback>
         </Avatar>
         <div className="text-info">
           <h2>
-            {acc?.first_name} {acc?.last_name}
+            {acc?.firstName} {acc?.lastName}
           </h2>
           <small>{role}</small>
         </div>
@@ -60,16 +60,16 @@ const Sidenav: React.FC = () => {
 
       <Navigation
         activeItemId={location.pathname}
-        onSelect={({ itemId }) => {
-          //conditional routing if user is not admin prevent...
-          role !== "admin" &&
-          (itemId === "/home/management/doctors" ||
-            itemId === "/home/management/nurses" ||
-            itemId === "/home/management/admins" ||
-            itemId === "/home/management")
-            ? navigate(null)
-            : navigate(itemId);
-        }}
+        // onSelect={({ itemId }) => {
+        //   //conditional routing if user is not admin prevent...
+        //   role !== "admin" &&
+        //   (itemId === "/home/management/doctors" ||
+        //     itemId === "/home/management/nurses" ||
+        //     itemId === "/home/management/admins" ||
+        //     itemId === "/home/management")
+        //     ? navigate(null)
+        //     : navigate(itemId);
+        // }}
         items={[
           {
             title: "Patient Info",

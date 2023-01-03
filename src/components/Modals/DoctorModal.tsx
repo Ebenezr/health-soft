@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { padding } from "@mui/system";
 import { Label } from "../Radix/Label";
 import { userInterface } from "../../interfaces/interfaces";
 import Axios from "../../Api/axios";
@@ -43,15 +42,14 @@ const DoctorModal: React.FC<ModalProps> = ({
   const [status, setStatus] = useState<boolean>(null);
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     phone: 0,
     email: "",
     designation: "",
     role: "",
     featured_image: {},
     password: "",
-    confirm_password: "",
   });
 
   useEffect(() => {
@@ -67,7 +65,7 @@ const DoctorModal: React.FC<ModalProps> = ({
   };
 
   const patchDoctor = async (id: number) => {
-    await Axios.patch(`/doctors/${id}`, formData).then((res) => {});
+    await Axios.patch(`/doctor/${id}`, formData).then((res) => {});
   };
 
   const postDoctor = async (formData) => {
@@ -166,10 +164,10 @@ const DoctorModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="first_name"
+                id="firstName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.first_name}
+                value={formData?.firstName}
               ></input>
             </span>
             <span className="input_group">
@@ -179,10 +177,10 @@ const DoctorModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="last_name"
+                id="lastName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.last_name}
+                value={formData?.lastName}
               ></input>
             </span>
             <span className="input_group">
@@ -238,9 +236,9 @@ const DoctorModal: React.FC<ModalProps> = ({
                 value={formData?.password}
               ></input>
             </span>
-            <span className="input_group">
+            {/* <span className="input_group">
               <Label htmlFor="cpassword" css={{ lineHeight: "35px" }}>
-                Cornfirm Password
+                Confirm Password
               </Label>
               <input
                 required
@@ -250,7 +248,7 @@ const DoctorModal: React.FC<ModalProps> = ({
                 onChange={handleChange}
                 value={formData?.confirm_password}
               ></input>
-            </span>
+            </span> */}
             <span className="input_group">
               <Label htmlFor="featured_image" css={{ lineHeight: "35px" }}>
                 Profile Picture

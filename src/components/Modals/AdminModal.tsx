@@ -43,15 +43,14 @@ const AdminModal: React.FC<ModalProps> = ({
   const [status, setStatus] = useState<boolean>(null);
   //hold user data
   const [formData, setFormData] = useState<userInterface>({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     phone: 0,
     email: "",
     designation: "",
     role: "",
     featured_image: {},
     password: "",
-    cpassword: "",
   });
 
   useEffect(() => {
@@ -68,7 +67,7 @@ const AdminModal: React.FC<ModalProps> = ({
   };
 
   const patchDoctor = async (id: number) => {
-    await Axios.patch(`/admins/${id}`, formData).then((res) => {});
+    await Axios.patch(`/admin/${id}`, formData).then((res) => {});
   };
 
   const postDoctor = async (formData) => {
@@ -166,10 +165,10 @@ const AdminModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="first_name"
+                id="firstName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.first_name}
+                value={formData?.firstName}
               ></input>
             </span>
             <span className="input_group">
@@ -179,10 +178,10 @@ const AdminModal: React.FC<ModalProps> = ({
               <input
                 required
                 type="text"
-                id="last_name"
+                id="lastName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.last_name}
+                value={formData?.lastName}
               ></input>
             </span>
             <span className="input_group">
@@ -238,19 +237,18 @@ const AdminModal: React.FC<ModalProps> = ({
                 value={formData?.password}
               ></input>
             </span>
-            <span className="input_group">
-              <Label htmlFor="cpassword" css={{ lineHeight: "35px" }}>
-                Cornfirm Password
+            {/* <span className="input_group">
+              <Label htmlFor="confirm_password" css={{ lineHeight: "35px" }}>
+                Confirm Password
               </Label>
               <input
                 required
                 type="password"
-                id="cpassword"
+                id="confirm_password"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.cpassword}
               ></input>
-            </span>
+            </span> */}
             <span className="input_group">
               <Label htmlFor="featured_image" css={{ lineHeight: "35px" }}>
                 Profile Picture

@@ -11,7 +11,7 @@ function NurseTBL() {
   const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/nurses");
-    return data;
+    return data?.payload;
   }
   const {
     data: nurses,
@@ -53,12 +53,12 @@ function NurseTBL() {
 
     {
       name: "First Name",
-      selector: (row: any) => row?.first_name,
+      selector: (row: any) => row?.firstName,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row?.last_name,
+      selector: (row: any) => row?.lastName,
       sortable: true,
     },
     {

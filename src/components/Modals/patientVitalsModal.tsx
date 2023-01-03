@@ -5,9 +5,6 @@ import { Label } from "../Radix/Label";
 import Axios from "../../Api/axios";
 import { patientInterface, patientVitals } from "../../interfaces/interfaces";
 import Select from "react-select";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Toast,
@@ -40,21 +37,7 @@ const dropIn = {
   },
 };
 
-//form validatiion schema
-const schema = yup.object().shape({
-  temperature: yup
-    .number()
-    .required("temperature is required")
-    .positive()
-    .integer()
-    .min(33)
-    .max(40),
-  bp_systolic: yup.number().positive().integer().min(100).max(150),
-  bp_diastolic: yup.number().positive().integer().min(50).max(100),
-  notes: yup.string(),
-});
 
-//.oneOf([yup.ref('password),null])
 
 interface ModalProps {
   openModal: boolean;
@@ -74,21 +57,21 @@ const VitalsModal: React.FC<ModalProps> = ({
   const [open, setOpen] = useState(false);
   const [userChoice, setUserChoice] = useState<any>();
   const [formData, setFormData] = useState<patientVitals>({
-    patient_id: 0,
+    patientID: 0,
     temperature: 0,
-    bp_systolic: 0,
-    bp_diastolic: 0,
+    bpSystolic: 0,
+    bpDiastolic: 0,
     notes: "",
   });
 
   const timerRef = React.useRef(0);
-  const [error, setError] = useState("");
+
 
   useEffect(() => {
     setFormData(vitals);
     return () => clearTimeout(timerRef.current);
   }, [vitals]);
-  //hangle change event
+  //handle change event
   const handleChange = (event: any) => {
     const key = event.target.id;
     const value = event.target.value;
@@ -100,8 +83,8 @@ const VitalsModal: React.FC<ModalProps> = ({
   async function getPatients() {
     const arr: any = [];
     const { data } = await Axios.get("/patients");
-    data.map((user: patientInterface) => {
-      return arr.push({ value: user.id, label: user.fullname });
+    data?.payload.map((user: patientInterface) => {
+      return arr.push({ value: user.id, label: user.fullName });
     });
     return arr;
   }
@@ -110,17 +93,15 @@ const VitalsModal: React.FC<ModalProps> = ({
 
   //patch vitals
   const patchVitals = async (patient_id: number) => {
-    await Axios.patch(`/patient_vitals/${patient_id}`, formData).then(
-      (res) => res.data
-    );
+    await Axios.patch(`/vital/${patient_id}`, formData).then((res) => res.data);
   };
 
   //post vitals
   const postVitals = async (formData: patientVitals) => {
-    await Axios.post(`/patient_vitals`, formData).then((res) => res.data);
+    await Axios.post(`/vitals`, formData).then((res) => res.data);
   };
 
-  //update pationt's vitals query
+  //update patient's vitals query
   const { isLoading: load, mutate: patch } = useMutation(patchVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
@@ -141,7 +122,7 @@ const VitalsModal: React.FC<ModalProps> = ({
     },
   });
 
-  //post pationt's vitals query
+  //post patient's vitals query
   const { isLoading, mutate: post } = useMutation(postVitals, {
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
@@ -170,7 +151,7 @@ const VitalsModal: React.FC<ModalProps> = ({
       post(formData);
       return;
     }
-    patch(vitals?.patient_id);
+    patch(vitals?.patientID);
   };
 
   if (!openModal) return null;
@@ -212,7 +193,7 @@ const VitalsModal: React.FC<ModalProps> = ({
                 </Label>
 
                 <Select
-                  defaultInputValue={vitals?.patient?.fullname}
+                  defaultInputValue={vitals?.patient?.fullName}
                   className="input-cont"
                   placeholder="Select Type"
                   options={patients}
@@ -224,7 +205,7 @@ const VitalsModal: React.FC<ModalProps> = ({
                     setUserChoice(event?.value);
                   }}
                   onBlur={() =>
-                    setFormData({ ...formData, patient_id: userChoice })
+                    setFormData({ ...formData, patientID: userChoice })
                   }
                   //    value={patients.find((c) => c.value === value)}
 
@@ -252,9 +233,9 @@ const VitalsModal: React.FC<ModalProps> = ({
                 </Label>
                 <input
                   type="number"
-                  id="bp_systolic"
+                  id="bpSystolic"
                   className="inputs"
-                  value={formData?.bp_systolic}
+                  value={formData?.bpSystolic}
                   onChange={handleChange}
                   // {...register("bp_systolic")}
                 ></input>
@@ -266,9 +247,9 @@ const VitalsModal: React.FC<ModalProps> = ({
                 </Label>
                 <input
                   type="number"
-                  id="bp_diastolic"
+                  id="bpDiastolic"
                   className="inputs"
-                  value={formData?.bp_diastolic}
+                  value={formData?.bpDiastolic}
                   onChange={handleChange}
                   // {...register("bp_diastolic")}
                 ></input>
@@ -296,7 +277,7 @@ const VitalsModal: React.FC<ModalProps> = ({
           </article>
           <footer className="modal-footer">
             <button className="btn save" type="submit">
-              {isLoading || load  ? "Saving..." : "Save"}
+              {isLoading || load ? "Saving..." : "Save"}
             </button>
             <button className="btn close" onClick={closeModal}>
               Close

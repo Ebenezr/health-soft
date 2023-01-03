@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DataTable from "./DataTable";
 import Axios from "../../Api/axios";
-import { patientVitals, userInterface } from "../../interfaces/interfaces";
+import { patientVitals } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import VitalsModal from "../Modals/patientVitalsModal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,8 +9,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 function TriageTBL() {
   const queryClient = useQueryClient();
   async function getData() {
-    const { data } = await Axios.get("/patient_vitals");
-    return data;
+    const { data } = await Axios.get("/vitals");
+    return data?.payload;
   }
   const {
     data: patients,
@@ -27,11 +27,10 @@ function TriageTBL() {
   };
 
   const handleDelete = async (id: number) => {
-    await Axios.delete(`/patient_vitals/${id}`).then((res) => {});
+    await Axios.delete(`/vital/${id}`).then((res) => {});
   };
 
   const { mutate: destroy } = useMutation(handleDelete, {
-   
     onSuccess: () => {
       queryClient.invalidateQueries(["patientsvitals"]);
     },
@@ -52,7 +51,7 @@ function TriageTBL() {
 
     {
       name: "Patient",
-      selector: (row: any) => row?.patient?.fullname,
+      selector: (row: any) => row?.patient?.fullName,
       sortable: true,
     },
     {
@@ -62,11 +61,11 @@ function TriageTBL() {
     },
     {
       name: "Bp Systolic",
-      selector: (row: any) => row?.bp_systolic,
+      selector: (row: any) => row?.bpSystolic,
     },
     {
       name: "Bp Diastolic",
-      selector: (row: any) => row?.bp_diastolic,
+      selector: (row: any) => row?.bpDiastolic,
     },
     {
       name: "Notes",
