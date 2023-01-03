@@ -42,34 +42,42 @@ const PatientModal: React.FC<ModalProps> = ({
   const queryClient = useQueryClient();
   const gender: { value: string; label: string }[] = [
     {
-      value: "Male",
+      value: "MALE",
       label: "Male",
     },
     {
-      value: "Female",
+      value: "FEMALE",
       label: "Female",
     },
   ];
   const married: { value: string; label: string }[] = [
     {
-      value: "Single",
+      value: "SINGLE",
       label: "Single",
     },
     {
-      value: "Maried",
+      value: "MARRIED",
       label: "Married",
+    },
+    {
+      value: "WIDOWED",
+      label: "Widowed",
+    },
+    {
+      value: "DIVORCED",
+      label: "Divorced",
     },
   ];
   const [status, setStatus] = useState<boolean>(null);
   const [genderchoice, setGender] = useState("");
   const [marriedchoice, setMarriedChoice] = useState("");
   const [formData, setFormData] = useState<patientInterface>({
-    national_id: 0,
-    first_name: "",
-    last_name: "",
+    nationalId: 0,
+    firstName: "",
+    lastName: "",
     gender: "",
     dob: "",
-    marital_status: "",
+    maritalStatus: "",
     fullname: "",
     phone: 0,
     email: "",
@@ -92,7 +100,7 @@ const PatientModal: React.FC<ModalProps> = ({
   };
 
   const patchPatient = async (id: number) => {
-    await Axios.patch(`/patients/${id}`, formData).then((res) => {});
+    await Axios.patch(`/patient/${id}`, formData).then((res) => {});
   };
 
   const postPatient = async (formData) => {
@@ -188,10 +196,10 @@ const PatientModal: React.FC<ModalProps> = ({
               </Label>
               <input
                 type="text"
-                id="first_name"
+                id="firstName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.first_name}
+                value={formData?.firstName}
               ></input>
             </span>
             <span className="input_group">
@@ -200,10 +208,10 @@ const PatientModal: React.FC<ModalProps> = ({
               </Label>
               <input
                 type="text"
-                id="last_name"
+                id="lastName"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.last_name}
+                value={formData?.lastName}
               ></input>
             </span>
             <span className="input_group">
@@ -213,10 +221,10 @@ const PatientModal: React.FC<ModalProps> = ({
 
               <input
                 type="text"
-                id="national_id"
+                id="nationalId"
                 className="inputs"
                 onChange={handleChange}
-                value={formData?.national_id}
+                value={formData?.nationalId}
               ></input>
             </span>
             <span className="input_group">
@@ -257,12 +265,12 @@ const PatientModal: React.FC<ModalProps> = ({
                 className="input-cont "
                 placeholder="Select Type"
                 options={married}
-                defaultInputValue={currentUser?.marital_status}
+                defaultInputValue={currentUser?.maritalStatus}
                 noOptionsMessage={() => "Choice not found"}
                 onChange={(event: any) => setMarriedChoice(event.value)}
                 value={married.find((obj) => obj.value === marriedchoice)}
                 onBlur={() =>
-                  setFormData({ ...formData, marital_status: marriedchoice })
+                  setFormData({ ...formData, maritalStatus: marriedchoice })
                 }
               />
             </span>
@@ -285,7 +293,7 @@ const PatientModal: React.FC<ModalProps> = ({
                 Email
               </Label>
               <input
-                type="eamil"
+                type="email"
                 id="email"
                 className="inputs"
                 onChange={handleChange}

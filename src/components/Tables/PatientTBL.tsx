@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DataTable from "./DataTable";
 import Axios from "../../Api/axios";
 import { patientInterface } from "../../interfaces/interfaces";
@@ -9,7 +9,7 @@ function PatientTBL() {
   const queryClient = useQueryClient();
   async function getData() {
     const { data } = await Axios.get("/patients");
-    return data;
+    return data?.payload;
   }
   const {
     data: patients,
@@ -21,7 +21,7 @@ function PatientTBL() {
   const [currentUser, setCurrentUser] = useState<patientInterface>({});
 
   const handleDelete = async (id: number) => {
-    await Axios.delete(`/patients/${id}`).then((res) => {});
+    await Axios.delete(`/patient/${id}`).then((res) => {});
   };
 
   const { mutate: destroy } = useMutation(handleDelete, {
@@ -51,17 +51,17 @@ function PatientTBL() {
     },
     {
       name: "First Name",
-      selector: (row: any) => row?.first_name,
+      selector: (row: any) => row?.firstName,
       sortable: true,
     },
     {
       name: "Last Name",
-      selector: (row: any) => row?.last_name,
+      selector: (row: any) => row?.lastName,
       sortable: true,
     },
     {
       name: "Marital Status",
-      selector: (row: any) => row?.marital_status,
+      selector: (row: any) => row?.maritalStatus,
     },
     {
       name: "Gender",
