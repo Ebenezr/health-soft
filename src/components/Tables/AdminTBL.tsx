@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import DataTable from "./DataTable";
 import Axios from "../../Api/axios";
 import { userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
-
-import NurseModal from "../Modals/NurseModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AdminModal from "../Modals/AdminModal";
 

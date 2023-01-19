@@ -11,12 +11,7 @@ function PatientTBL() {
     const { data } = await Axios.get("/patients");
     return data?.payload;
   }
-  const {
-    data: patients,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery(["patients"], () => getData());
+  const { data: patients, isLoading } = useQuery(["patients"], () => getData());
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<patientInterface>({});
 

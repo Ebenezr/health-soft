@@ -60,16 +60,6 @@ const Sidenav: React.FC = () => {
 
       <Navigation
         activeItemId={location.pathname}
-        // onSelect={({ itemId }) => {
-        //   //conditional routing if user is not admin prevent...
-        //   role !== "admin" &&
-        //   (itemId === "/home/management/doctors" ||
-        //     itemId === "/home/management/nurses" ||
-        //     itemId === "/home/management/admins" ||
-        //     itemId === "/home/management")
-        //     ? navigate(null)
-        //     : navigate(itemId);
-        // }}
         items={[
           {
             title: "Patient Info",

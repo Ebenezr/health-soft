@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import DataTable from "./DataTable";
 import Axios from "../../Api/axios";
-import { patientInterface, userInterface } from "../../interfaces/interfaces";
+import {userInterface } from "../../interfaces/interfaces";
 import { motion } from "framer-motion";
 import DoctorModal from "../Modals/DoctorModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,8 +15,6 @@ function DoctorTBL() {
   const {
     data: doctors,
     isLoading,
-    refetch,
-    error,
   } = useQuery(["doctors"], () => getData());
 
   const [currentUser, setCurrentUser] = useState<userInterface>({});
