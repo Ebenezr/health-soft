@@ -22,7 +22,7 @@ const Signin: React.FC<formData> = () => {
   });
   const userRef = React.useRef<HTMLInputElement>(null);
 
-  //hangle change event
+  //handle change event
   const handleChange = (event: any): void => {
     const key: string = event.target.id;
     const value: any =
@@ -35,10 +35,10 @@ const Signin: React.FC<formData> = () => {
 
   //login post request
   const logIn = async (formData) => {
-    await Axios.post(`/users`, formData).then((res) => {
-      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+    await Axios.post(`/login`, formData).then((res) => {
+      localStorage.setItem("user", JSON.stringify(res?.data?.name));
       localStorage.setItem("token", JSON.stringify(res?.data?.token));
-      localStorage.setItem("role", JSON.stringify(res?.data?.user?.role_cd));
+      localStorage.setItem("role", JSON.stringify(res?.data?.role));
     });
   };
 

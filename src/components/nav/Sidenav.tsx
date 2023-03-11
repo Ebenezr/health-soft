@@ -19,11 +19,11 @@ const Sidenav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [acc, setAcc] = useState<userInterface>({});
-  const [role, setRole] = useState<string>("");
+  const [role, setRole] = useState<string>("NURSE");
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    const userRole = JSON.parse(localStorage.getItem("role") || "");
+    const loggedUser = JSON.parse(localStorage.getItem("user"));
+    const userRole = JSON.parse(localStorage.getItem("role"));
     setAcc(loggedUser);
     setRole(userRole);
 

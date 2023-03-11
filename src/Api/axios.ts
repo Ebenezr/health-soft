@@ -4,7 +4,7 @@ import axios from "axios";
 const token =
   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJyb2xlIjoibnVyc2UifQ.yMX6vV7o-d5pR6fAamlSVaefltL93Jgs1klDn0ytCe4";
 
-axios.defaults.baseURL = " http://localhost:3000/api/v1/";
+axios.defaults.baseURL = "https://healthsoft-node.onrender.com/api/";
 //2 hours debugging !!!
 //catch JSON parse error
 try {
