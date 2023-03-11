@@ -22,8 +22,8 @@ const Sidenav: React.FC = () => {
   const [role, setRole] = useState<string>("NURSE");
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("user"));
-    const userRole = JSON.parse(localStorage.getItem("role"));
+    const loggedUser = JSON.parse(localStorage.getItem("user")) ?? {};
+    const userRole = JSON.parse(localStorage.getItem("role")) ?? "NURSE";
     setAcc(loggedUser);
     setRole(userRole);
 
@@ -34,16 +34,16 @@ const Sidenav: React.FC = () => {
     <aside>
       <div className="logo">
         <Avatar>
-          <AvatarImage src={logo} alt="Pedro Duarte" />
+          <AvatarImage src={logo} alt="" />
           <AvatarFallback>HS</AvatarFallback>
         </Avatar>
-        <h2>Healthsoft</h2>
+        <h2>HealthSoft</h2>
       </div>
       <Separator css={{ margin: "15px 0" }} />
 
       <div className="userinfo">
         <Avatar>
-          <AvatarImage src="" alt="Pedro Duarte" />
+          <AvatarImage src="" alt="" />
           <AvatarFallback>
             {acc?.firstName?.slice(0, 1)}
             {acc?.lastName?.slice(0, 1)}
@@ -65,44 +65,42 @@ const Sidenav: React.FC = () => {
             title: "Patient Info",
             itemId: "/home/patients",
 
-            elemBefore: () => <FaUserClock color="#7380ec" size="1.4rem" />,
+            elemBefore: () => <FaUserClock color="#7380ec" />,
           },
           {
             title: "Patient Appointment",
             itemId: "/home/appointments",
-            elemBefore: () => <FaClock color="#7380ec" size="1.4rem" />,
+            elemBefore: () => <FaClock color="#7380ec" />,
           },
           {
             title: "Nursing Triage",
             itemId: "/home/triage",
-            elemBefore: () => <FaUserNurse color="#7380ec" size="1.4rem" />,
+            elemBefore: () => <FaUserNurse color="#7380ec" />,
           },
           {
             title: "Check Up",
             itemId: "/home/checkup",
-            elemBefore: () => <FaStethoscope color="#7380ec" size="1.4rem" />,
+            elemBefore: () => <FaStethoscope color="#7380ec" />,
           },
           {
             title: "User Management",
             itemId: "/home/management",
-            elemBefore: () => <FaUnlock color="#7380ec" size="1.4rem" />,
+            elemBefore: () => <FaUnlock color="#7380ec" />,
             subNav: [
               {
                 title: "Doctors",
                 itemId: "/home/management/doctors",
-                elemBefore: () => (
-                  <FaStethoscope color="#7380ec" size="1.3rem" />
-                ),
+                elemBefore: () => <FaStethoscope color="#7380ec" />,
               },
               {
                 title: "Nurses",
                 itemId: "/home/management/nurses",
-                elemBefore: () => <FaUserNurse color="#7380ec" size="1.3rem" />,
+                elemBefore: () => <FaUserNurse color="#7380ec" />,
               },
               {
                 title: "Admins",
                 itemId: "/home/management/admins",
-                elemBefore: () => <RiAdminFill color="#7380ec" size="1.3rem" />,
+                elemBefore: () => <RiAdminFill color="#7380ec" />,
               },
             ],
           },
